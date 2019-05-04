@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+            android:id="@+id/AddRead"
+        android:title="@string/AddRead"
+        app:showAsAction="always" />
+    <item
+            android:id="@+id/Report"
+        android:title="@string/AddRead"
+        app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/TermManaging"
+        android:title="@string/Terming"
+        app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/Booking"
+        android:title="@string/Booking"
+        app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/FreeBooking"
+        android:title="@string/FreeBooking"
+        app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/Reseting"
+        android:title="@string/Reseting"
+        app:showAsAction="ifRoom" />
+</menu>
