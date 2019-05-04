@@ -25,17 +25,17 @@ class Read_Adapter// Provide a suitable constructor (depends on the kind of data
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     class ReadListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal var readbook: Spinner
+        internal var readbook: TextView
         internal var readpagecount: TextView
         internal var readdate: TextView
         internal var delRead: Button
 
 
         init {
-            readbook = v.findViewById<Spinner>(R.id.spinner)
+            readbook = v.findViewById<TextView>(R.id.read_book_name)
             readpagecount = v.findViewById<View>(R.id.read_page_count) as TextView
             readdate = v.findViewById<View>(R.id.read_date) as TextView
-            delRead = v.findViewById<View>(R.id.delread) as Button
+            delRead = v.findViewById<View>(R.id.del_read) as Button
         }
     }
 
@@ -44,7 +44,7 @@ class Read_Adapter// Provide a suitable constructor (depends on the kind of data
                                     viewType: Int): Read_Adapter.ReadListViewHolder {
         // create a new view
         val v = LayoutInflater.from(parent.context)
-                .inflate(R.layout.readlist, parent, false)
+                .inflate(R.layout.item_read, parent, false)
         // set the view's size, margins, paddings and layout parameters
 
         return ReadListViewHolder(v)
@@ -56,7 +56,7 @@ class Read_Adapter// Provide a suitable constructor (depends on the kind of data
             val r = reads[i]
             //final Book book = bookDBhandeler.GetBook(reads.get(i).getBookId());
 
-            holder.readbook = r.book!!.name.toString()
+            holder.readbook.text = r.book!!.name.toString()
             holder.readpagecount.text = reads[i].pageReadCount.toString() + " صفحه خوانده شد"
             holder.readdate.text = "در تاریخ " + reads[i].readDate.toString()
 

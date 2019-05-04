@@ -17,9 +17,9 @@
             android:name="AA_DB_VERSION"
             android:value="3" />
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" />
+        <!--<activity-->
+            <!--android:name=".MainActivity"-->
+            <!--android:label="@string/app_name" />-->
         <!--<activity-->
             <!--android:name=".Add_Term"-->
             <!--android:label="@string/Terming"-->
@@ -28,20 +28,20 @@
                 <!--android:name="android.support.PARENT_ACTIVITY"-->
                 <!--android:value=".MainActivity" />-->
         <!--</activity>-->
-        <activity
-            android:name=".Booking"
-            android:label="@string/Booking">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".Reading"
-            android:label="@string/Reading">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".Booking"-->
+            <!--android:label="@string/Booking">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".MainActivity" />-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".Reading"-->
+            <!--android:label="@string/Reading">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".MainActivity" />-->
+        <!--</activity>-->
         <activity
             android:name=".Splash"
             android:label="@string/app_name">
@@ -51,20 +51,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Add_Book"
-            android:windowSoftInputMode="adjustPan|adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Booking" />
-        </activity>
-        <activity
-            android:name=".Add_Read"
-            android:windowSoftInputMode="adjustPan|adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Reading" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".Add_Book"-->
+            <!--android:windowSoftInputMode="adjustPan|adjustResize">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".Booking" />-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".Add_Read"-->
+            <!--android:windowSoftInputMode="adjustPan|adjustResize">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".Reading" />-->
+        <!--</activity>-->
         <activity
             android:name=".DashboardActivity"
             android:label="@string/title_activity_dashboard"
