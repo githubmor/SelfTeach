@@ -78,6 +78,6 @@ class Read_Adapter// Provide a suitable constructor (depends on the kind of data
 
     fun addNewRead(b: Read) {
         reads?.add(b)
-
+        notifyDataSetChanged()
     }
 }
