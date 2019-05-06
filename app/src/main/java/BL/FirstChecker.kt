@@ -1,7 +1,6 @@
 package BL
 
 import com.activeandroid.query.Select
-import java.util.ArrayList
 
 class FirstChecker {
     companion object{
@@ -33,9 +32,9 @@ class FirstChecker {
             return Select().from(Book::class.java).where("free = " + 0).execute()
         }
 
-        fun getReads(): MutableList<Read>? {
+        fun getReads(): MutableList<Read> {
             val books = Select().from(Book::class.java).execute<Book>()
-            val reads: MutableList<Read>? = null
+            val reads: MutableList<Read> = mutableListOf()
 
             for (b in books) {
                 val rs = Select()
@@ -47,7 +46,7 @@ class FirstChecker {
                         r.book = b
                     }
                 }
-                reads?.addAll(rs)
+                reads.addAll(rs)
             }
 
             return reads

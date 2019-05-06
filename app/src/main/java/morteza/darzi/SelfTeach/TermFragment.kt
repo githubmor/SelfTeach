@@ -6,16 +6,21 @@ import BL.FirstChecker
 import BL.Term
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_term.*
 import kotlinx.android.synthetic.main.fragment_term.view.*
+
+
 
 
 //private const val ARG_PARAM1 = "param1"
@@ -86,13 +91,15 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             datePickerDialog.show(activity!!.fragmentManager, END)
         }
 
+        textChangeListner(v.term_name_lay,"لطفا نامی برای ترم انتخاب کنید")
+
         v.term_save.setOnClickListener {
 
-            if(v.term_name.text==null)
-                v.term_name_lay.error = "لطفا نامی را انتخاب کنید"
-            else if (v.term_start_date.text==null)
+            if(v.term_name.text.isNullOrEmpty())
+                v.term_name_lay.error = "لطفا نامی برای ترم انتخاب کنید"
+            else if (v.term_start_date.text.isNullOrEmpty())
                 Toast.makeText(context!!,"لطفا تاریخ شروع ترم را مشخص کنید", Toast.LENGTH_SHORT).show()
-            else if (v.term_end_date.text==null)
+            else if (v.term_end_date.text.isNullOrEmpty())
                 Toast.makeText(context!!,"لطفا تاریخ پایان ترم را مشخص کنید", Toast.LENGTH_SHORT).show()
             else if (term==null) {
                 term = Term()
@@ -106,6 +113,30 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 
         return v
+    }
+
+    private fun textChangeListner(v: TextInputLayout,errorMes : String) {
+        v.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.isEmpty()) {
+                    v.isErrorEnabled = true
+                    v.error = errorMes
+                }
+                if (s.isNotEmpty()) {
+                    v.error = null
+                    v.isErrorEnabled = false
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+        })
     }
 
     private fun assaginTerm(v: View) {

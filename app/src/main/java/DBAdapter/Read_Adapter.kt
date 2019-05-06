@@ -2,14 +2,13 @@ package DBAdapter
 
 import BL.Read
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import morteza.darzi.SelfTeach.R
 
 class Read_Adapter// Provide a suitable constructor (depends on the kind of dataset)
@@ -25,18 +24,12 @@ class Read_Adapter// Provide a suitable constructor (depends on the kind of data
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     class ReadListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal var readbook: TextView
-        internal var readpagecount: TextView
-        internal var readdate: TextView
-        internal var delRead: Button
+        internal var readbook= v.findViewById<TextView>(R.id.read_book_name)
+        internal var readpagecount = v.findViewById(R.id.read_page_count) as TextView
+        internal var readdate = v.findViewById<View>(R.id.read_date) as TextView
+        internal var delRead = v.findViewById<View>(R.id.del_read) as Button
 
 
-        init {
-            readbook = v.findViewById<TextView>(R.id.read_book_name)
-            readpagecount = v.findViewById<View>(R.id.read_page_count) as TextView
-            readdate = v.findViewById<View>(R.id.read_date) as TextView
-            delRead = v.findViewById<View>(R.id.del_read) as Button
-        }
     }
 
     // Create new views (invoked by the layout manager)

@@ -74,22 +74,20 @@
             <!--android:layout_height="wrap_content" />-->
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/term_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/startDate"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:layout_margin="16dp"
+                android:hint="@string/startDate" />
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/term_end_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/endDate"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:layout_margin="16dp"
+                android:hint="@string/endDate" />
 
             <Button
                 android:id="@+id/term_save"

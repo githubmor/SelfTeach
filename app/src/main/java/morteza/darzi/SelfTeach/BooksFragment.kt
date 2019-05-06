@@ -6,6 +6,8 @@ import DBAdapter.Book_Adapter
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -13,6 +15,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_books.view.*
 import kotlinx.android.synthetic.main.item_book.view.*
 
@@ -64,16 +67,20 @@ class BooksFragment : Fragment() {
             v.delbook.background = AppCompatResources.getDrawable(context!!,R.drawable.ic_add_white_48dp)
         }
 
+        v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         val adapter = Book_Adapter(context!!,books)
         v.list.adapter = adapter
 
+        textChangeListner(v.book_name_lay,"لطفا نام كتاب را وارد كنيد")
+        textChangeListner(v.book_page_count_lay,"لطفا تعداد صفحات كتاب را وارد كنيد")
+
         v.delbook.setOnClickListener {
-            if(v.bookname.text==null)
-                v.bookname.error = "لطفا نام كتاب را وارد كنيد"
-            else if(v.bookpagecount.text==null)
-                v.bookpagecount.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
+            if(v.book_name.text==null)
+                v.book_name.error = "لطفا نام كتاب را وارد كنيد"
+            else if(v.book_page_count.text==null)
+                v.book_page_count.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
             else {
-                val b = Book(v.bookname.text.toString(),v.bookpagecount.text.toString().toInt(),false)
+                val b = Book(v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),false)
                 b.save()
                 adapter.addNewBook(b)
                 arrangeForNotEmpty(v)
@@ -83,11 +90,37 @@ class BooksFragment : Fragment() {
         return v
     }
 
+    private fun textChangeListner(v: TextInputLayout, errorMes : String) {
+        v.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.isEmpty()) {
+                    v.isErrorEnabled = true
+                    v.error = errorMes
+                }
+                if (s.isNotEmpty()) {
+                    v.error = null
+                    v.isErrorEnabled = false
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+        })
+    }
+
     private fun arrangeForNotEmpty(v: View) {
         v.list.visibility = VISIBLE
         v.emptyText.visibility = GONE
         v.fab.visibility = VISIBLE
         v.include.visibility = GONE
+        v.book_name.setText("")
+        v.book_page_count.setText("")
     }
 
     private fun arrangeForEmpty(v: View) {
@@ -95,6 +128,8 @@ class BooksFragment : Fragment() {
         v.emptyText.visibility = VISIBLE
         v.fab.visibility = VISIBLE
         v.include.visibility = GONE
+        v.book_name.setText("")
+        v.book_page_count.setText("")
     }
 
 

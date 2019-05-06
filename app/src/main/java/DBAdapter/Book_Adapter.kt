@@ -6,25 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import morteza.darzi.SelfTeach.R
 
-class Book_Adapter
-(private val context: Context, private val books: MutableList<Book>?)
+class Book_Adapter(private val context: Context, private val books: MutableList<Book>?)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal val bookName: TextView
-        internal val pageCount: TextView
-        internal val delBook: Button
+        internal val bookName = v.findViewById<View>(R.id.book_name) as TextInputEditText
+        internal val pageCount = v.findViewById<View>(R.id.book_page_count) as TextInputEditText
+        internal val delBook = v.findViewById<View>(R.id.delbook) as Button
 
 
         init {
-            bookName = v.findViewById<View>(R.id.bookname) as TextView
-            pageCount = v.findViewById<View>(R.id.bookpagecount) as TextView
-            delBook = v.findViewById<View>(R.id.delbook) as Button
 
             v.setOnLongClickListener {
 
@@ -45,8 +41,8 @@ class Book_Adapter
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
         if (books!=null) {
             val b = books[i]
-            holder.bookName.text = b.name
-            holder.pageCount.text = books[i].pageCount.toString() + " صفحه"
+            holder.bookName.setText(b.name)
+            holder.pageCount.setText(books[i].pageCount.toString() + " صفحه")
             holder.delBook.setOnClickListener {
                 Toast.makeText(context, "کتاب " + books[i].name + " حذف شد", Toast.LENGTH_SHORT).show()
                 books[i].DeleteReads()
@@ -62,7 +58,7 @@ class Book_Adapter
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
-        return if (books==null) 0 else books.size
+        return books?.size ?: 0
     }
 
     fun addNewBook(b: Book) {
