@@ -13,10 +13,17 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
+import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.main.fragment_books.view.*
+import kotlinx.android.synthetic.main.fragment_term.*
 import kotlinx.android.synthetic.main.item_book.view.*
+import kotlinx.android.synthetic.main.readlist.*
 import kotlinx.android.synthetic.main.readlist.view.*
 
 
@@ -34,7 +41,7 @@ import kotlinx.android.synthetic.main.readlist.view.*
  * create an instance of this fragment.
  *
  */
-class ReadsFragment : Fragment() {
+class ReadsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
@@ -49,6 +56,8 @@ class ReadsFragment : Fragment() {
 //            param2 = it.getString(ARG_PARAM2)
 //        }
     }
+
+    private var selectedBook: Book? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -70,18 +79,48 @@ class ReadsFragment : Fragment() {
         val adapter = Read_Adapter(context!!,reads)
         v.list.adapter = adapter
 
+        v.read_date.setOnClickListener {
+            val persianCalendar = PersianCalendar()
+            val datePickerDialog = DatePickerDialog.newInstance(
+                    this@ReadsFragment,
+                    persianCalendar.persianYear,
+                    persianCalendar.persianMonth,
+                    persianCalendar.persianDay
+            )
+
+            datePickerDialog.show(activity!!.fragmentManager, "")
+        }
+
+        val allbooks = FirstChecker.getBooks()
+
+        val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allbooks!!)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        v.spinner.adapter = dataAdapter
+
+        v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                selectedBook = adapterView.getItemAtPosition(i) as Book
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {
+
+            }
+        }
+
         v.delbook.setOnClickListener {
-//            if(v.read_page_count.text==null)
-//                v.read_page_count.error = "لطفا نام كتاب را وارد كنيد"
-//            else if(v.bookpagecount.text==null)
-//                v.bookpagecount.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
-//            else {
-//                val read = Read(v.pageRead!!.text.toString().toInt(), v.readDate!!.text.toString())
-//                read.book = selectedBook
-//                read.save()
-//                adapter.addNewRead(read)
-//                arrangeForNotEmpty(v)
-//            }
+            if(selectedBook==null)
+                Toast.makeText(context!!,"لطفا نام كتاب را وارد كنيد",Toast.LENGTH_SHORT).show()
+            else if(v.read_page_count.text.isNullOrEmpty())
+                v.read_page_count.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
+            else if(v.read_date.text.isNullOrEmpty())
+                v.read_date.error = "لطفا زمان خواندن را مشخص كنيد"
+            else {
+                val read = Read(v.read_page_count!!.text.toString().toInt(), v.read_date!!.text.toString())
+                read.book = selectedBook
+                read.save()
+                adapter.addNewRead(read)
+                arrangeForNotEmpty(v)
+            }
         }
 
         return v
@@ -116,6 +155,15 @@ class ReadsFragment : Fragment() {
         listener = null
     }
 
+
+    override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+
+        val d = PersianCalendar()
+        d.setPersianDate(year, monthOfYear, dayOfMonth)
+
+        read_date.setText(d.persianShortDate)
+
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -130,6 +178,8 @@ class ReadsFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
+
+        fun failPerformance()
     }
 
 //    companion object {

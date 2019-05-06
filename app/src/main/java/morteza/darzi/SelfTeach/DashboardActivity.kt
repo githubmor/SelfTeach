@@ -14,7 +14,11 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 
 
 class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteractionListener
-        ,BooksFragment.OnFragmentInteractionListener {
+        ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener {
+    override fun failPerformance() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onFragmentInteraction(uri: Uri) {
 
     }
@@ -35,9 +39,13 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         when(FirstChecker.checkLevel()){
             TermLevel.Term -> frag = TermFragment()
             TermLevel.Book -> frag = BooksFragment()
-            TermLevel.Perfermance -> TODO()
+            TermLevel.Perfermance -> frag = PerformanceFragment()
         }
-        supportFragmentManager.beginTransaction().replace(R.id.container,frag).commit()
+        Transaction(frag)
+    }
+
+    private fun Transaction(frag: Fragment) {
+        supportFragmentManager.beginTransaction().replace(R.id.container, frag).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -71,25 +79,18 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
                     }
                 }
 
-                startActivity(Intent(this, MainActivity::class.java))
+                initializeFirst()
             }
-            R.id.TermManaging -> startActivity(Intent(this, TermFragment::class.java))
+            R.id.TermManaging -> Transaction(TermFragment())
 
-            R.id.AddRead -> {
-                val i = Intent(this, Reading::class.java)
-                startActivity(i)
-            }
-            R.id.Booking -> {
-                val b = Intent(this, Booking::class.java)
-                b.putExtra("free", false)
-                startActivity(b)
-            }
-            R.id.FreeBooking -> {
-                val f = Intent(this, Booking::class.java)
-                f.putExtra("free", true)
-                startActivity(f)
-            }
-            R.id.Report -> Toast.makeText(applicationContext, "در حال توسعه", Toast.LENGTH_SHORT).show()
+            R.id.AddRead -> Transaction(ReadsFragment())
+            R.id.Booking -> Transaction(BooksFragment())
+//            R.id.FreeBooking -> {
+//                val f = Intent(this, Booking::class.java)
+//                f.putExtra("free", true)
+//                startActivity(f)
+//            }
+//            R.id.Report -> Toast.makeText(applicationContext, "در حال توسعه", Toast.LENGTH_SHORT).show()
             else -> {
             }
         }

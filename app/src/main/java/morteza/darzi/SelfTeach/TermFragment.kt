@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
@@ -48,8 +49,12 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 //        val addNewTerm = v.findViewById<Button>(R.id.add_new_term)
 
-        if (term!=null)
+        if (term!=null) {
             v.switcher.showNext()
+            v.term_name.setText(term?.termName)
+            v.term_start_date.setText(term?.startDate)
+            v.term_end_date.setText(term?.endDate)
+        }
 
         v.add_new_term.setOnClickListener {
             v.switcher.showNext()
@@ -57,12 +62,7 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 //        v.spinner.onItemSelectedListener = this
 
-        v.term_name.setText(term?.termName)
-        v.term_start_date.setText(term?.startDate)
-        v.term_end_date.setText(term?.endDate)
-
-
-        v.term_start_date_lay.setOnClickListener {
+        v.term_start_date.setOnClickListener {
             val persianCalendar = PersianCalendar()
             val datePickerDialog = DatePickerDialog.newInstance(
                     this@TermFragment,
@@ -91,9 +91,9 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if(v.term_name.text==null)
                 v.term_name_lay.error = "لطفا نامی را انتخاب کنید"
             else if (v.term_start_date.text==null)
-                v.term_start_date_lay.error = "لطفا تاریخ شروع ترم را مشخص کنید"
+                Toast.makeText(context!!,"لطفا تاریخ شروع ترم را مشخص کنید", Toast.LENGTH_SHORT).show()
             else if (v.term_end_date.text==null)
-                v.term_end_date_lay.error = "لطفا تاریخ پایان ترم را مشخص کنید"
+                Toast.makeText(context!!,"لطفا تاریخ پایان ترم را مشخص کنید", Toast.LENGTH_SHORT).show()
             else if (term==null) {
                 term = Term()
                 assaginTerm(v)

@@ -1,3 +1,5 @@
+package Unused
+
 //package morteza.darzi.SelfTeach
 //
 //import BL.Book
@@ -43,7 +45,7 @@
 //            //because want to show just two fragment , not show free books in land tablet
 //            if (savedInstanceState != null)
 //                return
-//            val termMain = TermMain()
+//            val termMain = PerformanceFragment()
 //            termMain.GiveTeacher(teacher!!)
 //            val bookMain = BookMain()
 //            bookMain.GiveTeacher(teacher!!)
