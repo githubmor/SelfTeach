@@ -19,17 +19,8 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
         internal val pageCount = v.findViewById<View>(R.id.book_page_count) as TextInputEditText
         internal val delBook = v.findViewById<View>(R.id.delbook) as Button
 
-
-        init {
-
-            v.setOnLongClickListener {
-
-                return@setOnLongClickListener true
-            }
-        }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Book_Adapter.BookListViewHolder {
         val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_book, parent, false)
@@ -37,7 +28,6 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
         return BookListViewHolder(v)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
         if (books!=null) {
             val b = books[i]
@@ -55,8 +45,6 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
 
     }
 
-
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
         return books?.size ?: 0
     }

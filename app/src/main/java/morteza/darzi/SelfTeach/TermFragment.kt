@@ -20,17 +20,8 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_term.*
 import kotlinx.android.synthetic.main.fragment_term.view.*
 
-
-
-
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-
 class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
-
-    //    private var param1: String? = null
-//    private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private var term :Term ? = null
     private val START = "start"
@@ -41,18 +32,11 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         term = FirstChecker.getTerm()
 
-
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_term, container, false)
-
-//        val addNewTerm = v.findViewById<Button>(R.id.add_new_term)
 
         if (term!=null) {
             v.switcher.showNext()
@@ -64,8 +48,6 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         v.add_new_term.setOnClickListener {
             v.switcher.showNext()
         }
-
-//        v.spinner.onItemSelectedListener = this
 
         v.term_start_date.setOnClickListener {
             val persianCalendar = PersianCalendar()
@@ -180,29 +162,8 @@ class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         super.onDetach()
         listener = null
     }
-//    override fun onNothingSelected(p0: AdapterView<*>?) {
-//
-//    }
-//
-//    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//        val va = resources.getStringArray(R.array.term_type)
-//        val a = va.get(p2)
-//        term_start_date.setText("1398/01/01")
-//        term_end_date.setText("1398/10/01")
-//    }
 
     interface OnFragmentInteractionListener {
         fun onSaveTermComplete()
     }
-
-//    companion object {
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//                TermFragment().apply {
-//                    arguments = Bundle().apply {
-//                        putString(ARG_PARAM1, param1)
-//                        putString(ARG_PARAM2, param2)
-//                    }
-//                }
-//    }
 }

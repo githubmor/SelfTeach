@@ -19,25 +19,22 @@ import android.view.animation.*
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.github.lzyzsd.circleprogress.DonutProgress
 
-/**
- * Created by M on 14/12/25.
- */
 class PerformanceFragment : Fragment() {
 
     private var teacher: Teacher? = null
     private var performanceircle: DonutProgress? = null
-    private var listener: ReadsFragment.OnFragmentInteractionListener? = null
+    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(FirstChecker.checkLevel()!=TermLevel.Perfermance)
+        if(FirstChecker.checkLevel()!=TermLevel.Perfermance) {
+            Toast.makeText(context!!, "هنوز ترم يا كتابي ثبت نشده", Toast.LENGTH_SHORT).show()
             listener!!.failPerformance()
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
+        }
+
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -129,56 +126,11 @@ class PerformanceFragment : Fragment() {
             book_need_toPlane.visibility = View.GONE
 
         return view
-//        } else if (teacher!!.IsTermSet()!!) {//term set without books
-//
-//            val view = inflater.inflate(R.layout.nobook, container, false)
-//
-//            val st = view.findViewById<View>(R.id.showTerm) as TextView
-//            val sd = view.findViewById<View>(R.id.Desc) as TextView
-//            val ad = view.findViewById<View>(R.id.ToADDBook) as Button
-//
-//            val start = "<font color=\"#029789\">" + teacher!!.term!!.startDate + "</font>"
-//            val end = "<font color=\"#029789\">" + teacher!!.term!!.endDate + "</font>"
-//
-//            st.text = "تاریخ شروع ترم از " + Html.fromHtml(start) + " تا " + Html.fromHtml(end) + " می باشد"
-//            sd.text = "هیچ کتابی برای این ترم ثبت نشده"
-//
-//            ad.setOnClickListener {
-//                val b = Intent(activity, Booking::class.java)
-//                b.putExtra("free", false)
-//                startActivity(b)
-//            }
-//
-//            return view
-//        } else {//no term no books
-//            val view = inflater.inflate(R.layout.nodata, container, false)
-//
-//            val sd = view.findViewById<View>(R.id.Desc) as TextView
-//            val td = view.findViewById<View>(R.id.ToADDTerm) as Button
-//            //Button fd = (Button) view.findViewById(R.id.ToADDFreeBook);
-//
-//            sd.text = "ترم تحصیلی خود را معرفی کنید تا خودخوان شما را در طول ترم همراهی کند"
-//
-//            td.setOnClickListener { startActivity(Intent(activity, TermFragment::class.java)) }
-//
-//            //            fd.setOnClickListener(new View.OnClickListener() {
-//            //                @Override
-//            //                public void onClick(View view) {
-//            //                    Intent f = new Intent(getActivity(),Booking.class);
-//            //                    f.putExtra("free",true);
-//            //                    startActivity(f);
-//            //                }
-//            //            });
-//
-//            return view
-//        }
-
-
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is ReadsFragment.OnFragmentInteractionListener) {
+        if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
@@ -188,11 +140,6 @@ class PerformanceFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
     }
     internal fun getColor(power: Double): Int {
         val H = power * 80
@@ -237,8 +184,8 @@ class PerformanceFragment : Fragment() {
         }
     }
 
-
-    fun GiveTeacher(teacher: Teacher) {
-        this.teacher = teacher
+    interface OnFragmentInteractionListener {
+        fun failPerformance()
     }
+
 }

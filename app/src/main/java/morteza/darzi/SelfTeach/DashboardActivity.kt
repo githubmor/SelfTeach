@@ -14,14 +14,8 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 
 
 class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteractionListener
-        ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener {
-    override fun failPerformance() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onFragmentInteraction(uri: Uri) {
-
-    }
+        ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
+        PerformanceFragment.OnFragmentInteractionListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +44,13 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.mainmenu, menu)
-//        if (teacher.IsBooksSet()!!.not()) {
-//            if (teacher.IsTermSet()!!.not())
-//                menu.getItem(3).isVisible = false//add books
-//            if (freeBooks.size <= 0)
-//                menu.getItem(0).isVisible = false//add read
-//        }
-//        menu.getItem(1).isVisible = false//reporting
+        when {
+            FirstChecker.checkLevel()==TermLevel.Term -> {
+                menu.getItem(0).isVisible = false//add read
+                menu.getItem(2).isVisible = false//add book
+            }
+            FirstChecker.checkLevel()==TermLevel.Book -> menu.getItem(0).isVisible = false//add read
+        }
         return true
     }
 
@@ -82,24 +76,23 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
                 initializeFirst()
             }
             R.id.TermManaging -> Transaction(TermFragment())
-
             R.id.AddRead -> Transaction(ReadsFragment())
             R.id.Booking -> Transaction(BooksFragment())
-//            R.id.FreeBooking -> {
-//                val f = Intent(this, Booking::class.java)
-//                f.putExtra("free", true)
-//                startActivity(f)
-//            }
-//            R.id.Report -> Toast.makeText(applicationContext, "در حال توسعه", Toast.LENGTH_SHORT).show()
-            else -> {
-            }
         }
 
         return super.onOptionsItemSelected(item)
 
     }
-
+    override fun FailOpenBooks() {
+        initializeFirst()
+    }
+    override fun failPerformance() {
+        initializeFirst()
+    }
     override fun onSaveTermComplete() {
+        initializeFirst()
+    }
+    override fun failRead() {
         initializeFirst()
     }
 }

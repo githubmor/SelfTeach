@@ -8,10 +8,7 @@
         android:id="@+id/AddRead"
         android:title="@string/AddRead"
         app:showAsAction="always" />
-    <!--<item-->
-            <!--android:id="@+id/Report"-->
-        <!--android:title="@string/AddRead"-->
-        <!--app:showAsAction="ifRoom" />-->
+
     <item
             android:id="@+id/TermManaging"
         android:title="@string/Terming"
@@ -20,10 +17,7 @@
             android:id="@+id/Booking"
         android:title="@string/Booking"
         app:showAsAction="ifRoom" />
-    <!--<item-->
-            <!--android:id="@+id/FreeBooking"-->
-        <!--android:title="@string/FreeBooking"-->
-        <!--app:showAsAction="ifRoom" />-->
+
     <item
             android:id="@+id/Reseting"
         android:title="@string/Reseting"

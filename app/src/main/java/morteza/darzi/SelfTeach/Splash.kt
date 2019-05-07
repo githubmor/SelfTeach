@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 class Splash : AppCompatActivity() {
 
-    /** Called when the activity is first created.  */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash)
