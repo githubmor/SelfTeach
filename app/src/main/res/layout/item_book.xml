@@ -23,13 +23,13 @@
         android:id="@+id/book_page_count_lab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/book_name_lab"
+        app:layout_constraintTop_toBottomOf="@+id/read_progress"
         tools:text="258 صفحه" />
 
     <Button
@@ -38,7 +38,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:background="@drawable/ic_action_remove"
+        android:background="@drawable/ic_del"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,12 +50,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:indeterminate="false"
         android:scaleX="-1"
-        app:layout_constraintBottom_toBottomOf="@+id/book_name_lab"
-        app:layout_constraintEnd_toStartOf="@+id/book_name_lab"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/del_book"
+        app:layout_constraintTop_toBottomOf="@+id/book_name_lab"
         tools:progress="54" />
 
 

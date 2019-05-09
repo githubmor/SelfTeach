@@ -17,13 +17,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+
 import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import kotlinx.android.synthetic.main.fragment_reads.*
+
 
 import kotlinx.android.synthetic.main.fragment_reads.view.*
+import kotlinx.android.synthetic.main.include_read_add.*
+import kotlinx.android.synthetic.main.include_read_add.view.*
+import kotlinx.android.synthetic.main.include_read_list.view.*
 
 
 class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
@@ -62,7 +65,7 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         val adapter = Read_Adapter(context!!,reads)
         v.list.adapter = adapter
 
-        v.read_date.setOnClickListener {
+        v.read_date_lab.setOnClickListener {
             val persianCalendar = PersianCalendar()
             val datePickerDialog = DatePickerDialog.newInstance(
                     this@ReadsFragment,
@@ -95,12 +98,12 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         v.read_save.setOnClickListener {
             if(selectedBook==null)
                 Toast.makeText(context!!,"لطفا نام كتاب را وارد كنيد",Toast.LENGTH_SHORT).show()
-            else if(v.read_page_count.text.isNullOrEmpty())
-                v.read_page_count.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
-            else if(v.read_date.text.isNullOrEmpty())
-                v.read_date.error = "لطفا زمان خواندن را مشخص كنيد"
+            else if(v.read_page_count_lab.text.isNullOrEmpty())
+                v.read_page_count_lab.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
+            else if(v.read_date_lab.text.isNullOrEmpty())
+                Toast.makeText(context!!,"لطفا زمان خواندن را مشخص كنيد",Toast.LENGTH_SHORT).show()
             else {
-                val read = Read(v.read_page_count!!.text.toString().toInt(), v.read_date!!.text.toString())
+                val read = Read(v.read_page_count_lab!!.text.toString().toInt(), v.read_date_lab!!.text.toString())
                 read.book = selectedBook
                 read.save()
                 adapter.addNewRead(read)
@@ -123,9 +126,9 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         v.fab.show()
         if (v.switcher.displayedChild==1)
             v.switcher.showPrevious()
-        v.read_page_count.setText("")
+        v.read_page_count_lab.setText("")
         v.read_page_count_lay.isErrorEnabled = false
-        v.read_date.setText("")
+        v.read_date_lab.setText("")
 //        v.read_date.err = false
     }
 
@@ -135,10 +138,9 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         v.fab.show()
         if (v.switcher.displayedChild==1)
             v.switcher.showPrevious()
-        v.read_page_count.setText("")
+        v.read_page_count_lab.setText("")
         v.read_page_count_lay.isErrorEnabled = false
-        v.read_date.setText("")
-//        v.read_date.isErrorEnabled = false
+        v.read_date_lab.setText("")
     }
 
     private fun textChangeListner(v: TextInputLayout, errorMes : String) {
@@ -185,7 +187,7 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         val d = PersianCalendar()
         d.setPersianDate(year, monthOfYear, dayOfMonth)
 
-        read_date.setText(d.persianShortDate)
+        read_date_lab.setText(d.persianShortDate)
 
     }
 

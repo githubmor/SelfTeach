@@ -17,8 +17,10 @@ import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_term.*
 import kotlinx.android.synthetic.main.fragment_term.view.*
+import kotlinx.android.synthetic.main.include_term_add.*
+import kotlinx.android.synthetic.main.include_term_add.view.*
+import kotlinx.android.synthetic.main.include_term_empty.view.*
 
 class TermFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     override val title: String

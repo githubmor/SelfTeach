@@ -16,6 +16,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_books.view.*
+import kotlinx.android.synthetic.main.include_book_add.view.*
+import kotlinx.android.synthetic.main.include_book_list.view.*
+
 
 class BooksFragment : BaseFragment() {
     override val title: String
@@ -104,7 +107,8 @@ class BooksFragment : BaseFragment() {
         v.list.visibility = VISIBLE
         v.emptyText.visibility = GONE
         v.fab.show()
-        v.switcher.showPrevious()
+        if (v.switcher.displayedChild==1)
+            v.switcher.showPrevious()
         v.book_name.setText("")
         v.book_name_lay.isErrorEnabled = false
         v.book_page_count.setText("")
@@ -115,7 +119,8 @@ class BooksFragment : BaseFragment() {
         v.list.visibility = GONE
         v.emptyText.visibility = VISIBLE
         v.fab.show()
-        v.switcher.showPrevious()
+        if (v.switcher.displayedChild==1)
+            v.switcher.showPrevious()
         v.book_name.setText("")
         v.book_name_lay.isErrorEnabled = false
         v.book_page_count.setText("")

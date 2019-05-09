@@ -5,8 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_read.view.*
@@ -17,9 +15,9 @@ class Read_Adapter
     : RecyclerView.Adapter<Read_Adapter.ReadListViewHolder>() {
 
     class ReadListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal var readbook= v.read_book_name
-        internal var readpagecount = v.read_page_count
-        internal var readdate = v.read_date
+        internal var readbook= v.read_book_name_lab
+        internal var readpagecount = v.read_page_count_lab
+        internal var readdate = v.read_date_lab
         internal var delRead = v.del_read
 
 
@@ -35,7 +33,7 @@ class Read_Adapter
         if (reads!=null) {
             val r = reads[i]
             holder.readbook.text = r.book!!.name.toString()
-            holder.readpagecount.text = r.pageReadCount.toString()
+            holder.readpagecount.text = r.pageReadCount.toString() + " صفحه"
             holder.readdate.text = r.readDate.toString()
 
             holder.delRead.setOnClickListener {

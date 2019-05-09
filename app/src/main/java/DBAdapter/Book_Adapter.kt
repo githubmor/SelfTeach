@@ -31,7 +31,7 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
         if (books!=null) {
             val b = books[i]
             holder.bookName.setText(b.name)
-            holder.pageCount.setText(b.pageCount.toString())
+            holder.pageCount.setText(b.pageCount.toString() + " صفحه")
             holder.readProgress.progress = b.PageReadPercent()
             holder.delBook.setOnClickListener {
                 Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()

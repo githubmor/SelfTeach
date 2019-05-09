@@ -41,7 +41,15 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
     }
     protected fun Transaction(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            super.onBackPressed()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
