@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.activeandroid.query.Select
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -17,14 +19,14 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
         PerformanceFragment.OnFragmentInteractionListener {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+        MyExceptionHandler(this)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         initializeFirst()
-
 
     }
 
@@ -37,9 +39,9 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         }
         Transaction(frag)
     }
-
-    private fun Transaction(frag: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, frag).commit()
+    protected fun Transaction(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,7 +85,7 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         return super.onOptionsItemSelected(item)
 
     }
-    override fun FailOpenBooks() {
+    override fun failOpenBooks() {
         initializeFirst()
     }
     override fun failPerformance() {

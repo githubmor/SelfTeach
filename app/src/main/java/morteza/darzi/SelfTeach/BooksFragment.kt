@@ -14,12 +14,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_books.*
 import kotlinx.android.synthetic.main.fragment_books.view.*
 
-class BooksFragment : Fragment() {
+class BooksFragment : BaseFragment() {
+    override val title: String
+        get() = "كتاب ها"
 
     var books : MutableList<Book>? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -28,7 +28,7 @@ class BooksFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (FirstChecker.checkLevel()==TermLevel.Term) {
             Toast.makeText(context!!,"هنوز ترمي ثبت نشده",Toast.LENGTH_SHORT).show()
-            listener!!.FailOpenBooks()
+            listener!!.failOpenBooks()
         }else {
             books = FirstChecker.getBooks()
         }
@@ -104,7 +104,7 @@ class BooksFragment : Fragment() {
         v.list.visibility = VISIBLE
         v.emptyText.visibility = GONE
         v.fab.show()
-        v.switcher.reset()
+        v.switcher.showPrevious()
         v.book_name.setText("")
         v.book_name_lay.isErrorEnabled = false
         v.book_page_count.setText("")
@@ -115,7 +115,7 @@ class BooksFragment : Fragment() {
         v.list.visibility = GONE
         v.emptyText.visibility = VISIBLE
         v.fab.show()
-        v.switcher.reset()
+        v.switcher.showPrevious()
         v.book_name.setText("")
         v.book_name_lay.isErrorEnabled = false
         v.book_page_count.setText("")
@@ -139,7 +139,7 @@ class BooksFragment : Fragment() {
 
     interface OnFragmentInteractionListener {
 
-        fun FailOpenBooks()
+        fun failOpenBooks()
     }
 
 }

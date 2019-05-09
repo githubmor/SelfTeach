@@ -5,20 +5,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.item_book.view.*
 import morteza.darzi.SelfTeach.R
 
 class Book_Adapter(private val context: Context, private val books: MutableList<Book>?)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal val bookName = v.findViewById<View>(R.id.book_name) as TextInputEditText
-        internal val pageCount = v.findViewById<View>(R.id.book_page_count) as TextInputEditText
-        internal val delBook = v.findViewById<View>(R.id.delbook) as Button
-
+        internal val bookName = v.book_name_lab
+        internal val pageCount = v.book_page_count_lab
+        internal val delBook = v.del_book
+        internal val readProgress = v.read_progress
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Book_Adapter.BookListViewHolder {
@@ -32,11 +31,12 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
         if (books!=null) {
             val b = books[i]
             holder.bookName.setText(b.name)
-            holder.pageCount.setText(books[i].pageCount.toString() + " صفحه")
+            holder.pageCount.setText(b.pageCount.toString())
+            holder.readProgress.progress = b.PageReadPercent()
             holder.delBook.setOnClickListener {
-                Toast.makeText(context, "کتاب " + books[i].name + " حذف شد", Toast.LENGTH_SHORT).show()
-                books[i].DeleteReads()
-                books[i].delete()
+                Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
+                b.DeleteReads()
+                b.delete()
 
                 books.removeAt(i)
                 notifyItemRemoved(i)

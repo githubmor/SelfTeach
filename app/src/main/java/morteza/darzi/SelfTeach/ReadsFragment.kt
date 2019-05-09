@@ -22,10 +22,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.main.fragment_reads.*
+
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 
 
-class ReadsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
+    override val title: String
+        get() = "خوانده ها"
 
     var reads : MutableList<Read> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
@@ -59,7 +62,7 @@ class ReadsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val adapter = Read_Adapter(context!!,reads)
         v.list.adapter = adapter
 
-        v.read_date_lay.setOnClickListener {
+        v.read_date.setOnClickListener {
             val persianCalendar = PersianCalendar()
             val datePickerDialog = DatePickerDialog.newInstance(
                     this@ReadsFragment,
@@ -88,7 +91,6 @@ class ReadsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         textChangeListner(v.read_page_count_lay,"لطفا تعداد صفحات كتاب را وارد كنيد")
-        textChangeListner(v.read_date_lay,"لطفا زمان خواندن را مشخص كنيد")
 
         v.read_save.setOnClickListener {
             if(selectedBook==null)
@@ -119,22 +121,24 @@ class ReadsFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         v.list.visibility = VISIBLE
         v.emptyText.visibility = GONE
         v.fab.show()
-        v.switcher.showPrevious()
+        if (v.switcher.displayedChild==1)
+            v.switcher.showPrevious()
         v.read_page_count.setText("")
         v.read_page_count_lay.isErrorEnabled = false
         v.read_date.setText("")
-        v.read_date_lay.isErrorEnabled = false
+//        v.read_date.err = false
     }
 
     private fun arrangeForEmptyBook(v: View) {
         v.list.visibility = GONE
         v.emptyText.visibility = VISIBLE
         v.fab.show()
-        v.switcher.showPrevious()
+        if (v.switcher.displayedChild==1)
+            v.switcher.showPrevious()
         v.read_page_count.setText("")
         v.read_page_count_lay.isErrorEnabled = false
         v.read_date.setText("")
-        v.read_date_lay.isErrorEnabled = false
+//        v.read_date.isErrorEnabled = false
     }
 
     private fun textChangeListner(v: TextInputLayout, errorMes : String) {

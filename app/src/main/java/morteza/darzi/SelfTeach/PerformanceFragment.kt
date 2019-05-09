@@ -22,7 +22,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.github.lzyzsd.circleprogress.DonutProgress
 
-class PerformanceFragment : Fragment() {
+class PerformanceFragment : BaseFragment() {
+    override val title: String
+        get() = "خود خوان"
 
     private var teacher: Teacher? = null
     private var performanceircle: DonutProgress? = null

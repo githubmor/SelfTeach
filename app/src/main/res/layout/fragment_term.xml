@@ -66,19 +66,12 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <!--<Spinner-->
-            <!--android:id="@+id/spinner"-->
-            <!--android:entries="@array/term_type"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
-
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/term_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:hint="@string/startDate" />
 
 
@@ -87,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:hint="@string/endDate" />
 
             <Button

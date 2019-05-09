@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_read.view.*
 import morteza.darzi.SelfTeach.R
 
 class Read_Adapter
@@ -16,10 +17,10 @@ class Read_Adapter
     : RecyclerView.Adapter<Read_Adapter.ReadListViewHolder>() {
 
     class ReadListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal var readbook= v.findViewById<TextView>(R.id.read_book_name)
-        internal var readpagecount = v.findViewById(R.id.read_page_count) as TextView
-        internal var readdate = v.findViewById<View>(R.id.read_date) as TextView
-        internal var delRead = v.findViewById<View>(R.id.del_read) as Button
+        internal var readbook= v.read_book_name
+        internal var readpagecount = v.read_page_count
+        internal var readdate = v.read_date
+        internal var delRead = v.del_read
 
 
     }
@@ -34,12 +35,12 @@ class Read_Adapter
         if (reads!=null) {
             val r = reads[i]
             holder.readbook.text = r.book!!.name.toString()
-            holder.readpagecount.text = reads[i].pageReadCount.toString() + " صفحه خوانده شد"
-            holder.readdate.text = "در تاریخ " + reads[i].readDate.toString()
+            holder.readpagecount.text = r.pageReadCount.toString()
+            holder.readdate.text = r.readDate.toString()
 
             holder.delRead.setOnClickListener {
                 Toast.makeText(context, "حذف شد", Toast.LENGTH_SHORT).show()
-                reads[i].delete()
+                r.delete()
                 reads.removeAt(i)
                 notifyItemRemoved(i)
             }

@@ -29,7 +29,13 @@ class FirstChecker {
         }
 
         fun getBooks(): MutableList<Book>? {
-            return Select().from(Book::class.java).where("free = " + 0).execute()
+            val bs = Select().from(Book::class.java).where("free = " + 0).execute<Book>()
+            if (bs!=null){
+                for (b in bs) {
+                    b.LoadReads()
+                }
+            }
+            return bs
         }
 
         fun getReads(): MutableList<Read> {

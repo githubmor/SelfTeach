@@ -20,7 +20,9 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_term.*
 import kotlinx.android.synthetic.main.fragment_term.view.*
 
-class TermFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class TermFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
+    override val title: String
+        get() = "ترم"
 
     private var listener: OnFragmentInteractionListener? = null
     private var term :Term ? = null
