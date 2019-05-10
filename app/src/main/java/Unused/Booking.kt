@@ -13,7 +13,7 @@ package Unused
 //import com.activeandroid.query.Select
 //import com.gc.materialdesign.views.ButtonFloat
 //
-//import BL.Book
+//import BL.Book_Old
 //import DBAdapter.Book_Adapter
 //
 ///**
@@ -50,11 +50,11 @@ package Unused
 //
 //        val mRecyclerView = findViewById<View>(R.id.BookList) as RecyclerView
 //
-//        val books: MutableList<Book>
+//        val bookOlds: MutableList<Book_Old>
 //        if (free)
-//            books = Select().from(Book::class.java).where("free = " + 1).execute()
+//            bookOlds = Select().from(Book_Old::class.java).where("free = " + 1).execute()
 //        else
-//            books = Select().from(Book::class.java).where("free = " + 0).execute()
+//            bookOlds = Select().from(Book_Old::class.java).where("free = " + 0).execute()
 //
 //        mRecyclerView.setHasFixedSize(true)
 //
@@ -64,7 +64,7 @@ package Unused
 //
 //        // specify an adapter (see also next example)
 //
-//        val mAdapter = Book_Adapter(applicationContext, books)
+//        val mAdapter = Book_Adapter(applicationContext, bookOlds)
 //        mRecyclerView.adapter = mAdapter
 //
 //        //        mRecyclerView.setOnClickListener(new View.OnClickListener() {

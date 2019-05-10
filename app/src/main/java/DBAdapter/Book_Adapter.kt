@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_book.view.*
+import morteza.darzi.SelfTeach.MyApplication
 import morteza.darzi.SelfTeach.R
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class Book_Adapter(private val context: Context, private val books: MutableList<Book>?)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
@@ -30,16 +33,24 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
         if (books!=null) {
             val b = books[i]
-            holder.bookName.setText(b.name)
-            holder.pageCount.setText(b.pageCount.toString() + " صفحه")
+            holder.bookName.text = b.name
+            holder.pageCount.text = b.pageCount.toString() + " صفحه"
             holder.readProgress.progress = b.PageReadPercent()
             holder.delBook.setOnClickListener {
-                Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
-                b.DeleteReads()
-                b.delete()
 
-                books.removeAt(i)
-                notifyItemRemoved(i)
+                doAsync {
+
+                   MyApplication.database!!
+                            .bookDao().delete(b.dbDto.book)
+
+                    uiThread {
+                        Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
+                        books.removeAt(i)
+                        notifyItemRemoved(i)
+                    }
+                }
+
+
             }
         }
 

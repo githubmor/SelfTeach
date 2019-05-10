@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:showIn="@layout/fragment_reads">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
 
     <Spinner
         android:id="@+id/spinner"
-        style="@style/Widget.AppCompat.Spinner.DropDown"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:textDirection="rtl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
@@ -22,22 +22,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="تعداد صفحه">
+        android:hint="تعداد صفحه"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/read_page_count_lab"
+            android:id="@+id/read_page_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/read_date_lab"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/read_date_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="@string/ReadDate"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        app:errorEnabled="true"
+        android:clickable="true"
+        android:hint="@string/ReadDate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/read_date"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--<TextView-->
+        <!--android:id="@+id/read_date_lab2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:gravity="right|center_vertical"-->
+        <!--android:hint="@string/ReadDate"-->
+        <!--android:textAppearance="@style/ThemeOverlay.Design.TextInputEditText" />-->
 
 
     <Button

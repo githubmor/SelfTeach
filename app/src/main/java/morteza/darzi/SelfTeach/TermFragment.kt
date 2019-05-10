@@ -2,18 +2,14 @@ package morteza.darzi.SelfTeach
 
 
 
-import BL.FirstChecker
 import BL.Term
+import DAL.Termdb
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.TextInputLayout
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.*
@@ -21,20 +17,35 @@ import kotlinx.android.synthetic.main.fragment_term.view.*
 import kotlinx.android.synthetic.main.include_term_add.*
 import kotlinx.android.synthetic.main.include_term_add.view.*
 import kotlinx.android.synthetic.main.include_term_empty.view.*
+import morteza.darzi.SelfTeach.MyApplication.Companion.database
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
-class TermFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
+
+class TermFragment : BaseDatePickerFragment() {
+
+    private val termError = "لطفا نامی برای ترم انتخاب کنید"
+    private val startDateError = "لطفا تاریخ شروع ترم را مشخص کنید"
+    private val endDateError = "لطفا تاریخ پایان ترم را مشخص کنید"
+
     override val title: String
         get() = "ترم"
 
+
     private var listener: OnFragmentInteractionListener? = null
     private var term :Term ? = null
-    private val START = "start"
-    private val END = "end"
+    private val startTag = "start"
+    private val endTag = "end"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        doAsync {
+            val bills = database!!.termDao().getTerm()
 
-        term = FirstChecker.getTerm()
+            uiThread {
+                term = Term(bills.first())
+            }
+        }
 
     }
 
@@ -43,96 +54,89 @@ class TermFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         val v = inflater.inflate(R.layout.fragment_term, container, false)
 
         if (term!=null) {
-            v.switcher.showNext()
-            v.term_name.setText(term?.termName)
-            v.term_start_date.setText(term?.startDate)
-            v.term_end_date.setText(term?.endDate)
+            showTermView(v)
+            loadTermInView(v)
         }
 
         v.add_new_term.setOnClickListener {
-            v.switcher.showNext()
+            showTermView(v)
         }
 
         v.term_start_date.setOnClickListener {
-            val persianCalendar = PersianCalendar()
-            val datePickerDialog = DatePickerDialog.newInstance(
-                    this@TermFragment,
-                    persianCalendar.persianYear,
-                    persianCalendar.persianMonth,
-                    persianCalendar.persianDay
-            )
-
-            datePickerDialog.show(activity!!.fragmentManager, START)
+            showDatapicker(startTag)
+        }
+        v.term_start_date_lay.setOnClickListener {
+            showDatapicker(startTag)
         }
 
         v.term_end_date.setOnClickListener {
-            val persianCalendar = PersianCalendar()
-            val datePickerDialog = DatePickerDialog.newInstance(
-                    this@TermFragment,
-                    persianCalendar.persianYear,
-                    persianCalendar.persianMonth,
-                    persianCalendar.persianDay
-            )
-
-            datePickerDialog.show(activity!!.fragmentManager, END)
+            showDatapicker(endTag)
+        }
+        v.term_end_date_lay.setOnClickListener {
+            showDatapicker(endTag)
         }
 
-        textChangeListner(v.term_name_lay,"لطفا نامی برای ترم انتخاب کنید")
+
+        errorTextChangeListner(v.term_name_lay, termError)
+        errorTextChangeListner(v.term_start_date_lay, startDateError)
+        errorTextChangeListner(v.term_end_date_lay,endDateError)
 
         v.term_save.setOnClickListener {
-
-            if(v.term_name.text.isNullOrEmpty())
-                v.term_name_lay.error = "لطفا نامی برای ترم انتخاب کنید"
-            else if (v.term_start_date.text.isNullOrEmpty())
-                Toast.makeText(context!!,"لطفا تاریخ شروع ترم را مشخص کنید", Toast.LENGTH_SHORT).show()
-            else if (v.term_end_date.text.isNullOrEmpty())
-                Toast.makeText(context!!,"لطفا تاریخ پایان ترم را مشخص کنید", Toast.LENGTH_SHORT).show()
-            else if (term==null) {
-                term = Term()
-                assaginTerm(v)
-            }else{
-                assaginTerm(v)
+            if(validateToSave(v)) {
+                getTermAndSave(v)
             }
-
-
         }
-
-
         return v
     }
 
-    private fun textChangeListner(v: TextInputLayout,errorMes : String) {
-        v.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isEmpty()) {
-                    v.isErrorEnabled = true
-                    v.error = errorMes
-                }
-                if (s.isNotEmpty()) {
-                    v.error = null
-                    v.isErrorEnabled = false
-                }
-
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
+    private fun showTermView(v: View) {
+        if (v.switcher.displayedChild==0)
+            v.switcher.showNext()
     }
 
-    private fun assaginTerm(v: View) {
-        term!!.termName = v.term_name.text.toString()
-        term!!.startDate = v.term_start_date.text.toString()
-        term!!.endDate = v.term_end_date.text.toString()
+    private fun loadTermInView(v: View) {
+        v.term_name.setText(term?.termName)
+        v.term_start_date.setText(term?.startDate)
+        v.term_end_date.setText(term?.endDate)
+    }
 
-        term!!.save()
+    private fun validateToSave(v:View):Boolean{
+        return when {
+            v.term_name.text.isNullOrEmpty() ->{
+                v.term_name_lay.error = termError
+                false
+            }
+            v.term_start_date.text.isNullOrEmpty() -> {
+                v.term_start_date_lay.error = startDateError
+                false
+            }
+            v.term_end_date.text.isNullOrEmpty() -> {
+                v.term_end_date_lay.error =endDateError
+                false
+            }
+            else -> true
+        }
+    }
 
-        listener!!.onSaveTermComplete()
+    private fun getTermAndSave(v: View) {
+        val te = Termdb(
+                0,
+                v.term_name.text.toString(),
+                v.term_start_date.text.toString(),
+                v.term_end_date.text.toString()
+        )
+        doAsync {
+
+            database!!
+                    .termDao().insert(te)
+
+            uiThread {
+                Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                listener!!.onSaveTermComplete()
+            }
+        }
+
+
     }
 
 
@@ -150,16 +154,18 @@ class TermFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         this.clearFindViewByIdCache()
     }
 
-    override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
-        val tag = view.tag
+        val tag = view!!.tag
         val d = PersianCalendar()
         d.setPersianDate(year, monthOfYear, dayOfMonth)
 
-        if (tag == START) {
+        if (tag == startTag) {
             term_start_date.setText(d.persianShortDate)
-        } else if (tag == END) {
+            term_start_date_lay.isErrorEnabled = false
+        } else if (tag == endTag) {
             term_end_date.setText(d.persianShortDate)
+            term_end_date_lay.isErrorEnabled = false
         }
     }
     override fun onDetach() {

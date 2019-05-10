@@ -1,18 +1,15 @@
 package morteza.darzi.SelfTeach
 
 import BL.*
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.activeandroid.query.Select
-import kotlinx.android.synthetic.main.activity_dashboard.*
+import org.jetbrains.anko.doAsyncResult
 
 
 class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteractionListener
@@ -32,7 +29,8 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
 
     private fun initializeFirst() {
         val frag : Fragment
-        when(FirstChecker.checkLevel()){
+        val checker = doAsyncResult { FirstChecker.checkLevel()  }
+        when(checker){
             TermLevel.Term -> frag = TermFragment()
             TermLevel.Book -> frag = BooksFragment()
             TermLevel.Perfermance -> frag = PerformanceFragment()
@@ -57,7 +55,7 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         when {
             FirstChecker.checkLevel()==TermLevel.Term -> {
                 menu.getItem(0).isVisible = false//add read
-                menu.getItem(2).isVisible = false//add book
+                menu.getItem(2).isVisible = false//add bookOld
             }
             FirstChecker.checkLevel()==TermLevel.Book -> menu.getItem(0).isVisible = false//add read
         }
@@ -68,16 +66,16 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
 
         when (item.itemId) {
             R.id.Reseting -> {
-                val t = Select().from(Term::class.java).executeSingle<Term>()
-                val bs = Select().from(Book::class.java).execute<Book>()
-                val rs = Select().from(Read::class.java).execute<Read>()
+                val t = Select().from(Term_old::class.java).executeSingle<Term_old>()
                 t?.delete()
-                if (!bs.isEmpty()) {
+                val bs = Select().from(Book_Old::class.java).execute<Book_Old>()
+                if (bs.isNotEmpty()) {
                     for (b in bs) {
                         b.delete()
                     }
                 }
-                if (!rs.isEmpty()) {
+                val rs = Select().from(Read::class.java).execute<Read>()
+                if (rs.isNotEmpty()) {
                     for (r in rs) {
                         r.delete()
                     }

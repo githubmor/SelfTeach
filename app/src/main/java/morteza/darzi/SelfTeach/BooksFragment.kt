@@ -3,37 +3,49 @@ package morteza.darzi.SelfTeach
 import BL.Book
 import BL.FirstChecker
 import BL.TermLevel
+import DAL.BookReads
+import DAL.Bookdb
 import DBAdapter.Book_Adapter
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_books.view.*
 import kotlinx.android.synthetic.main.include_book_add.view.*
 import kotlinx.android.synthetic.main.include_book_list.view.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 class BooksFragment : BaseFragment() {
+
+    private val bookNameErrorMessage = "لطفا نام كتاب را وارد كنيد"
+    private val bookPageCountErrorMessage ="لطفا تعداد صفحات كتاب را وارد كنيد"
     override val title: String
         get() = "كتاب ها"
 
     var books : MutableList<Book>? = null
     private var listener: OnFragmentInteractionListener? = null
-
+    val database = MyApplication.database
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (FirstChecker.checkLevel()==TermLevel.Term) {
-            Toast.makeText(context!!,"هنوز ترمي ثبت نشده",Toast.LENGTH_SHORT).show()
             listener!!.failOpenBooks()
         }else {
-            books = FirstChecker.getBooks()
+            doAsync {
+                val bills = database!!.bookDao().getAllBookWithReads()
+
+                uiThread {
+                    for (bill in bills) {
+                        books!!.add(Book(bill))
+                    }
+                }
+            }
+
+
         }
     }
 
@@ -42,89 +54,79 @@ class BooksFragment : BaseFragment() {
         val v = inflater.inflate(R.layout.fragment_books, container, false)
 
         if (books.isNullOrEmpty()){
-            arrangeForEmptyBook(v)
+            arrangeForFirstViewSwitcher(v,false)
         }else{
-            arrangeForShowList(v)
+            arrangeForFirstViewSwitcher(v,true)
         }
 
         v.fab.setOnClickListener {
-            arrangeToAddBook(v)
+            arrangeForSecondViewSwitcher(v)
         }
 
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         val adapter = Book_Adapter(context!!,books)
         v.list.adapter = adapter
 
-        textChangeListner(v.book_name_lay,"لطفا نام كتاب را وارد كنيد")
-        textChangeListner(v.book_page_count_lay,"لطفا تعداد صفحات كتاب را وارد كنيد")
+
+        errorTextChangeListner(v.book_name_lay, bookNameErrorMessage)
+        errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
 
         v.book_save.setOnClickListener {
-            if(v.book_name.text==null)
-                v.book_name.error = "لطفا نام كتاب را وارد كنيد"
-            else if(v.book_page_count.text==null)
-                v.book_page_count.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
-            else {
-                val b = Book(v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),false)
-                b.save()
-                adapter.addNewBook(b)
-                arrangeForShowList(v)
+            if (validateToSave(v)) {
+                val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt())
+
+                doAsync {
+                    database!!.bookDao().insert(b)
+                    uiThread {
+                        adapter.addNewBook(Book(BookReads(b, listOf())))
+                        arrangeForFirstViewSwitcher(v,true)
+                    }
+                }
+
             }
         }
 
         return v
     }
 
-    private fun arrangeToAddBook(v: View) {
-        v.switcher.showNext()
+    private fun validateToSave(v:View):Boolean {
+        return when {
+            v.book_name.text.isNullOrEmpty() -> {
+                v.book_name_lay.error = bookNameErrorMessage
+                false
+            }
+            v.book_page_count.text.isNullOrEmpty() -> {
+                v.book_page_count_lay.error = bookPageCountErrorMessage
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun arrangeForSecondViewSwitcher(v: View) {
+        v.book_name.setText("")
+        v.book_name_lay.isErrorEnabled = false
+        v.book_page_count.setText("")
+        v.book_page_count_lay.isErrorEnabled = false
+        if (v.switcher.displayedChild==0)
+            v.switcher.showNext()
         v.fab.hide()
     }
 
-    private fun textChangeListner(v: TextInputLayout, errorMes : String) {
-        v.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
-            }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isEmpty()) {
-                    v.isErrorEnabled = true
-                    v.error = errorMes
-                }
-                if (s.isNotEmpty()) {
-                    v.error = null
-                    v.isErrorEnabled = false
-                }
-
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
-    }
-
-    private fun arrangeForShowList(v: View) {
-        v.list.visibility = VISIBLE
-        v.emptyText.visibility = GONE
+    private fun arrangeForFirstViewSwitcher(v: View, isListShow:Boolean) {
+        if (isListShow) {
+            v.list.visibility = VISIBLE
+            v.emptyText.visibility = GONE
+        }else{
+            v.list.visibility = GONE
+            v.emptyText.visibility = VISIBLE
+        }
         v.fab.show()
         if (v.switcher.displayedChild==1)
             v.switcher.showPrevious()
-        v.book_name.setText("")
-        v.book_name_lay.isErrorEnabled = false
-        v.book_page_count.setText("")
-        v.book_page_count_lay.isErrorEnabled = false
-    }
 
-    private fun arrangeForEmptyBook(v: View) {
-        v.list.visibility = GONE
-        v.emptyText.visibility = VISIBLE
-        v.fab.show()
-        if (v.switcher.displayedChild==1)
-            v.switcher.showPrevious()
-        v.book_name.setText("")
-        v.book_name_lay.isErrorEnabled = false
-        v.book_page_count.setText("")
-        v.book_page_count_lay.isErrorEnabled = false
     }
 
 

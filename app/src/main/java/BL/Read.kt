@@ -20,8 +20,8 @@ class Read : Model {
     var readDate: String? = null
         internal set
 
-    @Column(name = "Book")
-    var book: Book? = null
+    @Column(name = "Book_Old")
+    var bookOld: Book_Old? = null
 
     @Throws(MyException::class)
     constructor(pageReadCount: Int, readDate: String) : super() {// must check date with term date and before today

@@ -2,7 +2,7 @@ package Unused
 
 //package morteza.darzi.SelfTeach
 //
-//import BL.Book
+//import BL.Book_Old
 //import BL.Read
 //import BL.Teacher
 //import DBAdapter.Read_Adapter
@@ -40,18 +40,18 @@ package Unused
 //            startActivity(intent)
 //        }
 //
-//        val books = Select().from(Book::class.java).execute<Book>()
+//        val bookOlds = Select().from(Book_Old::class.java).execute<Book_Old>()
 //
 //        reads = ArrayList()
 //
-//        for (b in books) {
+//        for (b in bookOlds) {
 //            val rs = Select()
 //                    .from(Read::class.java)
-//                    .where("Book = ?", b.id!!)
+//                    .where("Book_Old = ?", b.id!!)
 //                    .execute<Read>()
 //            if (!rs.isEmpty()) {
 //                for (r in rs) {
-//                    r.book = b
+//                    r.bookOld = b
 //                }
 //            }
 //            reads!!.addAll(rs)

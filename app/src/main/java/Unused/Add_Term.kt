@@ -3,7 +3,7 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //import BL.MyException
-//import BL.Term
+//import BL.Term_old
 //import android.content.Intent
 //import android.os.Bundle
 //import android.view.Menu
@@ -30,7 +30,7 @@ package Unused
 //    private var EndDate: String? = null
 //    private var state: String? = null
 //
-//    private var term: Term? = null
+//    private var term: Term_old? = null
 //    private val START = "start"
 //    private val END = "end"
 //
@@ -68,7 +68,7 @@ package Unused
 //        }
 //
 //
-//        term = Select().from(Term::class.java).executeSingle()
+//        term = Select().from(Term_old::class.java).executeSingle()
 //
 //
 //
@@ -99,13 +99,13 @@ package Unused
 //
 //        when (item.itemId) {
 //
-//            R.id.saveTerm -> if (state === "ShowTerm") {//Maybe Edit Term
+//            R.id.saveTerm -> if (state === "ShowTerm") {//Maybe Edit Term_old
 //
 //                try {
 //                    term!!.termName = name!!.text.toString()
 //                    term!!.setStartAndEndDate(start!!.text.toString(), end!!.text.toString())
 //                    //term.setEndDate(end.getText().toString());
-//                    //term = new Term(name.getText().toString(), start.getText().toString(), end.getText().toString());
+//                    //term = new Term_old(name.getText().toString(), start.getText().toString(), end.getText().toString());
 //                    term!!.save()
 //
 //                    Toast.makeText(applicationContext, "اطلاعات ترم ویرایش شد", Toast.LENGTH_SHORT).show()
@@ -118,13 +118,13 @@ package Unused
 //                //                        term.setStartDate(start.getText().toString());
 //                //                        term.setEndDate(end.getText().toString());
 //
-//            } else {//add new Term
+//            } else {//add new Term_old
 //
 //                TermName = name!!.text.toString()
 //                StartDate = start!!.text.toString()
 //                EndDate = end!!.text.toString()
 //                try {
-//                    term = Term(TermName!!, StartDate!!, EndDate!!)
+//                    term = Term_old(TermName!!, StartDate!!, EndDate!!)
 //                    term!!.save()
 //                    Toast.makeText(applicationContext, "اطلاعات ترم ذخیره شد", Toast.LENGTH_SHORT).show()
 //                    startActivity(Intent(applicationContext, Booking::class.java))

@@ -1,6 +1,6 @@
 //package DBAdapter
 //
-//import BL.Book
+//import BL.Book_Old
 //import androidx.recyclerview.widget.RecyclerView
 //import android.view.LayoutInflater
 //import android.view.View
@@ -11,7 +11,7 @@
 //import morteza.darzi.SelfTeach.R
 //
 //class FreeBook_list_Performance// Provide a suitable constructor (depends on the kind of dataset)
-//(private val books: List<Book>) : RecyclerView.Adapter<FreeBook_list_Performance.BookListViewHolder>() {
+//(private val bookOlds: List<Book_Old>) : RecyclerView.Adapter<FreeBook_list_Performance.BookListViewHolder>() {
 //    //private Teacher teacher;
 //
 //    // Provide a reference to the views for each data item
@@ -49,7 +49,7 @@
 //
 //    // Replace the contents of a view (invoked by the layout manager)
 //    override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
-//        val b = books[i]
+//        val b = bookOlds[i]
 //        holder.vbookName.text = b.name
 //
 //        if (b.PageRemind() >= b.pageCount || b.PageRemind() < 0)
@@ -76,7 +76,7 @@
 //
 //    // Return the size of your dataset (invoked by the layout manager)
 //    override fun getItemCount(): Int {
-//        return books.size
+//        return bookOlds.size
 //    }
 //
 //    //    private void SetArcProgressBarPerformance(DonutProgress performanceircle,int performance) {

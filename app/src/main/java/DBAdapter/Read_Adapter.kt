@@ -32,7 +32,7 @@ class Read_Adapter
     override fun onBindViewHolder(holder: ReadListViewHolder, i: Int) {
         if (reads!=null) {
             val r = reads[i]
-            holder.readbook.text = r.book!!.name.toString()
+            holder.readbook.text = r.bookOld!!.name.toString()
             holder.readpagecount.text = r.pageReadCount.toString() + " صفحه"
             holder.readdate.text = r.readDate.toString()
 

@@ -8,9 +8,9 @@ import java.util.*
  */
 class Teacher {
 
-    val term: Term? = Select().from(Term::class.java).executeSingle()
+    val term: Term_old? = Select().from(Term_old::class.java).executeSingle()
 
-    val books: List<Book> = Select().from(Book::class.java).where("free = " + 0).execute()
+    val bookOlds: List<Book_Old> = Select().from(Book_Old::class.java).where("free = " + 0).execute()
     private val reads: MutableList<Read>
     private var now: String? = null
 
@@ -22,32 +22,32 @@ class Teacher {
         }
     }
 
-    fun BookPerformance(book: Book): Int {
-        return if (term!!.DayPast() > 0 && PPDBook(book) > 0) {
-            book.PageWasReaded() * 100 / (term.DayPast() * PPDBook(book))
+    fun BookPerformance(bookOld: Book_Old): Int {
+        return if (term!!.DayPast() > 0 && PPDBook(bookOld) > 0) {
+            bookOld.PageWasReaded() * 100 / (term.DayPast() * PPDBook(bookOld))
         } else {
             0
         }
     }
 
-    fun BookPageTo100Percent(book: Book): Int {
-        val i = term!!.DayPast() * PPDBook(book) - book.PageWasReaded()
+    fun BookPageTo100Percent(bookOld: Book_Old): Int {
+        val i = term!!.DayPast() * PPDBook(bookOld) - bookOld.PageWasReaded()
         return if (i >= 10) {
-            if (i * 4 < UserPPDReadBook(book)) {
+            if (i * 4 < UserPPDReadBook(bookOld)) {
                 0
             } else {
                 i
             }
-        } else if (UserPPDReadBook(book) >= 0) {
+        } else if (UserPPDReadBook(bookOld) >= 0) {
             i
         } else {
             0
         }
     }
 
-    private fun UserPPDReadBook(book: Book): Int {
-        return if (book.reads.size > 0) {
-            book.PageWasReaded() / book.reads.size
+    private fun UserPPDReadBook(bookOld: Book_Old): Int {
+        return if (bookOld.reads.size > 0) {
+            bookOld.PageWasReaded() / bookOld.reads.size
         } else {
             0
         }
@@ -76,9 +76,9 @@ class Teacher {
     }
 
 
-    private fun PPDBook(book: Book): Int {
+    private fun PPDBook(bookOld: Book_Old): Int {
         return if (term!!.DayCount() > 0) {
-            book.pageCount / term.DayCount()
+            bookOld.pageCount / term.DayCount()
         } else {
             0
         }
@@ -87,9 +87,9 @@ class Teacher {
     fun BookNameForRead(): String? {
         var max = 0
         var re: String? = ""
-        if (!books.isEmpty()) {
-            for (b in books) {
-                //if page to 100 less than userppd for that book , no book to show
+        if (!bookOlds.isEmpty()) {
+            for (b in bookOlds) {
+                //if page to 100 less than userppd for that bookOld , no bookOld to show
                 if (BookPageTo100Percent(b) * 3 > UserPPDReadBook(b) && BookPageTo100Percent(b) > max) {
                     re = b.name
                     max = BookPageTo100Percent(b)
@@ -133,7 +133,7 @@ class Teacher {
     }
 
     fun IsBooksSet(): Boolean? {
-        return books.size > 0
+        return bookOlds.size > 0
     }
 
     fun IsTermSet(): Boolean? {
@@ -142,7 +142,7 @@ class Teacher {
 
 
     private fun SetReadsToBooks() {
-        for (b in books) {
+        for (b in bookOlds) {
             b.LoadReads()
             reads.addAll(b.reads)
         }
@@ -151,8 +151,8 @@ class Teacher {
 
     private fun PageCount(): Int {
         var result = 0
-        if (!books.isEmpty()) {
-            for (b in books) {
+        if (!bookOlds.isEmpty()) {
+            for (b in bookOlds) {
                 result += b.pageCount
             }
         }
@@ -164,7 +164,7 @@ class Teacher {
         val f1 = BookNameForRead()
         var re: String? = ""
         if ("" != f1) {
-            for (b in books) {
+            for (b in bookOlds) {
                 if (b.name != f1) {
                     if (BookPageTo100Percent(b) * 3 > UserPPDReadBook(b) && BookPageTo100Percent(b) > max) {
                         re = b.name
@@ -201,7 +201,7 @@ class Teacher {
     fun BooksNeedPlane(): String? {
         var re: String? = ""
         if (term!!.DayRemind() > 0) {
-            for (book in books) {
+            for (book in bookOlds) {
                 val i = book.PageRemind() / term.DayRemind()// this i is PagePerDay should read till term endDate
                 if (i > 5 * UserPPDReadBook(book) && TermDayPercent() > 60) {
                     if (re != "")
@@ -226,8 +226,8 @@ class Teacher {
         return End.dayCount - Start.dayCount + 1
     }
 
-    //    public void setBooks(List<Book> books) {
-    //        this.books = books;
+    //    public void setBooks(List<Book_Old> bookOlds) {
+    //        this.bookOlds = bookOlds;
     //    }
 
     // --Commented out by Inspection START (15/02/02 22:42):

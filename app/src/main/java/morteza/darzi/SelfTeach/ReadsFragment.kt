@@ -1,14 +1,13 @@
 package morteza.darzi.SelfTeach
 
-import BL.Book
+
+import BL.Book_Old
 import BL.FirstChecker
 import BL.Read
 import BL.TermLevel
 import DBAdapter.Read_Adapter
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -17,21 +16,25 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-
-import com.google.android.material.textfield.TextInputLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-
-
 import kotlinx.android.synthetic.main.fragment_reads.view.*
-import kotlinx.android.synthetic.main.include_read_add.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
 
 
-class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
+
+
+class ReadsFragment : BaseDatePickerFragment() {
+    private lateinit var readDate: TextInputEditText
     override val title: String
         get() = "خوانده ها"
+
+    private val readDateErrorMessage = "لطفا زمان خواندن را مشخص كنيد"
+    private val readPageCountErrorMessage = "لطفا تعداد صفحات خوانده شده را وارد كنيد"
+    private val readSelectBookErrorMessage = "لطفا نام كتاب را وارد كنيد"
 
     var reads : MutableList<Read> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
@@ -39,133 +42,125 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(FirstChecker.checkLevel()!= TermLevel.Perfermance) {
-            Toast.makeText(context!!, "هنوز ترم يا كتابي ثبت نشده", Toast.LENGTH_SHORT).show()
             listener!!.failRead()
         }else
             reads = FirstChecker.getReads()
     }
 
-    private var selectedBook: Book? = null
+    private var selectedBookOld: Book_Old? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_reads, container, false)
 
+        readDate = v.read_date
+
         if (reads.isNullOrEmpty()){
-            arrangeForEmptyBook(v)
+            arrangeForShowFirstViewSwitcher(v,false)
         }else{
-            arrangeForShowList(v)
+            arrangeForShowFirstViewSwitcher(v,true)
         }
 
         v.fab.setOnClickListener {
-            arrangeToAddRead(v)
+            arrangeToShowSecondViewSwitcher(v)
         }
 
-        v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        val adapter = Read_Adapter(context!!,reads)
-        v.list.adapter = adapter
+        val adapter = intializeReadList(v)
 
-        v.read_date_lab.setOnClickListener {
-            val persianCalendar = PersianCalendar()
-            val datePickerDialog = DatePickerDialog.newInstance(
-                    this@ReadsFragment,
-                    persianCalendar.persianYear,
-                    persianCalendar.persianMonth,
-                    persianCalendar.persianDay
-            )
-
-            datePickerDialog.show(activity!!.fragmentManager, "")
+        v.read_date_lay.setOnClickListener {
+            showDatapicker("")
+        }
+        v.read_date.setOnClickListener {
+            showDatapicker("")
         }
 
-        val allbooks = FirstChecker.getBooks()
+        if (FirstChecker.BooksExist())
+            intializeBookList(v)
+        else
+            listener!!.failRead()
 
-        val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allbooks!!)
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        v.spinner.adapter = dataAdapter
-
-        v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedBook = adapterView.getItemAtPosition(i) as Book
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>) {
-
-            }
-        }
-
-        textChangeListner(v.read_page_count_lay,"لطفا تعداد صفحات كتاب را وارد كنيد")
+        errorTextChangeListner(v.read_page_count_lay, readPageCountErrorMessage)
+        errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
 
         v.read_save.setOnClickListener {
-            if(selectedBook==null)
-                Toast.makeText(context!!,"لطفا نام كتاب را وارد كنيد",Toast.LENGTH_SHORT).show()
-            else if(v.read_page_count_lab.text.isNullOrEmpty())
-                v.read_page_count_lab.error = "لطفا تعداد صفحات كتاب را وارد كنيد"
-            else if(v.read_date_lab.text.isNullOrEmpty())
-                Toast.makeText(context!!,"لطفا زمان خواندن را مشخص كنيد",Toast.LENGTH_SHORT).show()
-            else {
-                val read = Read(v.read_page_count_lab!!.text.toString().toInt(), v.read_date_lab!!.text.toString())
-                read.book = selectedBook
+            if (validateToSave(v)) {
+                val read = Read(v.read_page_count.text.toString().toInt(), v.read_date.text.toString())
+                read.bookOld = selectedBookOld
                 read.save()
                 adapter.addNewRead(read)
-                arrangeForShowList(v)
-
+                arrangeForShowFirstViewSwitcher(v,true)
             }
         }
 
         return v
     }
 
-    private fun arrangeToAddRead(v: View) {
-        v.switcher.showNext()
+    private fun intializeReadList(v: View): Read_Adapter {
+        v.list.layoutManager = LinearLayoutManager(context)
+        val adapter = Read_Adapter(context!!, reads)
+        v.list.adapter = adapter
+        return adapter
+    }
+
+    private fun intializeBookList(v: View) {
+        val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, FirstChecker.getBooks()!!)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        v.spinner.adapter = dataAdapter
+
+        v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                selectedBookOld = adapterView.getItemAtPosition(i) as Book_Old
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {
+
+            }
+        }
+    }
+
+    private fun validateToSave(v:View):Boolean{
+        return when {
+            selectedBookOld==null ->{
+                Toast.makeText(context!!, readSelectBookErrorMessage,Toast.LENGTH_SHORT).show()
+                return false
+            }
+            v.read_page_count.text.isNullOrEmpty() -> {
+                v.read_page_count_lay.error = readPageCountErrorMessage
+                return false
+            }
+            v.read_date.text.isNullOrEmpty() -> {
+                v.read_date_lay.error =readDateErrorMessage
+                return false
+            }
+            else -> true
+        }
+    }
+
+    private fun arrangeToShowSecondViewSwitcher(v: View) {
+        v.read_page_count.setText("")
+        v.read_page_count_lay.isErrorEnabled = false
+        v.read_date.setText("")
+        v.read_date_lay.isErrorEnabled = false
+        if (v.switcher.displayedChild==0)
+            v.switcher.showNext()
         v.fab.hide()
     }
 
-    private fun arrangeForShowList(v: View) {
-        v.list.visibility = VISIBLE
-        v.emptyText.visibility = GONE
+
+    private fun arrangeForShowFirstViewSwitcher(v: View, isListShow :Boolean) {
+        if (isListShow) {
+            v.list.visibility = VISIBLE
+            v.emptyText.visibility = GONE
+        }else{
+            v.list.visibility = GONE
+            v.emptyText.visibility = VISIBLE
+        }
         v.fab.show()
         if (v.switcher.displayedChild==1)
             v.switcher.showPrevious()
-        v.read_page_count_lab.setText("")
-        v.read_page_count_lay.isErrorEnabled = false
-        v.read_date_lab.setText("")
-//        v.read_date.err = false
+
     }
 
-    private fun arrangeForEmptyBook(v: View) {
-        v.list.visibility = GONE
-        v.emptyText.visibility = VISIBLE
-        v.fab.show()
-        if (v.switcher.displayedChild==1)
-            v.switcher.showPrevious()
-        v.read_page_count_lab.setText("")
-        v.read_page_count_lay.isErrorEnabled = false
-        v.read_date_lab.setText("")
-    }
-
-    private fun textChangeListner(v: TextInputLayout, errorMes : String) {
-        v.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isEmpty()) {
-                    v.isErrorEnabled = true
-                    v.error = errorMes
-                }
-                if (s.isNotEmpty()) {
-                    v.error = null
-                    v.isErrorEnabled = false
-                }
-
-            }
-
-            override fun afterTextChanged(s: Editable) {
-
-            }
-        })
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -182,12 +177,12 @@ class ReadsFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     }
 
 
-    override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
         val d = PersianCalendar()
         d.setPersianDate(year, monthOfYear, dayOfMonth)
 
-        read_date_lab.setText(d.persianShortDate)
+        readDate.setText(d.persianShortDate.toString())
 
     }
 

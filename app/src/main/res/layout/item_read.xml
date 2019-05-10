@@ -44,13 +44,15 @@
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         tools:text="1398/02/18" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/del_read"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:background="@drawable/ic_del"
+        android:background="@drawable/background_transparent"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/del"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

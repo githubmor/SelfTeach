@@ -3,7 +3,7 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //
-//import BL.Book
+//import BL.Book_Old
 //import DBAdapter.FreeBook_list_Performance
 //import android.content.Intent
 //import android.os.Bundle
@@ -21,11 +21,11 @@ package Unused
 // */
 //class FreeBookMain : Fragment() {
 //
-//    private var books: List<Book>? = null
+//    private var bookOlds: List<Book_Old>? = null
 //
 //    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 //
-//        if (books!!.size > 0) {
+//        if (bookOlds!!.size > 0) {
 //            val view = inflater.inflate(R.layout.bookmain, container, false)
 //
 //            val mRecyclerView = view.findViewById<View>(R.id.my_recycler_view) as RecyclerView
@@ -41,7 +41,7 @@ package Unused
 //
 //            // specify an adapter (see also next example)
 //
-//            val mAdapter = FreeBook_list_Performance(books!!)
+//            val mAdapter = FreeBook_list_Performance(bookOlds!!)
 //            mRecyclerView.adapter = mAdapter
 //            return view
 //        } else {
@@ -65,8 +65,8 @@ package Unused
 //        }
 //    }
 //
-//    fun GiveBooks(books: List<Book>) {
-//        this.books = books
+//    fun GiveBooks(bookOlds: List<Book_Old>) {
+//        this.bookOlds = bookOlds
 //    }
 //
 //

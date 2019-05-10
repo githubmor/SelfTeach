@@ -2,7 +2,7 @@ package Unused
 
 //package morteza.darzi.SelfTeach
 //
-//import BL.Book
+//import BL.Book_Old
 //import BL.MyException
 //import BL.Read
 //import BL.Teacher
@@ -29,9 +29,9 @@ package Unused
 //    private var bookListSpinner: Spinner? = null
 //
 //    private val teacher = Teacher()
-//    private var selectedBook: Book? = null
-//    //    Term term;
-//    internal val books = Select().from(Book::class.java).execute<Book>()
+//    private var selectedBook: Book_Old? = null
+//    //    Term_old term;
+//    internal val bookOlds = Select().from(Book_Old::class.java).execute<Book_Old>()
 //    //    List<Read> reads;
 //
 //    //    DBhelper dBhelper;
@@ -46,7 +46,7 @@ package Unused
 //
 //        //        picker = new D
 //
-//        for (b in books) {
+//        for (b in bookOlds) {
 //            b.LoadReads()
 //        }
 //        //selectedBook = new BookOld();
@@ -90,13 +90,13 @@ package Unused
 //            }
 //        })
 //
-//        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, books)
+//        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, bookOlds)
 //        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 //        bookListSpinner!!.adapter = dataAdapter
 //
 //        bookListSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 //            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-//                selectedBook = adapterView.getItemAtPosition(i) as Book
+//                selectedBook = adapterView.getItemAtPosition(i) as Book_Old
 //                //readList = selectedBook.getReads();
 //            }
 //
@@ -133,7 +133,7 @@ package Unused
 //                        //Read read;
 //                        try {
 //                            val read = Read(readcount, readDate!!.text.toString())
-//                            read.book = selectedBook
+//                            read.bookOld = selectedBook
 //                            read.save()
 //                            //readDBhandeler.InsertRead(read);
 //                            val intent = Intent(applicationContext, Reading::class.java)

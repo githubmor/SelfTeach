@@ -2,10 +2,10 @@ package Unused
 
 //package morteza.darzi.SelfTeach
 //
-//import BL.Book
+//import BL.Book_Old
 //import BL.Read
 //import BL.Teacher
-//import BL.Term
+//import BL.Term_old
 //import android.content.Intent
 //import android.os.Bundle
 //import android.view.Menu
@@ -19,7 +19,7 @@ package Unused
 //
 //
 //    private var teacher: Teacher? = null
-//    private var freeBooks: List<Book>? = null
+//    private var freeBooks: List<Book_Old>? = null
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ package Unused
 //        val mViewPager = findViewById<ViewPager>(R.id.pager)
 //
 //        teacher = Teacher()
-//        freeBooks = Select().from(Book::class.java).where("free = " + 1).execute()
+//        freeBooks = Select().from(Book_Old::class.java).where("free = " + 1).execute()
 //        if (freeBooks!!.isNotEmpty())
 //            SetReadsToFreeBooks()
 //
@@ -37,12 +37,12 @@ package Unused
 //        if (mViewPager != null) {//this is in phone
 //
 //            val mDemoCollectionPagerAdapter = DemoCollectionPagerAdapter(
-//                    supportFragmentManager, teacher!!, freeBooks as MutableList<Book>)
+//                    supportFragmentManager, teacher!!, freeBooks as MutableList<Book_Old>)
 //
 //            mViewPager.adapter = mDemoCollectionPagerAdapter
 //        } else {//this is in land tablet
 //
-//            //because want to show just two fragment , not show free books in land tablet
+//            //because want to show just two fragment , not show free bookOlds in land tablet
 //            if (savedInstanceState != null)
 //                return
 //            val termMain = PerformanceFragment()
@@ -75,7 +75,7 @@ package Unused
 //        menuInflater.inflate(R.menu.mainmenu, menu)
 //        if (teacher!!.IsBooksSet()!!.not()) {
 //            if (teacher!!.IsTermSet()!!.not())
-//                menu.getItem(3).isVisible = false//add books
+//                menu.getItem(3).isVisible = false//add bookOlds
 //            if (freeBooks!!.size <= 0)
 //                menu.getItem(0).isVisible = false//add read
 //        }
@@ -89,7 +89,7 @@ package Unused
 //            R.id.Reseting -> {
 //                //                if (teacher.IsTermSet() & teacher.IsBooksSet()) {
 //                //                    teacher.getTerm().delete();
-//                //                    for (Book b : teacher.getBooks()) {
+//                //                    for (Book_Old b : teacher.getBookOlds()) {
 //                //                        b.DeleteReads();
 //                //                        b.delete();
 //                //                    }
@@ -97,12 +97,12 @@ package Unused
 //                //                    teacher.getTerm().delete();
 //                //                }
 //                //                if (freeBooks.size()>0){
-//                //                    for (Book n: freeBooks){
+//                //                    for (Book_Old n: freeBooks){
 //                //                        n.delete();
 //                //                    }
 //                //                }
-//                val t = Select().from(Term::class.java).executeSingle<Term>()
-//                val bs = Select().from(Book::class.java).execute<Book>()
+//                val t = Select().from(Term_old::class.java).executeSingle<Term_old>()
+//                val bs = Select().from(Book_Old::class.java).execute<Book_Old>()
 //                val rs = Select().from(Read::class.java).execute<Read>()
 //                t?.delete()
 //                if (!bs.isEmpty()) {

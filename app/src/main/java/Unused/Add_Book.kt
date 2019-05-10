@@ -3,7 +3,7 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //
-//import BL.Book
+//import BL.Book_Old
 //import BL.MyException
 //import android.content.Intent
 //import android.os.Bundle
@@ -20,7 +20,7 @@ package Unused
 //
 //    private var name: EditText? = null
 //    private var pagecount: EditText? = null
-//    private var book: Book? = null
+//    private var bookOld: Book_Old? = null
 //    internal var free: Boolean = false
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,10 +46,10 @@ package Unused
 //
 //        when (item.itemId) {
 //            R.id.savingBook -> try {
-//                book = Book(name!!.text.toString(), Integer.parseInt(pagecount!!.text.toString()), free)
-//                book!!.save()
-//                //dBhandeler.InsertBook(book);
-//                Toast.makeText(applicationContext, "کتاب " + book!!.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+//                bookOld = Book_Old(name!!.text.toString(), Integer.parseInt(pagecount!!.text.toString()), free)
+//                bookOld!!.save()
+//                //dBhandeler.InsertBook(bookOld);
+//                Toast.makeText(applicationContext, "کتاب " + bookOld!!.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
 //                val intent = Intent(applicationContext, Booking::class.java)
 //                intent.putExtra("free", free)
 //                startActivity(intent)

@@ -1,6 +1,6 @@
 //package DBAdapter
 //
-//import BL.Book
+//import BL.Book_Old
 //import BL.HsvEvaluator
 //import BL.Teacher
 //import android.animation.AnimatorSet
@@ -19,7 +19,7 @@
 //class Book_list_Performance// Provide a suitable constructor (depends on the kind of dataset)
 //(private val teacher: Teacher) : RecyclerView.Adapter<Book_list_Performance.BookListViewHolder>() {
 //
-//    private val books: List<Book>
+//    private val bookOlds: List<Book_Old>
 //
 //    // Provide a reference to the views for each data item
 //    // Complex data items may need more than one view per item, and
@@ -42,7 +42,7 @@
 //    }
 //
 //    init {
-//        this.books = teacher.books
+//        this.bookOlds = teacher.bookOlds
 //    }
 //
 //    // Create new views (invoked by the layout manager)
@@ -58,7 +58,7 @@
 //
 //    // Replace the contents of a view (invoked by the layout manager)
 //    override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
-//        val b = books[i]
+//        val b = bookOlds[i]
 //        holder.vbookName.text = b.name
 //
 //        if (b.PageRemind() >= b.pageCount || b.PageRemind() < 0)
@@ -80,7 +80,7 @@
 //    }
 //
 //    override fun getItemCount(): Int {
-//        return books.size
+//        return bookOlds.size
 //    }
 //
 //    private fun SetArcProgressBarPerformance(performanceircle: DonutProgress, performance: Int) {

@@ -1,9 +1,12 @@
 package BL
 
+import android.content.Context
 import com.activeandroid.query.Select
+import morteza.darzi.SelfTeach.MyApplication.Companion.database
 
-class FirstChecker {
-    companion object{
+
+class FirstChecker(val context:Context) {
+        companion object{
         fun checkLevel() : TermLevel{
             return if (Termexist())
                 if (BooksExist())
@@ -16,20 +19,17 @@ class FirstChecker {
         }
 
         fun BooksExist(): Boolean {
-            val booksExist = Select().from(Book::class.java).where("free = " + 0).exists()
-            return booksExist
+            return database.bookDao().getAllBook().count()>0
         }
 
         fun Termexist(): Boolean {
-            return Select().from(Term::class.java).exists()
+            return database.termDao().getTerm().count()>0
         }
 
-        fun getTerm(): Term? {
-            return Select().from(Term::class.java).executeSingle()
-        }
 
-        fun getBooks(): MutableList<Book>? {
-            val bs = Select().from(Book::class.java).where("free = " + 0).execute<Book>()
+        fun getBooks(): MutableList<Book_Old>? {
+
+            val bs = Select().from(Book_Old::class.java).where("free = " + 0).execute<Book_Old>()
             if (bs!=null){
                 for (b in bs) {
                     b.LoadReads()
@@ -39,17 +39,17 @@ class FirstChecker {
         }
 
         fun getReads(): MutableList<Read> {
-            val books = Select().from(Book::class.java).execute<Book>()
+            val books = Select().from(Book_Old::class.java).execute<Book_Old>()
             val reads: MutableList<Read> = mutableListOf()
 
             for (b in books) {
                 val rs = Select()
                         .from(Read::class.java)
-                        .where("Book = ?", b.id!!)
+                        .where("Book_Old = ?", b.id!!)
                         .execute<Read>()
                 if (!rs.isEmpty()) {
                     for (r in rs) {
-                        r.book = b
+                        r.bookOld = b
                     }
                 }
                 reads.addAll(rs)
@@ -58,7 +58,9 @@ class FirstChecker {
             return reads
         }
     }
+
 }
+
 
 enum class TermLevel {
     Term,Book,Perfermance
