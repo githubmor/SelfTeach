@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_book.view.*
 import morteza.darzi.SelfTeach.MyApplication
 import morteza.darzi.SelfTeach.R
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+
 
 class Book_Adapter(private val context: Context, private val books: MutableList<Book>?)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
@@ -38,17 +37,12 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
             holder.readProgress.progress = b.PageReadPercent()
             holder.delBook.setOnClickListener {
 
-                doAsync {
 
-                   MyApplication.database!!
+                   MyApplication.database
                             .bookDao().delete(b.dbDto.book)
-
-                    uiThread {
                         Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
                         books.removeAt(i)
                         notifyItemRemoved(i)
-                    }
-                }
 
 
             }

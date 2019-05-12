@@ -18,8 +18,6 @@ import kotlinx.android.synthetic.main.include_term_add.*
 import kotlinx.android.synthetic.main.include_term_add.view.*
 import kotlinx.android.synthetic.main.include_term_empty.view.*
 import morteza.darzi.SelfTeach.MyApplication.Companion.database
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 
 class TermFragment : BaseDatePickerFragment() {
@@ -39,14 +37,8 @@ class TermFragment : BaseDatePickerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        doAsync {
-            val bills = database!!.termDao().getTerm()
-
-            uiThread {
-                term = Term(bills.first())
-            }
-        }
-
+            val bills = database.termDao().getTerm()
+            term = Term(bills.first())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -123,22 +115,13 @@ class TermFragment : BaseDatePickerFragment() {
                 0,
                 v.term_name.text.toString(),
                 v.term_start_date.text.toString(),
-                v.term_end_date.text.toString()
-        )
-        doAsync {
+                v.term_end_date.text.toString())
 
-            database!!
-                    .termDao().insert(te)
+            database.termDao().insert(te)
 
-            uiThread {
-                Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
-                listener!!.onSaveTermComplete()
-            }
-        }
-
-
+            Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+            listener!!.onSaveTermComplete()
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

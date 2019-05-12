@@ -16,4 +16,8 @@ interface ReadDAO {
     @Delete
     fun delete(read: Readdb)
 
+    @Query("SELECT Readdb.*,Bookdb.name FROM Readdb LEFT JOIN Bookdb ON Readdb.bookId = Bookdb.id")
+    fun getOrderWithCustomer(): List<ReadBook>
+
+
 }

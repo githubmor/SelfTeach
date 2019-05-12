@@ -16,8 +16,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_books.view.*
 import kotlinx.android.synthetic.main.include_book_add.view.*
 import kotlinx.android.synthetic.main.include_book_list.view.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+
 
 
 class BooksFragment : BaseFragment() {
@@ -35,17 +34,11 @@ class BooksFragment : BaseFragment() {
         if (FirstChecker.checkLevel()==TermLevel.Term) {
             listener!!.failOpenBooks()
         }else {
-            doAsync {
-                val bills = database!!.bookDao().getAllBookWithReads()
+                val bills = database.bookDao().getAllBookWithReads()
 
-                uiThread {
-                    for (bill in bills) {
-                        books!!.add(Book(bill))
-                    }
+                for (bill in bills) {
+                    books!!.add(Book(bill))
                 }
-            }
-
-
         }
     }
 
@@ -74,14 +67,9 @@ class BooksFragment : BaseFragment() {
         v.book_save.setOnClickListener {
             if (validateToSave(v)) {
                 val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt())
-
-                doAsync {
-                    database!!.bookDao().insert(b)
-                    uiThread {
+                    database.bookDao().insert(b)
                         adapter.addNewBook(Book(BookReads(b, listOf())))
                         arrangeForFirstViewSwitcher(v,true)
-                    }
-                }
 
             }
         }

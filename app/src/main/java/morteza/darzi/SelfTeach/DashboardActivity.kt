@@ -1,6 +1,8 @@
 package morteza.darzi.SelfTeach
 
 import BL.*
+import DAL.TermRepository
+import DAL.Termdb
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,13 +11,17 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.activeandroid.query.Select
-import org.jetbrains.anko.doAsyncResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteractionListener
+class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractionListener
         ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
         PerformanceFragment.OnFragmentInteractionListener {
 
+    lateinit var repository : TermRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -25,11 +31,15 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         initializeFirst()
 
+        repository = TermRepository(MyApplication.database.termDao())
     }
 
     private fun initializeFirst() {
-        val frag : Fragment
-        val checker = doAsyncResult { FirstChecker.checkLevel()  }
+        var frag = Fragment()
+
+        val checker = launch (Dispatchers.IO){
+             repository.term
+        }
         when(checker){
             TermLevel.Term -> frag = TermFragment()
             TermLevel.Book -> frag = BooksFragment()
@@ -37,6 +47,8 @@ class DashboardActivity : AppCompatActivity(),TermFragment.OnFragmentInteraction
         }
         Transaction(frag)
     }
+
+
     protected fun Transaction(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()

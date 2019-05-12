@@ -1,12 +1,32 @@
 package BL
 
+import DAL.TermRepository
+import DAL.Termdb
+import android.app.Application
 import android.content.Context
 import com.activeandroid.query.Select
+import kotlinx.coroutines.*
+import morteza.darzi.SelfTeach.MyApplication
 import morteza.darzi.SelfTeach.MyApplication.Companion.database
+import kotlin.coroutines.CoroutineContext
 
 
-class FirstChecker(val context:Context) {
-        companion object{
+class FirstChecker(val context:Context):CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    private val repository: TermRepository
+
+    init {
+        val wordsDao = MyApplication.database.termDao()
+        repository = TermRepository(wordsDao)
+    }
+    fun Termexist(): Boolean {
+        return repository.term!=null
+    }
+    fun insert(word: Termdb) = GlobalScope.launch(Dispatchers.IO) {
+        repository.insert(word)
+    }
+    companion object{
         fun checkLevel() : TermLevel{
             return if (Termexist())
                 if (BooksExist())
@@ -23,7 +43,7 @@ class FirstChecker(val context:Context) {
         }
 
         fun Termexist(): Boolean {
-            return database.termDao().getTerm().count()>0
+            return database.bookDao().getAllBook().count()>0
         }
 
 

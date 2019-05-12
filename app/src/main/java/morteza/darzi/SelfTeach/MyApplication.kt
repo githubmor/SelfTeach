@@ -16,6 +16,6 @@ class MyApplication : Application() {
         super.onCreate()
 //        ActiveAndroid.initialize(this)
         database = Room.databaseBuilder(this, AppDatabase::class.java,
-                "selfteach-db").build()
+                "selfteach-db").allowMainThreadQueries().build()
     }
 }
