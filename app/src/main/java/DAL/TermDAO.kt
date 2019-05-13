@@ -9,10 +9,13 @@ import androidx.room.Query
 interface TermDAO {
 
     @Query("SELECT * FROM termdb")
-    fun getTerm(): List<Termdb>?
+    fun getTerm(): Termdb
+
+    @Query("SELECT COUNT(*) FROM termdb")
+    fun existTerm(): Int
 
     @Insert
-    suspend fun insert(term: Termdb)
+    fun insert(term: Termdb)
 
     @Delete
     fun delete(term: Termdb)

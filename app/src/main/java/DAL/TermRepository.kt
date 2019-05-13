@@ -9,4 +9,8 @@ class TermRepository(private val termDAO: TermDAO) {
     suspend fun insert(term: Termdb) {
         termDAO.insert(term)
     }
+
+    fun isTermexist(): Int {
+        return termDAO.existTerm()
+    }
 }

@@ -14,6 +14,7 @@ import com.activeandroid.query.Select
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.withTestContext
 import kotlinx.coroutines.withContext
 
 
@@ -35,17 +36,27 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
     }
 
     private fun initializeFirst() {
-        var frag = Fragment()
+        launch {
+            var frag = Fragment()
 
-        val checker = launch (Dispatchers.IO){
-             repository.term
+            val checker = async(Dispatchers.IO) {
+                repository.isTermexist()
+            }
+
+            withContext(Dispatchers.Main) {
+                if (checker.await()==1) {
+                    frag = TermFragment()
+                }else{
+                    frag = BooksFragment()
+                }
+//            when (checker.await()) {
+//                TermLevel.Term -> frag = TermFragment()
+//                TermLevel.Book -> frag = BooksFragment()
+//                TermLevel.Perfermance -> frag = PerformanceFragment()
+//            }
+                Transaction(frag)
+            }
         }
-        when(checker){
-            TermLevel.Term -> frag = TermFragment()
-            TermLevel.Book -> frag = BooksFragment()
-            TermLevel.Perfermance -> frag = PerformanceFragment()
-        }
-        Transaction(frag)
     }
 
 
