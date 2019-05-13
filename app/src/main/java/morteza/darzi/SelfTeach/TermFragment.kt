@@ -38,7 +38,7 @@ class TermFragment : BaseDatePickerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
             val bills = database.termDao().getTerm()
-            term = Term(bills.first())
+            term = Term(bills)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
