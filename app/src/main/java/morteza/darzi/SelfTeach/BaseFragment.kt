@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : ScopedAppFragment() {
 
     abstract val title : String
 

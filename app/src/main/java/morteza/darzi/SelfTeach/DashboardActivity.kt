@@ -1,28 +1,24 @@
 package morteza.darzi.SelfTeach
 
 import BL.*
-import DAL.TermRepository
-import DAL.Termdb
+import BL.TermRepository
+import DAL.AppDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.activeandroid.query.Select
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.withTestContext
-import kotlinx.coroutines.withContext
 
 
 class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractionListener
         ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
         PerformanceFragment.OnFragmentInteractionListener {
 
-    lateinit var repository : TermRepository
+    lateinit var termRep : TermRepository
+    lateinit var bookRepo : BookRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -30,34 +26,33 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        initializeFirst()
 
-        repository = TermRepository(MyApplication.database.termDao())
+        val database = AppDatabase.getInstance(applicationContext)
+        termRep = TermRepository(database.termDao())
+        bookRepo = BookRepository(database.bookDao())
+
+        initializeFirst()
     }
 
     private fun initializeFirst() {
         launch {
             var frag = Fragment()
 
-            val checker = async(Dispatchers.IO) {
-                repository.isTermexist()
-            }
+            val termExist = termRep.isTermexist()
+            val bookExist = bookRepo.isBooksExist()
 
-            withContext(Dispatchers.Main) {
-                if (checker.await()==1) {
-                    frag = TermFragment()
-                }else{
-                    frag = BooksFragment()
-                }
-//            when (checker.await()) {
-//                TermLevel.Term -> frag = TermFragment()
-//                TermLevel.Book -> frag = BooksFragment()
-//                TermLevel.Perfermance -> frag = PerformanceFragment()
-//            }
-                Transaction(frag)
-            }
+            frag = if (termExist)
+                if (bookExist)
+                    PerformanceFragment()
+                else
+                    BooksFragment()
+            else
+                TermFragment()
+
+            Transaction(frag)
         }
     }
+
 
 
     protected fun Transaction(fragment: Fragment) {

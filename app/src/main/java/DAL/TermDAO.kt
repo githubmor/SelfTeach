@@ -1,9 +1,6 @@
 package DAL
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface TermDAO {
@@ -16,6 +13,9 @@ interface TermDAO {
 
     @Insert
     fun insert(term: Termdb)
+
+    @Update
+    fun update(term: Termdb)
 
     @Delete
     fun delete(term: Termdb)

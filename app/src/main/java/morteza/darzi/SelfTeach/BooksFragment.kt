@@ -1,8 +1,10 @@
 package morteza.darzi.SelfTeach
 
 import BL.Book
+import BL.BookRepository
 import BL.FirstChecker
 import BL.TermLevel
+import DAL.AppDatabase
 import DAL.BookReads
 import DAL.Bookdb
 import DBAdapter.Book_Adapter
@@ -16,7 +18,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_books.view.*
 import kotlinx.android.synthetic.main.include_book_add.view.*
 import kotlinx.android.synthetic.main.include_book_list.view.*
-
+import kotlinx.coroutines.launch
 
 
 class BooksFragment : BaseFragment() {
@@ -28,17 +30,11 @@ class BooksFragment : BaseFragment() {
 
     var books : MutableList<Book>? = null
     private var listener: OnFragmentInteractionListener? = null
-    val database = MyApplication.database
+    val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (FirstChecker.checkLevel()==TermLevel.Term) {
             listener!!.failOpenBooks()
-        }else {
-                val bills = database.bookDao().getAllBookWithReads()
-
-                for (bill in bills) {
-                    books!!.add(Book(bill))
-                }
         }
     }
 
@@ -56,21 +52,31 @@ class BooksFragment : BaseFragment() {
             arrangeForSecondViewSwitcher(v)
         }
 
+
+
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        val adapter = Book_Adapter(context!!,books)
+
+        val adapter = Book_Adapter(context!!,books,repository)
         v.list.adapter = adapter
 
-
+        launch {
+            val bills = repository.getAllBookWithRead()
+            for (bill in bills) {
+                books!!.add(Book(bill))
+            }
+            adapter.updateBooks(bills.map { Book(it) })
+        }
         errorTextChangeListner(v.book_name_lay, bookNameErrorMessage)
         errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
 
         v.book_save.setOnClickListener {
             if (validateToSave(v)) {
-                val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt())
-                    database.bookDao().insert(b)
-                        adapter.addNewBook(Book(BookReads(b, listOf())))
-                        arrangeForFirstViewSwitcher(v,true)
-
+                launch {
+                    val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt())
+                    repository.insert(b)
+                    adapter.addNewBook(Book(BookReads(b, listOf())))
+                    arrangeForFirstViewSwitcher(v,true)
+                }
             }
         }
 
