@@ -24,7 +24,7 @@ class Book_Old : Model {
     @Column(name = "free")
     private var free: Boolean = false
 
-    var reads: List<Read> = ArrayList()
+    var reads: List<Read_Old> = ArrayList()
         private set
 
 
@@ -42,7 +42,7 @@ class Book_Old : Model {
     fun LoadReads() {
         if (reads.isEmpty()) {
             reads = Select()
-                    .from(Read::class.java)
+                    .from(Read_Old::class.java)
                     .where("Book_Old = ?", id!!)
                     .execute()
         }

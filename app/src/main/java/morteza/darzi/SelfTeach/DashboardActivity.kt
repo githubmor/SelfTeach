@@ -92,7 +92,7 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
                         b.delete()
                     }
                 }
-                val rs = Select().from(Read::class.java).execute<Read>()
+                val rs = Select().from(Read_Old::class.java).execute<Read_Old>()
                 if (rs.isNotEmpty()) {
                     for (r in rs) {
                         r.delete()

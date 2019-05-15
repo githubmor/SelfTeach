@@ -3,7 +3,7 @@ package DAL
 import androidx.room.Embedded
 import androidx.room.Relation
 
-class BookReads(
+class BookReadsdb(
         @Embedded
         var book: Bookdb,
 

@@ -21,9 +21,9 @@ class ReadRepository(private val dao: ReadDAO) {
         }
     }
 //    @WorkerThread
-//    suspend fun update(term: Readdb) {
+//    suspend fun update(term_old: Readdb) {
 //        withContext(Dispatchers.IO) {
-//            dao.update(term)
+//            dao.update(term_old)
 //        }
 //    }
 //    @WorkerThread
@@ -50,7 +50,7 @@ class ReadRepository(private val dao: ReadDAO) {
     }
 
     @WorkerThread
-    suspend fun getAllReadsWithBookName(): List<ReadBook> {
+    suspend fun getAllReadsWithBookName(): List<ReadBookdb> {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllReadsWithBookName()

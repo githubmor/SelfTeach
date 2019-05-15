@@ -1,43 +1,13 @@
 package BL
 
-import com.activeandroid.Model
-import com.activeandroid.annotation.Column
-import com.activeandroid.annotation.Table
-
-/**
- * Created by M on 14/11/23.
- */
-
-@Table(name = "Reads")
-class Read : Model {
+import DAL.ReadBookdb
 
 
-    @Column(name = "pageReadCount")
-    var pageReadCount: Int = 0
-        internal set
+class Read(val dbDto: ReadBookdb) {
 
-    @Column(name = "readDate")
-    var readDate: String? = null
-        internal set
+    val pageReadCount = dbDto.read.pageRead
 
-    @Column(name = "Book_Old")
-    var bookOld: Book_Old? = null
+    val readDate = dbDto.read.readDate
 
-    @Throws(MyException::class)
-    constructor(pageReadCount: Int, readDate: String) : super() {// must check date with term date and before today
-        if (pageReadCount > 0) {
-            this.pageReadCount = pageReadCount
-        } else {
-            throw MyException("لطفا تعداد صفحه خوانده شده را وارد کنید")
-        }
-        if ("" != readDate) {
-            this.readDate = readDate
-        } else {
-            throw MyException("لطفا تاریخ خواندن را وارد کنید")
-        }
-    }
-
-    constructor() : super()
+    val book = dbDto.bookName
 }
-
-

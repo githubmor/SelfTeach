@@ -1,10 +1,11 @@
 package morteza.darzi.SelfTeach
 
 
-import BL.Book_Old
-import BL.FirstChecker
-import BL.Read
-import BL.TermLevel
+import BL.*
+import DAL.AppDatabase
+import DAL.Bookdb
+import DAL.ReadBookdb
+import DAL.Readdb
 import DBAdapter.Read_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -23,8 +24,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
-
-
+import kotlinx.coroutines.launch
 
 
 class ReadsFragment : BaseDatePickerFragment() {
@@ -38,28 +38,40 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     var reads : MutableList<Read> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
+    lateinit var readRepo: ReadRepository
+    lateinit var bookRepo: BookRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(FirstChecker.checkLevel()!= TermLevel.Perfermance) {
             listener!!.failRead()
-        }else
-            reads = FirstChecker.getReads()
+        }
+        readRepo = ReadRepository(AppDatabase.getInstance(context!!).readDao())
+        bookRepo = BookRepository(AppDatabase.getInstance(context!!).bookDao())
     }
 
-    private var selectedBookOld: Book_Old? = null
+    private var selectedBookOld: Bookdb? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_reads, container, false)
 
-        readDate = v.read_date
+        launch {
+            val rs = readRepo.getAllReadsWithBookName()
 
-        if (reads.isNullOrEmpty()){
-            arrangeForShowFirstViewSwitcher(v,false)
-        }else{
-            arrangeForShowFirstViewSwitcher(v,true)
+
+            for (r in rs) {
+                reads.add(Read(r))
+            }
+
+            if (reads.isNullOrEmpty()){
+                arrangeForShowFirstViewSwitcher(v,false)
+            }else{
+                arrangeForShowFirstViewSwitcher(v,true)
+            }
         }
+
+        readDate = v.read_date
 
         v.fab.setOnClickListener {
             arrangeToShowSecondViewSwitcher(v)
@@ -73,7 +85,6 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.read_date.setOnClickListener {
             showDatapicker("")
         }
-
         if (FirstChecker.BooksExist())
             intializeBookList(v)
         else
@@ -84,11 +95,12 @@ class ReadsFragment : BaseDatePickerFragment() {
 
         v.read_save.setOnClickListener {
             if (validateToSave(v)) {
-                val read = Read(v.read_page_count.text.toString().toInt(), v.read_date.text.toString())
-                read.bookOld = selectedBookOld
-                read.save()
-                adapter.addNewRead(read)
-                arrangeForShowFirstViewSwitcher(v,true)
+                launch {
+                    val read = Readdb(0,selectedBookOld!!.id,v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
+                    readRepo.insert(read)
+                    adapter.addNewRead(Read(ReadBookdb(read,selectedBookOld!!.name)))
+                    arrangeForShowFirstViewSwitcher(v,true)
+                }
             }
         }
 
@@ -97,19 +109,23 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun intializeReadList(v: View): Read_Adapter {
         v.list.layoutManager = LinearLayoutManager(context)
-        val adapter = Read_Adapter(context!!, reads)
+        val adapter = Read_Adapter(context!!, reads,readRepo)
         v.list.adapter = adapter
         return adapter
     }
 
     private fun intializeBookList(v: View) {
-        val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, FirstChecker.getBooks()!!)
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        v.spinner.adapter = dataAdapter
+        launch {
+            val bs = bookRepo.getAllBook()
+
+            val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, bs)
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            v.spinner.adapter = dataAdapter
+        }
 
         v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedBookOld = adapterView.getItemAtPosition(i) as Book_Old
+                selectedBookOld = adapterView.getItemAtPosition(i) as Bookdb
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {

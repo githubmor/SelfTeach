@@ -1,7 +1,7 @@
 package BL
 
 import DAL.BookDAO
-import DAL.BookReads
+import DAL.BookReadsdb
 import DAL.Bookdb
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +52,7 @@ class BookRepository(private val dao: BookDAO) {
     }
 
     @WorkerThread
-    suspend fun getAllBookWithRead(): List<BookReads> {
+    suspend fun getAllBookWithRead(): List<BookReadsdb> {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllBookWithReads()

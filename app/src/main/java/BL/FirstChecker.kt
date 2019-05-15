@@ -45,15 +45,15 @@ class FirstChecker(val database: AppDatabase){
             return bs
         }
 
-        fun getReads(): MutableList<Read> {
+        fun getReads(): MutableList<Read_Old> {
             val books = Select().from(Book_Old::class.java).execute<Book_Old>()
-            val reads: MutableList<Read> = mutableListOf()
+            val reads: MutableList<Read_Old> = mutableListOf()
 
             for (b in books) {
                 val rs = Select()
-                        .from(Read::class.java)
+                        .from(Read_Old::class.java)
                         .where("Book_Old = ?", b.id!!)
-                        .execute<Read>()
+                        .execute<Read_Old>()
                 if (!rs.isEmpty()) {
                     for (r in rs) {
                         r.bookOld = b

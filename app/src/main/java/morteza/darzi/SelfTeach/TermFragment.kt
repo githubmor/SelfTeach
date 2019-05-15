@@ -55,13 +55,13 @@ class TermFragment : BaseDatePickerFragment() {
         val v = inflater.inflate(R.layout.fragment_term, container, false)
         launch {
             val bills = termRep.getTerm()
-            withContext(Dispatchers.Main){
-                term = Term(bills)
-                if (term!=null) {
-                    showTermView(v)
-                    loadTermInView(v)
-                }
+
+            term = Term(bills)
+            if (term!=null) {
+                showTermView(v)
+                loadTermInView(v)
             }
+
         }
 
 
@@ -132,13 +132,13 @@ class TermFragment : BaseDatePickerFragment() {
                 v.term_start_date.text.toString(),
                 v.term_end_date.text.toString())
 
-            launch {
-                termRep.insert(te)
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
-                    listener!!.onSaveTermComplete()
-                }
+        launch {
+            termRep.insert(te)
+            withContext(Dispatchers.Main){
+                Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                listener!!.onSaveTermComplete()
             }
+        }
     }
 
     override fun onAttach(context: Context) {

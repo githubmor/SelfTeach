@@ -6,7 +6,7 @@ import androidx.room.*
 interface BookDAO {
 
     @Query("SELECT * FROM Bookdb")
-    fun getAllBookWithReads(): List<BookReads>
+    fun getAllBookWithReads(): List<BookReadsdb>
 
     @Insert
     fun insert(book: Bookdb)

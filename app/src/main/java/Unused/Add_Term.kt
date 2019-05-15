@@ -30,7 +30,7 @@ package Unused
 //    private var EndDate: String? = null
 //    private var state: String? = null
 //
-//    private var term: Term_old? = null
+//    private var term_old: Term_old? = null
 //    private val START = "start"
 //    private val END = "end"
 //
@@ -68,20 +68,20 @@ package Unused
 //        }
 //
 //
-//        term = Select().from(Term_old::class.java).executeSingle()
+//        term_old = Select().from(Term_old::class.java).executeSingle()
 //
 //
 //
-//        if (term == null) {
+//        if (term_old == null) {
 //            state = "AddNewTerm"
 //            ChangeState(state!!)
 //
 //        } else {
 //            state = "ShowTerm"
 //
-//            TermName = term!!.termName
-//            StartDate = term!!.startDate
-//            EndDate = term!!.endDate
+//            TermName = term_old!!.termName
+//            StartDate = term_old!!.startDate
+//            EndDate = term_old!!.endDate
 //
 //            ChangeState(state!!)
 //
@@ -102,11 +102,11 @@ package Unused
 //            R.id.saveTerm -> if (state === "ShowTerm") {//Maybe Edit Term_old
 //
 //                try {
-//                    term!!.termName = name!!.text.toString()
-//                    term!!.setStartAndEndDate(start!!.text.toString(), end!!.text.toString())
-//                    //term.setEndDate(end.getText().toString());
-//                    //term = new Term_old(name.getText().toString(), start.getText().toString(), end.getText().toString());
-//                    term!!.save()
+//                    term_old!!.termName = name!!.text.toString()
+//                    term_old!!.setStartAndEndDate(start!!.text.toString(), end!!.text.toString())
+//                    //term_old.setEndDate(end.getText().toString());
+//                    //term_old = new Term_old(name.getText().toString(), start.getText().toString(), end.getText().toString());
+//                    term_old!!.save()
 //
 //                    Toast.makeText(applicationContext, "اطلاعات ترم ویرایش شد", Toast.LENGTH_SHORT).show()
 //                    startActivity(Intent(applicationContext, MainActivity::class.java))
@@ -114,9 +114,9 @@ package Unused
 //                    Toast.makeText(applicationContext, e.message.toString(), Toast.LENGTH_SHORT).show()
 //                }
 //
-//                //                        term.setTermName(name.getText().toString());
-//                //                        term.setStartDate(start.getText().toString());
-//                //                        term.setEndDate(end.getText().toString());
+//                //                        term_old.setTermName(name.getText().toString());
+//                //                        term_old.setStartDate(start.getText().toString());
+//                //                        term_old.setEndDate(end.getText().toString());
 //
 //            } else {//add new Term_old
 //
@@ -124,8 +124,8 @@ package Unused
 //                StartDate = start!!.text.toString()
 //                EndDate = end!!.text.toString()
 //                try {
-//                    term = Term_old(TermName!!, StartDate!!, EndDate!!)
-//                    term!!.save()
+//                    term_old = Term_old(TermName!!, StartDate!!, EndDate!!)
+//                    term_old!!.save()
 //                    Toast.makeText(applicationContext, "اطلاعات ترم ذخیره شد", Toast.LENGTH_SHORT).show()
 //                    startActivity(Intent(applicationContext, Booking::class.java))
 //                } catch (e: MyException) {
@@ -147,7 +147,7 @@ package Unused
 //            name!!.isEnabled = true
 //            start!!.isEnabled = true
 //            end!!.isEnabled = true
-//            //term = null;
+//            //term_old = null;
 //            name!!.text = null
 //            start!!.text = null
 //            end!!.text = null

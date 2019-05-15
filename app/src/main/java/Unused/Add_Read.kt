@@ -4,7 +4,7 @@ package Unused
 //
 //import BL.Book_Old
 //import BL.MyException
-//import BL.Read
+//import BL.Read_Old
 //import BL.Teacher
 //import android.content.Intent
 //import android.os.Bundle
@@ -30,9 +30,9 @@ package Unused
 //
 //    private val teacher = Teacher()
 //    private var selectedBook: Book_Old? = null
-//    //    Term_old term;
+//    //    Term_old term_old;
 //    internal val bookOlds = Select().from(Book_Old::class.java).execute<Book_Old>()
-//    //    List<Read> reads;
+//    //    List<Read_Old> reads;
 //
 //    //    DBhelper dBhelper;
 //    //    TermDBhandeler termDBhandeler;
@@ -77,10 +77,10 @@ package Unused
 //            override fun afterTextChanged(editable: Editable) {
 //                if ((selectedBook != null) and selectedBook!!.NotFree()) {
 //                    if (readDate!!.text.toString() != "")
-//                        if (teacher.IsInTermRange(readDate!!.text.toString())!!.not()) {
+//                        if (teacher.IsInTermRange_old(readDate!!.text.toString())!!.not()) {
 //                            Toast.makeText(applicationContext, "لطفا زمانی بین " +
-//                                    teacher.term!!.startDate + " تا" +
-//                                    teacher.term.endDate + " را انتخاب کنید", Toast.LENGTH_SHORT).show()
+//                                    teacher.term_old!!.startDate + " تا" +
+//                                    teacher.term_old.endDate + " را انتخاب کنید", Toast.LENGTH_SHORT).show()
 //                            readDate!!.setText("")
 //                        }
 //
@@ -127,12 +127,12 @@ package Unused
 //                        readcount = Integer.valueOf(pageRead!!.text.toString())
 //                    }
 //                    //TO CHECK READDATE BETWIN TERM STARDATE TO ENDDATE
-//                    //term.setNow(readDate.getText().toString());
+//                    //term_old.setNow(readDate.getText().toString());
 //
 //                    if (selectedBook!!.PageRemind() >= readcount) {
-//                        //Read read;
+//                        //Read_Old read;
 //                        try {
-//                            val read = Read(readcount, readDate!!.text.toString())
+//                            val read = Read_Old(readcount, readDate!!.text.toString())
 //                            read.bookOld = selectedBook
 //                            read.save()
 //                            //readDBhandeler.InsertRead(read);

@@ -2,21 +2,17 @@ package morteza.darzi.SelfTeach
 
 
 import BL.*
+import DAL.AppDatabase
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -44,8 +40,10 @@ class PerformanceFragment : BaseFragment() {
 
         val jdf = JDF()
 
-        teacher = Teacher()
-        teacher!!.setNow(jdf.iranianDate)
+        val database = AppDatabase.getInstance(context!!)
+
+        teacher = Teacher(TermRepository(database.termDao()),BookRepository(database.bookDao()))
+//        teacher!!.setNow(jdf.iranianDate)
 
         val termRemindTxt: TextView
         val book_for_read: TextView
@@ -78,7 +76,7 @@ class PerformanceFragment : BaseFragment() {
             book_for_read.visibility = View.GONE
         }
 
-        val pt = teacher!!.PageTo100Percent()
+        val pt = teacher!!.PageTo100Percent_old()
         if (pt <= 0)
             page_to100_percent.visibility = View.GONE
         else if (pt > 1000) {
@@ -100,10 +98,10 @@ class PerformanceFragment : BaseFragment() {
 
         termDayPercent.progress = teacher!!.TermDayPercent()
 
-        if (teacher!!.term!!.DayRemind() >= teacher!!.term!!.DayCount() || teacher!!.term!!.DayRemind() < 0)
+        if (teacher!!.term_old!!.DayRemind() >= teacher!!.term_old!!.DayCount() || teacher!!.term_old!!.DayRemind() < 0)
             termRemindTxt.text = "هنوز ترم شروع نشده"
         else {
-            val brt = teacher!!.term!!.DayRemind().toString()
+            val brt = teacher!!.term_old!!.DayRemind().toString()
             val ot = "<font color=\"#029789\">$brt</font> روز از ترم باقی مانده"
             termRemindTxt.text = Html.fromHtml(ot)
         }

@@ -22,7 +22,7 @@ class MyExceptionHandler(private val context: AppCompatActivity) : Thread.Uncaug
             // http://stackoverflow.com/questions/13416879/show-a-dialog-in-thread-setdefaultuncaughtexceptionhandler
 
             val registerActivity = Intent(context, ExceptionActivity::class.java)
-            registerActivity.putExtra(EXTRA_MY_EXCEPTION_HANDLER, ex.message.toString())
+            registerActivity.putExtra(EXTRA_MY_EXCEPTION_HANDLER, ex.message)
             //registerActivity.putExtra("ad",ex.message)
             registerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //            registerActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)

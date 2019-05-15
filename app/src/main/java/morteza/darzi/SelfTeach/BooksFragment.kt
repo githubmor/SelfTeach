@@ -5,7 +5,7 @@ import BL.BookRepository
 import BL.FirstChecker
 import BL.TermLevel
 import DAL.AppDatabase
-import DAL.BookReads
+import DAL.BookReadsdb
 import DAL.Bookdb
 import DBAdapter.Book_Adapter
 import android.content.Context
@@ -74,7 +74,7 @@ class BooksFragment : BaseFragment() {
                 launch {
                     val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt())
                     repository.insert(b)
-                    adapter.addNewBook(Book(BookReads(b, listOf())))
+                    adapter.addNewBook(Book(BookReadsdb(b, listOf())))
                     arrangeForFirstViewSwitcher(v,true)
                 }
             }

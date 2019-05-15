@@ -50,11 +50,6 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
                     }
 
                 }
-
-
-
-
-
             }
         }
 

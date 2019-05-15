@@ -60,7 +60,7 @@
 //        holder.vPageTo100.visibility = View.GONE
 //        holder.vperformnce.visibility = View.GONE
 //        holder.tr.visibility = View.GONE
-//        //        int pt = teacher.BookPageTo100Percent(b);
+//        //        int pt = teacher.BookPageTo100Percent_old(b);
 //        //        if (pt<=0)
 //        //            holder.vPageTo100.setVisibility(View.GONE);
 //        //        else if (pt>1000)
@@ -68,7 +68,7 @@
 //        //        else
 //        //            holder.vPageTo100.setText("امروز باید "+String.valueOf(pt)+ " صفحه خوانده شود");
 //
-//        //holder.vPageTo100.setText(String.valueOf(teacher.BookPageTo100Percent(b))+" صفحه ی دیگر تا تکمیل برنامه امروز");
+//        //holder.vPageTo100.setText(String.valueOf(teacher.BookPageTo100Percent_old(b))+" صفحه ی دیگر تا تکمیل برنامه امروز");
 //        //SetArcProgressBarPerformance(holder.vperformnce,teacher.BookPerformance(b));
 //        //holder.vperformnce.setProgress(teacher.BookPerformance(b));
 //        holder.vpageRemindPercent.progress = b.PageReadPercent()

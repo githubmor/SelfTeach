@@ -15,7 +15,7 @@ package Unused
 //        val t3 = listOf("مطالعه آزاد", "ترم")
 //        val t2 = listOf("ترم", "مطالعه آزاد")
 //        val t1 = listOf("عملکرد ترم", "کتاب های ترم", "مطالعه آزاد")
-//        if (teacher.IsBooksSet()!!)
+//        if (teacher.IsBooksSet_old()!!)
 //            t = t1
 //        else if ((freeBooks.size > 0) and teacher.IsTermSet()!!.not())
 //            t = t3
@@ -49,7 +49,7 @@ package Unused
 //             }
 //             1 -> {
 //                 when {
-//                     teacher.IsBooksSet()!! -> {
+//                     teacher.IsBooksSet_old()!! -> {
 //                         val bookMain = BookMain()
 //                         bookMain.GiveTeacher(teacher)
 //                         return bookMain
@@ -86,7 +86,7 @@ package Unused
 //    }
 //
 //    override fun getCount(): Int {
-//        return if (teacher.IsBooksSet()!!.not())
+//        return if (teacher.IsBooksSet_old()!!.not())
 //            2
 //        else
 //            3

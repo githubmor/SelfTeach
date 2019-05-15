@@ -3,7 +3,7 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //import BL.Book_Old
-//import BL.Read
+//import BL.Read_Old
 //import BL.Teacher
 //import BL.Term_old
 //import android.content.Intent
@@ -73,7 +73,7 @@ package Unused
 //
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        menuInflater.inflate(R.menu.mainmenu, menu)
-//        if (teacher!!.IsBooksSet()!!.not()) {
+//        if (teacher!!.IsBooksSet_old()!!.not()) {
 //            if (teacher!!.IsTermSet()!!.not())
 //                menu.getItem(3).isVisible = false//add bookOlds
 //            if (freeBooks!!.size <= 0)
@@ -87,14 +87,14 @@ package Unused
 //
 //        when (item.itemId) {
 //            R.id.Reseting -> {
-//                //                if (teacher.IsTermSet() & teacher.IsBooksSet()) {
-//                //                    teacher.getTerm().delete();
+//                //                if (teacher.IsTermSet() & teacher.IsBooksSet_old()) {
+//                //                    teacher.getTerm_old().delete();
 //                //                    for (Book_Old b : teacher.getBookOlds()) {
 //                //                        b.DeleteReads();
 //                //                        b.delete();
 //                //                    }
 //                //                }else if (teacher.IsTermSet()){
-//                //                    teacher.getTerm().delete();
+//                //                    teacher.getTerm_old().delete();
 //                //                }
 //                //                if (freeBooks.size()>0){
 //                //                    for (Book_Old n: freeBooks){
@@ -103,7 +103,7 @@ package Unused
 //                //                }
 //                val t = Select().from(Term_old::class.java).executeSingle<Term_old>()
 //                val bs = Select().from(Book_Old::class.java).execute<Book_Old>()
-//                val rs = Select().from(Read::class.java).execute<Read>()
+//                val rs = Select().from(Read_Old::class.java).execute<Read_Old>()
 //                t?.delete()
 //                if (!bs.isEmpty()) {
 //                    for (b in bs) {

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Relation
 
-class ReadBook(
+data class ReadBookdb(
         @Embedded
         val read: Readdb,
 

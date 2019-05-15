@@ -66,7 +66,7 @@
 //        else
 //            holder.pageRemain.text = b.PageRemind().toString() + " صفحه باقی مانده"
 //
-//        val pt = teacher.BookPageTo100Percent(b)
+//        val pt = teacher.BookPageTo100Percent_old(b)
 //        if (pt <= 0)
 //            holder.vPageTo100.visibility = View.GONE
 //        else if (pt > 1000)

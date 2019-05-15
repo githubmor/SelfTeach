@@ -3,7 +3,7 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //import BL.Book_Old
-//import BL.Read
+//import BL.Read_Old
 //import BL.Teacher
 //import DBAdapter.Read_Adapter
 //import android.content.Intent
@@ -22,7 +22,7 @@ package Unused
 //class Reading : AppCompatActivity() {
 //
 //
-//    private var reads: MutableList<Read>? = null
+//    private var reads: MutableList<Read_Old>? = null
 //
 //    private var buttonFloat: ButtonFloat? = null
 //
@@ -46,9 +46,9 @@ package Unused
 //
 //        for (b in bookOlds) {
 //            val rs = Select()
-//                    .from(Read::class.java)
+//                    .from(Read_Old::class.java)
 //                    .where("Book_Old = ?", b.id!!)
-//                    .execute<Read>()
+//                    .execute<Read_Old>()
 //            if (!rs.isEmpty()) {
 //                for (r in rs) {
 //                    r.bookOld = b
@@ -70,7 +70,7 @@ package Unused
 //
 //        // specify an adapter (see also next example)
 //
-//        val mAdapter = Read_Adapter(applicationContext, reads as ArrayList<Read>)
+//        val mAdapter = Read_Adapter(applicationContext, reads as ArrayList<Read_Old>)
 //        mRecyclerView.adapter = mAdapter
 //
 //    }
