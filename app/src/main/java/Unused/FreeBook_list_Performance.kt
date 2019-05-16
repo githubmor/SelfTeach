@@ -12,7 +12,7 @@
 //
 //class FreeBook_list_Performance// Provide a suitable constructor (depends on the kind of dataset)
 //(private val bookOlds: List<Book_Old>) : RecyclerView.Adapter<FreeBook_list_Performance.BookListViewHolder>() {
-//    //private Teacher teacher;
+//    //private Performance teacher;
 //
 //    // Provide a reference to the views for each data item
 //    // Complex data items may need more than one view per item, and
@@ -69,8 +69,8 @@
 //        //            holder.vPageTo100.setText("امروز باید "+String.valueOf(pt)+ " صفحه خوانده شود");
 //
 //        //holder.vPageTo100.setText(String.valueOf(teacher.BookPageTo100Percent_old(b))+" صفحه ی دیگر تا تکمیل برنامه امروز");
-//        //SetArcProgressBarPerformance(holder.vperformnce,teacher.BookPerformance(b));
-//        //holder.vperformnce.setProgress(teacher.BookPerformance(b));
+//        //SetArcProgressBarPerformance(holder.vperformnce,teacher.BookPerformancePercent(b));
+//        //holder.vperformnce.setProgress(teacher.BookPerformancePercent(b));
 //        holder.vpageRemindPercent.progress = b.PageReadPercent()
 //    }
 //
@@ -87,7 +87,7 @@
 //    //
 //    //
 //    //        final int red = 0xffbf0a00;
-//    //        final int green = getColor((performance*1.0)/100);
+//    //        final int green = getColorToGreen((performance*1.0)/100);
 //    //
 //    //        ObjectAnimator anim = ObjectAnimator.ofObject(performanceircle,
 //    //                "FinishedStrokeColor",
@@ -106,7 +106,7 @@
 //    //
 //    //    }
 //
-//    //    int getColor(double power)
+//    //    int getColorToGreen(double power)
 //    //    {
 //    //        double H = power * 80;
 //    //        float[] floats = new float[3];

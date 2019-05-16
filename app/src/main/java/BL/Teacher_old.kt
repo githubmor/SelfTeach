@@ -98,9 +98,9 @@ CoroutineScope by MainScope(){
         if (!books.isEmpty()) {
             for (b in books) {
                 //if page to 100 less than userppd for that bookOld , no bookOld to show
-                if (b.needForRead(term.DayCount(),term.DayPast(now),max)>0) {
+                if (b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)>0) {
                     re = b.name
-                    max = b.needForRead(term.DayCount(),term.DayPast(now),max)
+                    max = b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)
                 }
             }
         }
@@ -163,9 +163,9 @@ CoroutineScope by MainScope(){
         if ("" != f1) {
             for (b in books) {
                 if (b.name != f1) {
-                    if (b.needForRead(term.DayCount(),term.DayPast(now),max)>0) {
+                    if (b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)>0) {
                         re = b.name
-                        max = b.needForRead(term.DayCount(),term.DayPast(now),max)
+                        max = b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)
                     }
                 }
             }
@@ -200,7 +200,7 @@ CoroutineScope by MainScope(){
         if (term.DayRemind(now) > 0) {
             for (book in books) {
                 val i = book.PageRemind() / term.DayRemind(now)// this i is PagePerDay should read till term_old endDate
-                if (i > 5 * book.UserPPDReadBook() && TermDayPercent(now) > 60) {
+                if (i > 5 * book.avgPageCountWasReadedPerEveryRead() && TermDayPercent(now) > 60) {
                     if (re != "")
                         re = re + " و" + book.name//means it is too big , make a plan for read ..
                     else

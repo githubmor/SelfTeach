@@ -3,12 +3,12 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //import BL.Book_Old
-//import BL.Teacher
+//import BL.Performance
 //import androidx.fragment.app.Fragment
 //import androidx.fragment.app.FragmentManager
 //import androidx.fragment.app.FragmentPagerAdapter
 //
-//class DemoCollectionPagerAdapter(fm: FragmentManager, private val teacher: Teacher, private val freeBooks: List<Book_Old>) : FragmentPagerAdapter(fm) {
+//class DemoCollectionPagerAdapter(fm: FragmentManager, private val teacher: Performance, private val freeBooks: List<Book_Old>) : FragmentPagerAdapter(fm) {
 //    private var t = listOf<String>()
 //
 //    init {

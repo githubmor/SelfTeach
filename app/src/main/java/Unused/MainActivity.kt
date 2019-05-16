@@ -4,7 +4,7 @@ package Unused
 //
 //import BL.Book_Old
 //import BL.Read_Old
-//import BL.Teacher
+//import BL.Performance
 //import BL.Term_old
 //import android.content.Intent
 //import android.os.Bundle
@@ -18,7 +18,7 @@ package Unused
 //class MainActivity : AppCompatActivity() {
 //
 //
-//    private var teacher: Teacher? = null
+//    private var teacher: Performance? = null
 //    private var freeBooks: List<Book_Old>? = null
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ package Unused
 //
 //        val mViewPager = findViewById<ViewPager>(R.id.pager)
 //
-//        teacher = Teacher()
+//        teacher = Performance()
 //        freeBooks = Select().from(Book_Old::class.java).where("free = " + 1).execute()
 //        if (freeBooks!!.isNotEmpty())
 //            SetReadsToFreeBooks()

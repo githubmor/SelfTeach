@@ -3,36 +3,36 @@ package BL
 import DAL.BookReadsdb
 
 class Book(val dbDto: BookReadsdb) {
-    fun PageReadPercent(): Int {
-        val readSumm = dbDto.reads.sumBy { it.pageRead }
-        return ((readSumm *100)/ pageCount)
-    }
 
     val pageCount = dbDto.book.pageCount
     val name = dbDto.book.name
 
-    fun BookPerformance(termDayPas : Int,termDayCount : Int): Int {
-        return if (termDayPas > 0 && PPDBook(termDayCount) > 0) {
-            PageWasReaded() * 100 / (termDayPas * PPDBook(termDayCount))
+    fun PageReadPercent(): Int {
+        return ((PageWasReaded()*100)/ pageCount)
+    }
+
+    fun BookPerformancePercent(termDayPas : Int, termDayCount : Int): Int {
+        return if (termDayPas > 0 && avgPagePerDayShouldRead(termDayCount) > 0) {
+            PageWasReaded() * 100 / (termDayPas * avgPagePerDayShouldRead(termDayCount))
         } else {
             0
         }
     }
-    fun BookPageTo100Percent(termDayPas : Int,termDayCount : Int): Int {
-        val i = termDayPas * PPDBook(termDayCount) - PageWasReaded()
-        return if (i >= 10) {
-            if (i * 4 < UserPPDReadBook()) {
+    fun BookPageRemindToGet100Percent(termDayPas : Int, termDayCount : Int): Int {
+        val pageNotReadToAvreg = termDayPas * avgPagePerDayShouldRead(termDayCount) - PageWasReaded()
+        return if (pageNotReadToAvreg >= 10) {
+            if (pageNotReadToAvreg * 4 < avgPageCountWasReadedPerEveryRead()) {
                 0
             } else {
-                i
+                pageNotReadToAvreg
             }
-        } else if (UserPPDReadBook() >= 0) {
-            i
+        } else if (avgPageCountWasReadedPerEveryRead() >= 0) {
+            pageNotReadToAvreg
         } else {
             0
         }
     }
-    fun UserPPDReadBook(): Int {
+    fun avgPageCountWasReadedPerEveryRead(): Int {
         return if (dbDto.reads.size > 0) {
             PageWasReaded() / dbDto.reads.size
         } else {
@@ -40,7 +40,7 @@ class Book(val dbDto: BookReadsdb) {
         }
     }
 
-    private fun PPDBook(termDayCount : Int): Int {
+    private fun avgPagePerDayShouldRead(termDayCount : Int): Int {
         return if (termDayCount > 0) {
             pageCount / termDayCount
         } else {
@@ -48,7 +48,7 @@ class Book(val dbDto: BookReadsdb) {
         }
     }
 
-     fun PageWasReaded(): Int {
+    fun PageWasReaded(): Int {
         return dbDto.reads.sumBy { it.pageRead }
     }
 
@@ -56,10 +56,7 @@ class Book(val dbDto: BookReadsdb) {
         return pageCount - PageWasReaded()
     }
 
-    fun needForRead(termDayPas : Int,termDayCount : Int,max:Int): Int {
-        return if (BookPageTo100Percent(termDayPas,termDayCount) * 3 > UserPPDReadBook() && BookPageTo100Percent(termDayPas,termDayCount) > max) {
-            BookPageTo100Percent(termDayPas,termDayCount)
-        }else
-            0
+    fun needHighPriorityRead(termDayPas : Int, termDayCount : Int): Boolean {
+        return BookPageRemindToGet100Percent(termDayPas,termDayCount) * 3 > avgPageCountWasReadedPerEveryRead()
     }
 }

@@ -3,7 +3,7 @@ package Unused
 //package morteza.darzi.SelfTeach
 //
 //
-//import BL.Teacher
+//import BL.Performance
 //import DBAdapter.Book_list_Performance
 //import android.os.Bundle
 //import androidx.fragment.app.Fragment
@@ -18,7 +18,7 @@ package Unused
 // */
 //class BookMain : Fragment() {
 //
-//    private var teacher: Teacher? = null
+//    private var teacher: Performance? = null
 //
 //    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 //
@@ -42,7 +42,7 @@ package Unused
 //        return view
 //    }
 //
-//    fun GiveTeacher(teacher: Teacher) {
+//    fun GiveTeacher(teacher: Performance) {
 //        this.teacher = teacher
 //    }
 //

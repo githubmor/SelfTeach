@@ -2,7 +2,7 @@
 //
 //import BL.Book_Old
 //import BL.HsvEvaluator
-//import BL.Teacher
+//import BL.Performance
 //import android.animation.AnimatorSet
 //import android.animation.ObjectAnimator
 //import android.graphics.Color
@@ -17,7 +17,7 @@
 //import morteza.darzi.SelfTeach.R
 //
 //class Book_list_Performance// Provide a suitable constructor (depends on the kind of dataset)
-//(private val teacher: Teacher) : RecyclerView.Adapter<Book_list_Performance.BookListViewHolder>() {
+//(private val teacher: Performance) : RecyclerView.Adapter<Book_list_Performance.BookListViewHolder>() {
 //
 //    private val bookOlds: List<Book_Old>
 //
@@ -74,7 +74,7 @@
 //        else
 //            holder.vPageTo100.text = "امروز باید $pt صفحه خوانده شود"
 //
-//        SetArcProgressBarPerformance(holder.vperformnce, teacher.BookPerformance(b))
+//        SetArcProgressBarPerformance(holder.vperformnce, teacher.BookPerformancePercent(b))
 //
 //        holder.vpageRemindPercent.progress = b.PageReadPercent()
 //    }
@@ -92,7 +92,7 @@
 //
 //
 //        val red = -0x40f600
-//        val green = getColor(performance * 1.0 / 100)
+//        val green = getColorToGreen(performance * 1.0 / 100)
 //
 //        val anim = ObjectAnimator.ofObject(performanceircle,
 //                "FinishedStrokeColor",
@@ -110,7 +110,7 @@
 //
 //    }
 //
-//    internal fun getColor(power: Double): Int {
+//    internal fun getColorToGreen(power: Double): Int {
 //        val H = power * 80
 //        val floats = FloatArray(3)
 //        floats[0] = H.toFloat()

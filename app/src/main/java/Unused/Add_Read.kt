@@ -5,7 +5,7 @@ package Unused
 //import BL.Book_Old
 //import BL.MyException
 //import BL.Read_Old
-//import BL.Teacher
+//import BL.Performance
 //import android.content.Intent
 //import android.os.Bundle
 //import android.text.Editable
@@ -28,7 +28,7 @@ package Unused
 //    //    private PersianDatePicker picker;
 //    private var bookListSpinner: Spinner? = null
 //
-//    private val teacher = Teacher()
+//    private val teacher = Performance()
 //    private var selectedBook: Book_Old? = null
 //    //    Term_old term_old;
 //    internal val bookOlds = Select().from(Book_Old::class.java).execute<Book_Old>()

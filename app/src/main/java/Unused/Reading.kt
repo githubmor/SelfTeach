@@ -4,7 +4,7 @@ package Unused
 //
 //import BL.Book_Old
 //import BL.Read_Old
-//import BL.Teacher
+//import BL.Performance
 //import DBAdapter.Read_Adapter
 //import android.content.Intent
 //import android.os.Bundle
@@ -57,7 +57,7 @@ package Unused
 //            reads!!.addAll(rs)
 //        }
 //
-//        val teacher = Teacher()
+//        val teacher = Performance()
 //        //        reads = teacher.getReads();
 //
 //        val mRecyclerView = findViewById<View>(R.id.ReedList) as RecyclerView
