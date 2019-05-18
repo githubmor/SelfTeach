@@ -2,7 +2,6 @@ package DBAdapter
 
 import BL.Read
 import BL.ReadRepository
-import BL.Read_Old
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

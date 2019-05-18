@@ -9,7 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.activeandroid.query.Select
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.dashboard_content.*
 import kotlinx.coroutines.launch
 
 
@@ -22,7 +23,7 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-//        MyExceptionHandler(this)
+        MyExceptionHandler(this)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -30,6 +31,9 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
         val database = AppDatabase.getInstance(applicationContext)
         termRep = TermRepository(database.termDao())
         bookRepo = BookRepository(database.bookDao())
+
+        val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         initializeFirst()
     }
@@ -53,7 +57,23 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
         }
     }
 
-
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.performancing -> {
+                Transaction(TermFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.AddRead -> {
+                Transaction(ReadsFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.Booking -> {
+                Transaction(BooksFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
 
     protected fun Transaction(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
@@ -70,13 +90,7 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.mainmenu, menu)
-//        when {
-//            FirstChecker.checkLevel()==TermLevel.Term -> {
-//                menu.getItem(0).isVisible = false//add read
-//                menu.getItem(2).isVisible = false//add bookOld
-//            }
-//            FirstChecker.checkLevel()==TermLevel.Book -> menu.getItem(0).isVisible = false//add read
-//        }
+
         return true
     }
 
@@ -84,26 +98,19 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
 
         when (item.itemId) {
             R.id.Reseting -> {
-                val t = Select().from(Term_old::class.java).executeSingle<Term_old>()
-                t?.delete()
-                val bs = Select().from(Book_Old::class.java).execute<Book_Old>()
-                if (bs.isNotEmpty()) {
-                    for (b in bs) {
-                        b.delete()
-                    }
-                }
-                val rs = Select().from(Read_Old::class.java).execute<Read_Old>()
-                if (rs.isNotEmpty()) {
-                    for (r in rs) {
-                        r.delete()
-                    }
-                }
+                launch {
+                    val term = termRep.getTerm()
+                    termRep.delete(term!!)
 
-                initializeFirst()
+                    val books = bookRepo.getAllBook()
+                    for (b in books!!) {
+                        bookRepo.delete(b)
+                    }
+
+                    initializeFirst()
+                }
             }
             R.id.TermManaging -> Transaction(TermFragment())
-            R.id.AddRead -> Transaction(ReadsFragment())
-            R.id.Booking -> Transaction(BooksFragment())
         }
 
         return super.onOptionsItemSelected(item)

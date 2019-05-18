@@ -39,14 +39,12 @@ class TermFragment : BaseDatePickerFragment() {
     private val startTag = "start"
     private val endTag = "end"
     lateinit var termRep : TermRepository
+    var isTermEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val database = AppDatabase.getInstance(context!!)
         termRep = TermRepository(database.termDao())
-
-
-
 
     }
 
@@ -56,8 +54,10 @@ class TermFragment : BaseDatePickerFragment() {
         launch {
             val bills = termRep.getTerm()
 
-            if (bills!=null)
+            if (bills!=null) {
                 term = Term(bills)
+                isTermEdit = true
+            }
 
             if (term!=null) {
 
@@ -136,10 +136,18 @@ class TermFragment : BaseDatePickerFragment() {
                 v.term_end_date.text.toString())
 
         launch {
-            termRep.insert(te)
-            withContext(Dispatchers.Main){
-                Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
-                listener!!.onSaveTermComplete()
+            if (isTermEdit){
+                termRep.update(te)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                    listener!!.onSaveTermComplete()
+                }
+            }else {
+                termRep.insert(te)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "ترم " + te.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                    listener!!.onSaveTermComplete()
+                }
             }
         }
     }

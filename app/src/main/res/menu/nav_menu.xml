@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/AddRead"
+        android:icon="@android:drawable/ic_delete"
+
+        android:title="@string/AddRead" />
+
+    <item
+            android:id="@+id/performancing"
+        android:icon="@android:drawable/ic_delete"
+        android:title="@string/PerformanceTitle" />
+    <item
+            android:id="@+id/Booking"
+        android:icon="@android:drawable/ic_delete"
+        android:title="@string/Booking" />
+
+</menu>

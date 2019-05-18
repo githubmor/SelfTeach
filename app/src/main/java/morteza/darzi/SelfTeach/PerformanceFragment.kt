@@ -57,7 +57,7 @@ class PerformanceFragment : BaseFragment() {
 
             v.day_remind.text = performance.term.termDateState(jdf.iranianDate)
 
-            v.progressBar.progress = performance.performancePercent()
+            v.progressBar.progress = performance.term.dayPastPercent(jdf.iranianDate)
 
             for (book in performance.booksNeedToReadToday()) {
                 val te = TextView(context)
