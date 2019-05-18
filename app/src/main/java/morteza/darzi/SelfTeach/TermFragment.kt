@@ -56,8 +56,11 @@ class TermFragment : BaseDatePickerFragment() {
         launch {
             val bills = termRep.getTerm()
 
-            term = Term(bills)
+            if (bills!=null)
+                term = Term(bills)
+
             if (term!=null) {
+
                 showTermView(v)
                 loadTermInView(v)
             }

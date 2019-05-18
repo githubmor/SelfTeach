@@ -2,8 +2,7 @@ package morteza.darzi.SelfTeach
 
 import BL.Book
 import BL.BookRepository
-import BL.FirstChecker
-import BL.TermLevel
+import BL.TermRepository
 import DAL.AppDatabase
 import DAL.BookReadsdb
 import DAL.Bookdb
@@ -28,44 +27,50 @@ class BooksFragment : BaseFragment() {
     override val title: String
         get() = "كتاب ها"
 
-    var books : MutableList<Book>? = null
+    var books : MutableList<Book> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-    val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (FirstChecker.checkLevel()==TermLevel.Term) {
-            listener!!.failOpenBooks()
-        }
-    }
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_books, container, false)
 
-        if (books.isNullOrEmpty()){
-            arrangeForFirstViewSwitcher(v,false)
-        }else{
-            arrangeForFirstViewSwitcher(v,true)
+        val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+        val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
+
+        val adapter = Book_Adapter(context!!,books,repository)
+
+        launch {
+            if (!termRepo.isTermexist()) {
+                listener!!.failOpenBooks()
+            }
+
+            val bills = repository.getAllBookWithRead()
+
+            if (bills!=null) {
+                for (bill in bills) {
+                    books.add(Book(bill))
+                }
+                adapter.updateBooks(books.toList())
+            }
+
+
+            if (books.size<=0){
+                arrangeForFirstViewSwitcher(v,false)
+            }else{
+                arrangeForFirstViewSwitcher(v,true)
+            }
+
         }
 
         v.fab.setOnClickListener {
             arrangeForSecondViewSwitcher(v)
         }
 
-
-
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-
-        val adapter = Book_Adapter(context!!,books,repository)
         v.list.adapter = adapter
 
-        launch {
-            val bills = repository.getAllBookWithRead()
-            for (bill in bills) {
-                books!!.add(Book(bill))
-            }
-            adapter.updateBooks(bills.map { Book(it) })
-        }
         errorTextChangeListner(v.book_name_lay, bookNameErrorMessage)
         errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
 

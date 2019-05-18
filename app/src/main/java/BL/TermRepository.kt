@@ -39,7 +39,7 @@ class TermRepository(private val dao: TermDAO) {
         }
     }
     @WorkerThread
-    suspend fun getTerm(): Termdb {
+    suspend fun getTerm(): Termdb? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getTerm()

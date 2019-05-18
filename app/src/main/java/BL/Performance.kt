@@ -1,39 +1,7 @@
 package BL
 
-import android.text.Html
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+class Performance(val term: Term, val books : List<Book>, val now :String){
 
-class Performance(termRepository: TermRepository, bookRepository: BookRepository, val now :String):
-        CoroutineScope by MainScope(){
-
-    lateinit var term: Term
-    private lateinit var books : List<Book>
-
-    init {
-        launch {
-            term = Term(termRepository.getTerm())
-            books = bookRepository.getAllBookWithRead().map { Book(it) }
-        }
-    }
-
-
-
-//    fun pageTo100PercentTips(): String {
-//        val cout = pageCountRemindToGet100Percent()
-//        return when {
-//            cout <= 0 -> ""
-//            cout > 1000 -> {
-//                val pp2 = "<font color=\"#029789\">" + (cout - 1000).toString() + "</font>" + " صفحه امروز باید خوانده شود!. نیاز به فوق برنامه می باشد"
-//                return Html.fromHtml(pp2).toString()
-//            }
-//            else -> {
-//                val pp = "در کل امروز باید <font color=\"#029789\">$cout</font> صفحه خوانده شود . سهم هر کتاب در لیست مشخص شده"
-//                return Html.fromHtml(pp).toString()
-//            }
-//        }
-//    }
 
     fun pageToReadToday(): Int {
         if (performancePercent() < 100) {

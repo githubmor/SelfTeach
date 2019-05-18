@@ -6,7 +6,7 @@ import androidx.room.*
 interface TermDAO {
 
     @Query("SELECT * FROM termdb")
-    fun getTerm(): Termdb
+    fun getTerm(): Termdb?
 
     @Query("SELECT COUNT(*) FROM termdb")
     fun existTerm(): Int

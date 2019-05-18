@@ -1,11 +1,11 @@
 package morteza.darzi.SelfTeach
 
 import BL.*
-import BL.TermRepository
 import DAL.AppDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -22,7 +22,7 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-        MyExceptionHandler(this)
+//        MyExceptionHandler(this)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -70,13 +70,13 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.mainmenu, menu)
-        when {
-            FirstChecker.checkLevel()==TermLevel.Term -> {
-                menu.getItem(0).isVisible = false//add read
-                menu.getItem(2).isVisible = false//add bookOld
-            }
-            FirstChecker.checkLevel()==TermLevel.Book -> menu.getItem(0).isVisible = false//add read
-        }
+//        when {
+//            FirstChecker.checkLevel()==TermLevel.Term -> {
+//                menu.getItem(0).isVisible = false//add read
+//                menu.getItem(2).isVisible = false//add bookOld
+//            }
+//            FirstChecker.checkLevel()==TermLevel.Book -> menu.getItem(0).isVisible = false//add read
+//        }
         return true
     }
 
@@ -111,14 +111,17 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
     }
     override fun failOpenBooks() {
         initializeFirst()
+        Toast.makeText(applicationContext,"fail book",Toast.LENGTH_LONG).show()
     }
     override fun failPerformance() {
         initializeFirst()
+        Toast.makeText(applicationContext,"fail performance",Toast.LENGTH_LONG).show()
     }
     override fun onSaveTermComplete() {
         initializeFirst()
     }
     override fun failRead() {
         initializeFirst()
+        Toast.makeText(applicationContext,"fail read",Toast.LENGTH_LONG).show()
     }
 }

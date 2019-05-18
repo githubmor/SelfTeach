@@ -13,11 +13,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import morteza.darzi.SelfTeach.MyApplication
 import morteza.darzi.SelfTeach.R
 
 
-class Book_Adapter(private val context: Context, private val books: MutableList<Book>?,val repository: BookRepository)
+class Book_Adapter(private val context: Context, private val books: MutableList<Book>,val repository: BookRepository)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -35,7 +34,6 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     }
 
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
-        if (books!=null) {
             val b = books[i]
             holder.bookName.text = b.name
             holder.pageCount.text = b.pageCount.toString() + " صفحه"
@@ -50,22 +48,22 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
                     }
 
                 }
-            }
+
         }
 
     }
 
     override fun getItemCount(): Int {
-        return books?.size ?: 0
+        return books.size
     }
 
     fun addNewBook(b: Book) {
-        books?.add(b)
+        books.add(b)
         notifyDataSetChanged()
     }
 
     fun updateBooks(bs: List<Book>) {
-        books!!.clear()
+        books.clear()
         books.addAll(bs)
         notifyDataSetChanged()
     }

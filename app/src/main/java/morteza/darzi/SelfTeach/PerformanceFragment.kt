@@ -10,11 +10,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.*
+import android.view.animation.LinearInterpolator
 import android.widget.TextView
-import android.widget.Toast
 import com.github.lzyzsd.circleprogress.DonutProgress
 import kotlinx.android.synthetic.main.fragment_performance.view.*
+import kotlinx.coroutines.launch
 
 class PerformanceFragment : BaseFragment() {
     override val title: String
@@ -24,38 +24,48 @@ class PerformanceFragment : BaseFragment() {
     private lateinit var performanceircle: DonutProgress
     private var listener: OnFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if(FirstChecker.checkLevel()!=TermLevel.Perfermance) {
-            Toast.makeText(context!!, "هنوز ترم يا كتابي ثبت نشده", Toast.LENGTH_SHORT).show()
-            listener!!.failPerformance()
-        }
 
-    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val v = inflater.inflate(R.layout.fragment_performance, container, false)
+        val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+
+        launch {
+            if (!repository.isBooksExist()) {
+                listener!!.failPerformance()
+            }
+        }
+
         performanceircle = v.performanceCircle
         val jdf = JDF()
 
         val database = AppDatabase.getInstance(context!!)
 
-        performance = Performance(TermRepository(database.termDao()),BookRepository(database.bookDao()),jdf.iranianDate)
-        animateArcPerformance(performance.performancePercent())
+        launch {
+            val term = Term(TermRepository(database.termDao()).getTerm()!!)
+            val books = BookRepository(database.bookDao()).getAllBookWithRead()!!.map { Book(it) }
 
-        v.today.text = performance.pageToReadToday().toString()
-        v.per_day.text = performance.pagePerDayRemind().toString()
+            performance = Performance(term, books, jdf.iranianDate)
 
-        v.day_remind.text = performance.term.termDateState(jdf.iranianDate)
 
-        v.progressBar.progress = performance.performancePercent()
 
-        for (book in performance.booksNeedToReadToday()) {
-            val te = TextView(context)
-            te.text = book
-            te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+            animateArcPerformance(performance.performancePercent())
 
-            v.read_list.addView(te)
+            v.today.text = performance.pageToReadToday().toString()
+            v.per_day.text = performance.pagePerDayRemind().toString()
+
+            v.day_remind.text = performance.term.termDateState(jdf.iranianDate)
+
+            v.progressBar.progress = performance.performancePercent()
+
+            for (book in performance.booksNeedToReadToday()) {
+                val te = TextView(context)
+                te.text = book
+                te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+                v.read_list.addView(te)
+            }
         }
 
         return v

@@ -40,7 +40,7 @@ class BookRepository(private val dao: BookDAO) {
         }
     }
     @WorkerThread
-    suspend fun getAllBook(): List<Bookdb> {
+    suspend fun getAllBook(): List<Bookdb>? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllBook()
@@ -52,7 +52,7 @@ class BookRepository(private val dao: BookDAO) {
     }
 
     @WorkerThread
-    suspend fun getAllBookWithRead(): List<BookReadsdb> {
+    suspend fun getAllBookWithRead(): List<BookReadsdb>? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllBookWithReads()

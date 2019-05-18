@@ -6,7 +6,7 @@ import androidx.room.*
 interface BookDAO {
 
     @Query("SELECT * FROM Bookdb")
-    fun getAllBookWithReads(): List<BookReadsdb>
+    fun getAllBookWithReads(): List<BookReadsdb>?
 
     @Insert
     fun insert(book: Bookdb)
@@ -18,7 +18,7 @@ interface BookDAO {
     fun delete(todo: Bookdb)
 
     @Query("SELECT * FROM Bookdb")
-    fun getAllBook() : List<Bookdb>
+    fun getAllBook() : List<Bookdb>?
 
     @Query("SELECT COUNT(*) FROM Bookdb")
     fun existBook(): Int

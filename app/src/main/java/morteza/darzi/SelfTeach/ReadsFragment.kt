@@ -1,7 +1,9 @@
 package morteza.darzi.SelfTeach
 
 
-import BL.*
+import BL.BookRepository
+import BL.Read
+import BL.ReadRepository
 import DAL.AppDatabase
 import DAL.Bookdb
 import DAL.ReadBookdb
@@ -38,17 +40,8 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     var reads : MutableList<Read> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var readRepo: ReadRepository
-    lateinit var bookRepo: BookRepository
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if(FirstChecker.checkLevel()!= TermLevel.Perfermance) {
-            listener!!.failRead()
-        }
-        readRepo = ReadRepository(AppDatabase.getInstance(context!!).readDao())
-        bookRepo = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-    }
+    lateinit var readRepo : ReadRepository
+    lateinit var bookRepo : BookRepository
 
     private var selectedBookOld: Bookdb? = null
 
@@ -56,15 +49,26 @@ class ReadsFragment : BaseDatePickerFragment() {
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_reads, container, false)
 
+        readRepo = ReadRepository(AppDatabase.getInstance(context!!).readDao())
+        bookRepo = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+
+        val adapter = intializeReadList(v)
+
         launch {
+            if (!bookRepo.isBooksExist()) {
+                listener!!.failRead()
+            }else
+                intializeBookList(v)
+
             val rs = readRepo.getAllReadsWithBookName()
 
-
-            for (r in rs) {
-                reads.add(Read(r))
+            if (rs!=null) {
+                for (r in rs) {
+                    reads.add(Read(r))
+                }
             }
 
-            if (reads.isNullOrEmpty()){
+            if (reads.size<=0){
                 arrangeForShowFirstViewSwitcher(v,false)
             }else{
                 arrangeForShowFirstViewSwitcher(v,true)
@@ -77,7 +81,7 @@ class ReadsFragment : BaseDatePickerFragment() {
             arrangeToShowSecondViewSwitcher(v)
         }
 
-        val adapter = intializeReadList(v)
+
 
         v.read_date_lay.setOnClickListener {
             showDatapicker("")
@@ -85,10 +89,6 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.read_date.setOnClickListener {
             showDatapicker("")
         }
-        if (FirstChecker.BooksExist())
-            intializeBookList(v)
-        else
-            listener!!.failRead()
 
         errorTextChangeListner(v.read_page_count_lay, readPageCountErrorMessage)
         errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
