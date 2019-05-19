@@ -9,5 +9,6 @@ data class Bookdb(
         @PrimaryKey(autoGenerate = true)
         var id : Int,
         var name: String,
-        var pageCount: Int
+        var pageCount: Int,
+        var priority: Int
 )

@@ -74,9 +74,9 @@
 //        else
 //            holder.vPageTo100.text = "امروز باید $pt صفحه خوانده شود"
 //
-//        SetArcProgressBarPerformance(holder.vperformnce, teacher.BookPerformancePercent(b))
+//        SetArcProgressBarPerformance(holder.vperformnce, teacher.performance(b))
 //
-//        holder.vpageRemindPercent.progress = b.PageReadPercent()
+//        holder.vpageRemindPercent.progress = b.pageReadPercent()
 //    }
 //
 //    override fun getItemCount(): Int {

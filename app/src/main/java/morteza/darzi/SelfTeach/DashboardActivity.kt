@@ -60,7 +60,7 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.performancing -> {
-                Transaction(TermFragment())
+                Transaction(PerformanceFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.AddRead -> {

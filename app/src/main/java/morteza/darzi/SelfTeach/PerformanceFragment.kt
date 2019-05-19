@@ -38,7 +38,6 @@ class PerformanceFragment : BaseFragment() {
         }
 
         performanceircle = v.performanceCircle
-        val jdf = JDF()
 
         val database = AppDatabase.getInstance(context!!)
 
@@ -46,22 +45,22 @@ class PerformanceFragment : BaseFragment() {
             val term = Term(TermRepository(database.termDao()).getTerm()!!)
             val books = BookRepository(database.bookDao()).getAllBookWithRead()!!.map { Book(it) }
 
-            performance = Performance(term, books, jdf.iranianDate)
+            performance = Performance(term, books)
 
 
 
-            animateArcPerformance(performance.performancePercent())
+            animateArcPerformance(performance.performance())
 
-            v.today.text = performance.pageToReadToday().toString()
+            v.today.text = performance.pageTo100Percent().toString()
             v.per_day.text = performance.pagePerDayRemind().toString()
 
-            v.day_remind.text = performance.term.termDateState(jdf.iranianDate)
+            v.day_remind.text = performance.term.termDateState()
 
-            v.progressBar.progress = performance.term.dayPastPercent(jdf.iranianDate)
+            v.progressBar.progress = performance.term.dayPastPercent()
 
-            for (book in performance.booksNeedToReadToday()) {
+            for (book in performance.readList()) {
                 val te = TextView(context)
-                te.text = book
+                te.text = book + " صفحه بخوان"
                 te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
                 v.read_list.addView(te)
@@ -99,10 +98,12 @@ class PerformanceFragment : BaseFragment() {
                 "FinishedStrokeColor",
                 HsvEvaluator(),
                 red, green)
-        val performanceAnim = ObjectAnimator.ofFloat(performanceircle!!,
+
+        val performanceAnim = ObjectAnimator.ofFloat(performanceircle,
                 "progress",
                 0F,
                 performance.toFloat()) // anim 2
+
 
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(storkColorAnim,performanceAnim)

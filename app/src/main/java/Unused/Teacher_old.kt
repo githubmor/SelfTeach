@@ -32,14 +32,14 @@
 //
 ////    fun BookPerformance_old(bookOld: Book_Old): Int {
 ////        return if (term_old!!.DayPast() > 0 && PPDBook_old(bookOld) > 0) {
-////            bookOld.PageWasReaded() * 100 / (term_old.DayPast() * PPDBook_old(bookOld))
+////            bookOld.pageWasReaded() * 100 / (term_old.DayPast() * PPDBook_old(bookOld))
 ////        } else {
 ////            0
 ////        }
 ////    }
 //
 ////    fun BookPageTo100Percent_old(bookOld: Book_Old): Int {
-////        val i = term_old!!.DayPast() * PPDBook_old(bookOld) - bookOld.PageWasReaded()
+////        val i = term_old!!.DayPast() * PPDBook_old(bookOld) - bookOld.pageWasReaded()
 ////        return if (i >= 10) {
 ////            if (i * 4 < UserPPDReadBook_old(bookOld)) {
 ////                0
@@ -55,7 +55,7 @@
 //
 ////    private fun UserPPDReadBook_old(bookOld: Book_Old): Int {
 ////        return if (bookOld.reads.size > 0) {
-////            bookOld.PageWasReaded() / bookOld.reads.size
+////            bookOld.pageWasReaded() / bookOld.reads.size
 ////        } else {
 ////            0
 ////        }
@@ -132,7 +132,7 @@
 //    }
 //
 //    private fun AllPageWasRead(): Int {
-//        return books.sumBy { it.PageWasReaded() }
+//        return books.sumBy { it.pageWasReaded() }
 //    }
 //
 ////    fun IsBooksSet_old(): Boolean? {
@@ -200,7 +200,7 @@
 //        if (term.DayRemind(now) > 0) {
 //            for (book in books) {
 //                val i = book.PageRemind() / term.DayRemind(now)// this i is PagePerDay should read till term_old endDate
-//                if (i > 5 * book.avgPageCountWasReadedPerEveryRead() && TermDayPercent(now) > 60) {
+//                if (i > 5 * book.avgPageWasReadedPerEveryRead() && TermDayPercent(now) > 60) {
 //                    if (re != "")
 //                        re = re + " و" + book.name//means it is too big , make a plan for read ..
 //                    else

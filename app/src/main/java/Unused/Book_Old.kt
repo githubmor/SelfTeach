@@ -60,7 +60,7 @@
 //    }
 //
 //
-//    fun PageWasReaded(): Int {
+//    fun pageWasReaded(): Int {
 //        if (reads.size > 0) {
 //            var sum = 0
 //            for (r in reads) {
@@ -73,13 +73,13 @@
 //    }
 //
 //    fun PageRemind(): Int {
-//        return pageCount - PageWasReaded()
+//        return pageCount - pageWasReaded()
 //    }
 //
 //
-//    fun PageReadPercent(): Int {
+//    fun pageReadPercent(): Int {
 //        return if (pageCount > 0) {
-//            PageWasReaded() * 100 / pageCount
+//            pageWasReaded() * 100 / pageCount
 //        } else {
 //            0
 //        }

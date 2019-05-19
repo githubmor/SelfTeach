@@ -116,7 +116,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun intializeBookList(v: View) {
         launch {
-            val bs = bookRepo.getAllBook()
+            val bs = bookRepo.getAllBook()!!.map { it.name + " - " + it.pageCount }
 
             val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, bs)
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

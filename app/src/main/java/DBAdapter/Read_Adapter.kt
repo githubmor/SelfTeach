@@ -38,7 +38,7 @@ class Read_Adapter
         if (reads!=null) {
             val r = reads[i]
             holder.readbook.text = r.book
-            holder.readpagecount.text = "$r.pageReadCount صفحه"
+            holder.readpagecount.text = r.pageReadCount.toString() + " صفحه"
             holder.readdate.text = r.readDate.toString()
 
             holder.delRead.setOnClickListener {

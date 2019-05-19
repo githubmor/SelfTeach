@@ -1,80 +1,75 @@
 package BL
 
-class Performance(val term: Term, val books : List<Book>, val now :String){
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 
+class Performance(val term: Term, val books : List<Book>){
 
-    fun pageToReadToday(): Int {
-        if (performancePercent() < 100) {
-            val pageRemindToAvreg = term.DayPast(now) * avgAllPagePerDayInTerm() - allPageWasRead()
-            return when {
-                pageRemindToAvreg > 10 -> //Less than 10 = Nothing to Show
-                    when {
-                        pageRemindToAvreg * 4 < avgAllPageCountWasReadPerEveryRead() -> //Less than 4 plus UserPagePerDay = Nothing to Show
-                            0
-                        pageRemindToAvreg > avgAllPageCountWasReadPerEveryRead() * 3 -> //Biger than 3 plus UserPagePerDay = User Shuld Have Plane To Read_Old , its very big
-                            pageRemindToAvreg + 1000//just for realse
-                        else -> //ok Read_Old i Page To reach 100 percent
-                            pageRemindToAvreg
-                    }
-                avgAllPageCountWasReadPerEveryRead() <= 10 -> //if page to reach is below 10 but My User also very Slow ...
-                    pageRemindToAvreg
-                else -> //this i is very bit = nothing to show ...
-                    0
-            }
-        } else {
-            return 0//nothing show
-        }
+    private fun PageWasRead() = books.sumBy { it.pageWasReaded() }
+
+    private fun PageCount()= books.sumBy { it.pageCount }
+
+    private fun pageShouldReadTillToday() = term.DayPast() * avgPagePerDay()
+
+    fun pagePerDayRemind()= term.DayRemind() * avgPagePerDay()
+
+    fun bookReadedToday(): List<String> {
+        val weekDay = PersianCalendar().persianWeekDayName
+        return  books.filter { it.dbDto.reads.any { it1 -> PersianDateParser( it1.readDate).persianDate.persianWeekDayName==weekDay } }
+                .map { it.name }
     }
 
-
-    fun booksNeedToReadToday(): List<String> {
-        return books.filter { it.needHighPriorityRead(term.DayPast(now),term.DayCount()) }
-                .map { "كتاب " + it.name + " - " + it.BookPageRemindToGet100Percent(term.DayPast(now),term.DayCount()) + " صفحه" }
+    fun pageTo100Percent(): Int {
+        return pageShouldReadTillToday() - PageWasRead()
     }
 
-    private fun avgAllPageCountWasReadPerEveryRead(): Int {
+    private fun avgPagePerEveryRead(): Int {
         val c =books.sumBy { it.dbDto.reads.count() }
         return if (c>0) {
-            allPageWasRead() / c
+            PageWasRead() / c
         } else 0
     }
 
-    private fun avgAllPagePerDayInTerm(): Int {
+    private fun avgPagePerDay(): Int {
         return if (term.DayCount() > 0) {
-            allPageCount() / term.DayCount()
+            PageCount() / term.DayCount()
         } else {
             0
         }
     }
 
-    fun performancePercent(): Int {
-        return if (term.DayPast(now) > 0 && avgAllPagePerDayInTerm() > 0) {
-            allPageWasRead() * 100 / (term.DayPast(now) * avgAllPagePerDayInTerm())
+    fun performance(): Int {
+        return if (term.DayPast() > 0 && avgPagePerDay() > 0) {
+            PageWasRead() * 100 / pageShouldReadTillToday()
         } else {
             0
         }
     }
 
-    private fun allPageWasRead(): Int {
-        return books.sumBy { it.PageWasReaded() }
-    }
+    fun readList(): List<String> {
 
-    private fun allPageCount(): Int {
-        return books.sumBy { it.pageCount }
-    }
+        val bookCountReadToday = bookReadedToday().count()
 
+        val needToRead = books.filter { it.pageRemindToGet100Percent(term.DayPast(),term.DayCount())>0 }
 
-
-
-    fun pagePerDayRemind(): Int {
-        val i: Int = if (term.DayRemind(now) > 0) {
-            (allPageCount() - allPageWasRead()) / term.DayRemind(now)// this i is PagePerDay should read till term_old endDate
-        } else {
-            0
+        val bookWithHighPriorityAndHightPageToRead = needToRead
+                .sortedWith(
+                        compareBy(
+                                { it.priority },
+                                { it.pageRemindToGet100Percent(term.DayPast(),term.DayCount()) }
+                        ))
+                .takeLast(bookCountReadToday)
+        val booksNeedToRead : MutableList<String> = mutableListOf()
+        var sum = 0
+        for (book in bookWithHighPriorityAndHightPageToRead) {
+            if (sum <= pageTo100Percent()) {
+                sum += book.avgPagePerEveryRead()
+                booksNeedToRead.add(book.name + " - " + book.avgPagePerEveryRead())
+            }
         }
-        return if (i > 5 * avgAllPageCountWasReadPerEveryRead() && term.dayPastPercent(now) > 60) {
-            i + 1000//means it is too big , make a plan for read ..
-        } else i
+        return booksNeedToRead
+
     }
+
 
 }

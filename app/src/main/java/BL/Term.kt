@@ -1,38 +1,33 @@
 package BL
 
 import DAL.Termdb
-import android.text.Html
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 
 class Term(db : Termdb) {
 
     var endDate = db.endDate
     var startDate = db.startDate
     var termName = db.name
+    val now = PersianCalendar().persianShortDate
 
+    fun termDateState()= "( " + DayPast() + "/" + DayCount() + " )" + " روز"
 
-    fun termDateState(now : String): String {
-        return "( " + DayPast(now) + "/" + DayCount() + " )"
-    }
-    fun DayCount(): Int {
-        return DaysDiffCalculate(startDate, endDate)
-    }
+    fun DayCount()= DaysDiffCalculate(startDate, endDate)
 
-    fun DayPast(now : String): Int {
-        return DaysDiffCalculate(startDate, now)
-    }
+    fun DayPast()= DaysDiffCalculate(startDate, now)
 
-    fun DayRemind(now : String): Int {
-        return DayCount() - DayPast(now)
-    }
+    fun DayRemind()= DayCount() - DayPast()
 
-    fun dayPastPercent(now : String): Int {
+    fun dayPastPercent(): Int {
         return if (DayCount() > 0) {
-            DayPast(now) * 100 / DayCount()
+            DayPast() * 100 / DayCount()
         } else {
             0
         }
     }
-    fun isInTermRange(now : String): Boolean {
+
+    fun isInTermRange(): Boolean {
         return if (now != "") {
             DaysDiffCalculate(startDate, now) > 0 && DaysDiffCalculate(now, endDate) > 0
         } else {
@@ -40,15 +35,14 @@ class Term(db : Termdb) {
         }
     }
 
-    private fun DaysDiffCalculate(StartDate: String, EndDate: String): Int {
+    private fun DaysDiffCalculate(s: String, e: String): Int {
 
-        val Start = JDF()
-        val End = JDF()
+        val start = PersianDateParser(s).persianDate.timeInMillis
+        val end = PersianDateParser(e).persianDate.timeInMillis
 
-        Start.iranianDate = StartDate
-        End.iranianDate = EndDate
+        val re = end - start
 
-        return End.dayCount - Start.dayCount + 1
+        return PersianCalendar(re).persianDay
     }
 
 }

@@ -69,9 +69,9 @@
 //        //            holder.vPageTo100.setText("امروز باید "+String.valueOf(pt)+ " صفحه خوانده شود");
 //
 //        //holder.vPageTo100.setText(String.valueOf(teacher.BookPageTo100Percent_old(b))+" صفحه ی دیگر تا تکمیل برنامه امروز");
-//        //SetArcProgressBarPerformance(holder.vperformnce,teacher.BookPerformancePercent(b));
-//        //holder.vperformnce.setProgress(teacher.BookPerformancePercent(b));
-//        holder.vpageRemindPercent.progress = b.PageReadPercent()
+//        //SetArcProgressBarPerformance(holder.vperformnce,teacher.performance(b));
+//        //holder.vperformnce.setProgress(teacher.performance(b));
+//        holder.vpageRemindPercent.progress = b.pageReadPercent()
 //    }
 //
 //    // Return the size of your dataset (invoked by the layout manager)

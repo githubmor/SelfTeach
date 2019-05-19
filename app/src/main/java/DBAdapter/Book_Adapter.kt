@@ -36,8 +36,8 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
             val b = books[i]
             holder.bookName.text = b.name
-            holder.pageCount.text = b.pageCount.toString() + " صفحه"
-            holder.readProgress.progress = b.PageReadPercent()
+            holder.pageCount.text = b.pageReadState()
+            holder.readProgress.progress = b.pageReadPercent()
             holder.delBook.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch{
                     repository.delete(b.dbDto.book)
