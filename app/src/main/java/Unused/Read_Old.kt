@@ -8,19 +8,19 @@
 // * Created by M on 14/11/23.
 // */
 //
-//@Table(name = "Reads")
+//@Table(type = "Reads")
 //class Read_Old : Model {
 //
 //
-//    @Column(name = "pageReadCount")
+//    @Column(type = "pageReadCount")
 //    var pageReadCount: Int = 0
 //        internal set
 //
-//    @Column(name = "readDate")
+//    @Column(type = "readDate")
 //    var readDate: String? = null
 //        internal set
 //
-//    @Column(name = "Book_Old")
+//    @Column(type = "Book_Old")
 //    var bookOld: Book_Old? = null
 //
 //    @Throws(MyException::class)

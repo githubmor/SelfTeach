@@ -34,20 +34,20 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     }
 
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
-            val b = books[i]
-            holder.bookName.text = b.name
-            holder.pageCount.text = b.pageReadState()
-            holder.readProgress.progress = b.pageReadPercent()
-            holder.delBook.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch{
-                    repository.delete(b.dbDto.book)
-                    withContext(Dispatchers.Main){
-                        Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
-                        books.removeAt(i)
-                        notifyItemRemoved(i)
-                    }
-
+        val b = books[i]
+        holder.bookName.text = b.name
+        holder.pageCount.text = b.pageReadState()
+        holder.readProgress.progress = b.pageReadPercent()
+        holder.delBook.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch{
+                repository.delete(b.dbDto.book)
+                withContext(Dispatchers.Main){
+                    Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
+                    books.removeAt(i)
+                    notifyItemRemoved(i)
                 }
+
+            }
 
         }
 

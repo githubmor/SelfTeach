@@ -8,16 +8,16 @@
 // * Created by M on 14/11/23.
 // */
 //
-//@Table(name = "Terms")
+//@Table(type = "Terms")
 //class Term_old : Model {
 //
-//    @Column(name = "termName")
-//    var termName: String? = null
+//    @Column(type = "type")
+//    var type: String? = null
 //
-//    @Column(name = "startDate")
+//    @Column(type = "startDate")
 //    var startDate: String? = null
 //
-//    @Column(name = "endDate")
+//    @Column(type = "endDate")
 //    var endDate: String? = null
 //
 //
@@ -27,12 +27,12 @@
 //    constructor() : super()
 //
 //    @Throws(MyException::class)
-//    constructor(termName: String, startDate: String, endDate: String) : super() {
+//    constructor(type: String, startDate: String, endDate: String) : super() {
 //        if (startDate != "" && endDate != "") {
 //            if (CheckDate(startDate, endDate)) {
 //                throw MyException("تاریخ شروع بعد از تاریخ پایان است !لطفا اصلاح کنید")
 //            } else {
-//                this.termName = termName
+//                this.type = type
 //                this.startDate = startDate
 //                this.endDate = endDate
 //            }
@@ -43,24 +43,24 @@
 //    }
 //
 //
-//    fun DayCount(): Int {
+//    fun dayCount(): Int {
 //        return DaysDiffCalculate(startDate!!, endDate!!)
 //    }
 //
 //
-//    fun DayPast(): Int {
+//    fun dayPast(): Int {
 //        return DaysDiffCalculate(startDate!!, now!!)
 //    }
 //
-//    fun DayRemind(): Int {
-//        return DayCount() - DayPast()
+//    fun dayRemind(): Int {
+//        return dayCount() - dayPast()
 //    }
 //
 //
 //    // --Commented out by Inspection START (15/02/02 22:42):
 //    //    public int DayPercentPast(){
-//    //        if (DayCount()>0) {
-//    //            return (DayPast() * 100) / DayCount();
+//    //        if (dayCount()>0) {
+//    //            return (dayPast() * 100) / dayCount();
 //    //        }else {
 //    //            return 0;
 //    //        }

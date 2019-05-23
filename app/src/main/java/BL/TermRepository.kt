@@ -10,21 +10,21 @@ import kotlinx.coroutines.withContext
 class TermRepository(private val dao: TermDAO) {
 
     @WorkerThread
-    suspend fun insert(term: Termdb) {
+    suspend fun insert(term: Term) {
         withContext(Dispatchers.IO) {
-            dao.insert(term)
+            dao.insert(term.db)
         }
     }
     @WorkerThread
-    suspend fun delete(term: Termdb) {
+    suspend fun delete(term: Term) {
         withContext(Dispatchers.IO) {
-            dao.delete(term)
+            dao.delete(term.db)
         }
     }
     @WorkerThread
-    suspend fun update(term: Termdb) {
+    suspend fun update(term: Term) {
         withContext(Dispatchers.IO) {
-            dao.update(term)
+            dao.update(term.db)
         }
     }
     @WorkerThread
@@ -39,13 +39,17 @@ class TermRepository(private val dao: TermDAO) {
         }
     }
     @WorkerThread
-    suspend fun getTerm(): Termdb? {
+    suspend fun getTerm(): Term? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getTerm()
             }
             withContext(Dispatchers.Main){
-                y.await()
+                val t = y.await()
+                return@withContext if (t == null)
+                    null
+                else
+                    Term(t)
             }
         }
     }

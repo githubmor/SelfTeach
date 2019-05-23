@@ -1,9 +1,7 @@
 package morteza.darzi.SelfTeach
 
 
-import BL.BookRepository
-import BL.Read
-import BL.ReadRepository
+import BL.*
 import DAL.AppDatabase
 import DAL.Bookdb
 import DAL.ReadBookdb
@@ -23,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
@@ -30,6 +29,8 @@ import kotlinx.coroutines.launch
 
 
 class ReadsFragment : BaseDatePickerFragment() {
+    override val selectableDateList: Array<PersianCalendar>
+        get() = term.getTermDaysList()
     private lateinit var readDate: TextInputEditText
     override val title: String
         get() = "خوانده ها"
@@ -38,12 +39,15 @@ class ReadsFragment : BaseDatePickerFragment() {
     private val readPageCountErrorMessage = "لطفا تعداد صفحات خوانده شده را وارد كنيد"
     private val readSelectBookErrorMessage = "لطفا نام كتاب را وارد كنيد"
 
+    var books : List<Bookdb> = listOf()
     var reads : MutableList<Read> = mutableListOf()
+    lateinit var term :Term
     private var listener: OnFragmentInteractionListener? = null
     lateinit var readRepo : ReadRepository
     lateinit var bookRepo : BookRepository
+    lateinit var termRepo : TermRepository
 
-    private var selectedBookOld: Bookdb? = null
+    private var selectedBook: Bookdb? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,6 +55,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
         readRepo = ReadRepository(AppDatabase.getInstance(context!!).readDao())
         bookRepo = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+        termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
 
         val adapter = intializeReadList(v)
 
@@ -59,6 +64,8 @@ class ReadsFragment : BaseDatePickerFragment() {
                 listener!!.failRead()
             }else
                 intializeBookList(v)
+
+            term = termRepo.getTerm()!!
 
             val rs = readRepo.getAllReadsWithBookName()
 
@@ -96,13 +103,14 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.read_save.setOnClickListener {
             if (validateToSave(v)) {
                 launch {
-                    val read = Readdb(0,selectedBookOld!!.id,v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
+                    val read = Readdb(0,selectedBook!!.id,v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
                     readRepo.insert(read)
-                    adapter.addNewRead(Read(ReadBookdb(read,selectedBookOld!!.name)))
+                    adapter.addNewRead(Read(ReadBookdb(read,selectedBook!!.name)))
                     arrangeForShowFirstViewSwitcher(v,true)
                 }
             }
         }
+
 
         return v
     }
@@ -116,16 +124,16 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun intializeBookList(v: View) {
         launch {
-            val bs = bookRepo.getAllBook()!!.map { it.name + " - " + it.pageCount }
+            books = bookRepo.getAllBook()!!
 
-            val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, bs)
+            val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map { it.name })
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             v.spinner.adapter = dataAdapter
         }
 
         v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedBookOld = adapterView.getItemAtPosition(i) as Bookdb
+                selectedBook = books.single { it.name == adapterView.getItemAtPosition(i) as String }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {
@@ -136,7 +144,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun validateToSave(v:View):Boolean{
         return when {
-            selectedBookOld==null ->{
+            selectedBook==null ->{
                 Toast.makeText(context!!, readSelectBookErrorMessage,Toast.LENGTH_SHORT).show()
                 return false
             }
@@ -195,10 +203,18 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
-        val d = PersianCalendar()
-        d.setPersianDate(year, monthOfYear, dayOfMonth)
-
-        readDate.setText(d.persianShortDate.toString())
+        val selectedDate = PersianCalendar().apply {
+            setPersianDate(year, monthOfYear, dayOfMonth)
+        }
+//        val start = PersianDateParser(term.startDate).persianDate.timeInMillis
+//        val end = PersianDateParser(term.endDate).persianDate.timeInMillis
+//
+//        if (selectedDate.timeInMillis in (start + 1) until end)
+            readDate.setText(selectedDate.persianShortDate)
+//        else {
+//            readDate.setText("")
+//
+//        }
 
     }
 

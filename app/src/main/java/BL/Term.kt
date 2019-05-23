@@ -3,37 +3,51 @@ package BL
 import DAL.Termdb
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
+import morteza.darzi.SelfTeach.termType
 
-class Term(db : Termdb) {
+class Term(val db : Termdb) {
 
-    var endDate = db.endDate
-    var startDate = db.startDate
-    var termName = db.name
-    val now = PersianCalendar().persianShortDate
+    var endDate
+        get() = db.endDate
+        set(value) {
+            db.endDate = value
+        }
 
-    fun termDateState()= "( " + DayPast() + "/" + DayCount() + " )" + " روز"
+    var startDate
+        get() = db.startDate
+        set(value) {
+            db.startDate = value
+        }
+    var type
+        get() = termType.valueOf(db.name).typeName
+        set(value) {
+            db.name = value
+        }
+    private val now: String = PersianCalendar().persianShortDate
 
-    fun DayCount()= DaysDiffCalculate(startDate, endDate)
+    fun termDateState()= "( " + dayPast() + "/" + dayCount() + " )" + " روز"
 
-    fun DayPast()= DaysDiffCalculate(startDate, now)
+    fun dayCount()= DaysDiffCalculate(startDate, endDate)
 
-    fun DayRemind()= DayCount() - DayPast()
+    fun dayPast()= DaysDiffCalculate(startDate, now)
+
+    fun dayRemind()= dayCount() - dayPast()
 
     fun dayPastPercent(): Int {
-        return if (DayCount() > 0) {
-            DayPast() * 100 / DayCount()
+        return if (dayCount() > 0) {
+            dayPast() * 100 / dayCount()
         } else {
             0
         }
     }
 
-    fun isInTermRange(): Boolean {
-        return if (now != "") {
-            DaysDiffCalculate(startDate, now) > 0 && DaysDiffCalculate(now, endDate) > 0
-        } else {
-            false
-        }
-    }
+//    fun isInTermRange(): Boolean {
+//        return if (now != "") {
+//            DaysDiffCalculate(startDate, now) > 0 && DaysDiffCalculate(now, endDate) > 0
+//        } else {
+//            false
+//        }
+//    }
 
     private fun DaysDiffCalculate(s: String, e: String): Int {
 
@@ -42,7 +56,19 @@ class Term(db : Termdb) {
 
         val re = end - start
 
-        return PersianCalendar(re).persianDay
+        return (re/(1000*60*60*24)).toInt()+1
+    }
+
+    fun getTermDaysList(): Array<PersianCalendar> {
+        val re = mutableListOf<PersianCalendar>()
+        val start = PersianDateParser(startDate).persianDate.timeInMillis
+        val end = PersianDateParser(endDate).persianDate.timeInMillis
+
+        for (b in start..end step (1000*60*60*24)){
+            re.add(PersianCalendar(b))
+        }
+
+        return re.toTypedArray()
     }
 
 }

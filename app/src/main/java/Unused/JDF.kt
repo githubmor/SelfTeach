@@ -139,7 +139,7 @@
 //        get() = "$juYear/$juMonth/$juDay"
 //
 //    /**
-//     * getWeekDayStr: Returns the week day name.
+//     * getWeekDayStr: Returns the week day type.
 //     *
 //     * @return String
 //     */

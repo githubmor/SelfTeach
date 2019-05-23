@@ -31,15 +31,15 @@
 //
 //
 ////    fun BookPerformance_old(bookOld: Book_Old): Int {
-////        return if (term_old!!.DayPast() > 0 && PPDBook_old(bookOld) > 0) {
-////            bookOld.pageWasReaded() * 100 / (term_old.DayPast() * PPDBook_old(bookOld))
+////        return if (term_old!!.dayPast() > 0 && PPDBook_old(bookOld) > 0) {
+////            bookOld.pageWasReaded() * 100 / (term_old.dayPast() * PPDBook_old(bookOld))
 ////        } else {
 ////            0
 ////        }
 ////    }
 //
 ////    fun BookPageTo100Percent_old(bookOld: Book_Old): Int {
-////        val i = term_old!!.DayPast() * PPDBook_old(bookOld) - bookOld.pageWasReaded()
+////        val i = term_old!!.dayPast() * PPDBook_old(bookOld) - bookOld.pageWasReaded()
 ////        return if (i >= 10) {
 ////            if (i * 4 < UserPPDReadBook_old(bookOld)) {
 ////                0
@@ -64,7 +64,7 @@
 //
 //    fun PageTo100Percent_old(now: String): Int {
 //        if (Performance(now) < 100) {
-//            val i = term.DayPast(now) * PPD() - AllPageWasRead()
+//            val i = term.dayPast(now) * PPD() - AllPageWasRead()
 //            return if (i > 10) {//Less than 10 = Nothing to Show
 //                if (i * 4 < UserPPDRead()) {//Less than 4 plus UserPagePerDay = Nothing to Show
 //                    0
@@ -85,8 +85,8 @@
 //
 //
 ////    private fun PPDBook_old(bookOld: Book_Old): Int {
-////        return if (term_old!!.DayCount() > 0) {
-////            bookOld.pageCount / term_old.DayCount()
+////        return if (term_old!!.dayCount() > 0) {
+////            bookOld.pageCount / term_old.dayCount()
 ////        } else {
 ////            0
 ////        }
@@ -98,9 +98,9 @@
 //        if (!books.isEmpty()) {
 //            for (b in books) {
 //                //if page to 100 less than userppd for that bookOld , no bookOld to show
-//                if (b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)>0) {
-//                    re = b.name
-//                    max = b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)
+//                if (b.needHighPriorityRead(term.dayCount(),term.dayPast(now),max)>0) {
+//                    re = b.type
+//                    max = b.needHighPriorityRead(term.dayCount(),term.dayPast(now),max)
 //                }
 //            }
 //        }
@@ -116,16 +116,16 @@
 //    }
 //
 //    private fun PPD(): Int {
-//        return if (term.DayCount() > 0) {
-//            AllPageCount() / term.DayCount()
+//        return if (term.dayCount() > 0) {
+//            AllPageCount() / term.dayCount()
 //        } else {
 //            0
 //        }
 //    }
 //
 //    fun Performance(now :String): Int {
-//        return if (term.DayPast(now) > 0 && PPD() > 0) {
-//            AllPageWasRead() * 100 / (term.DayPast(now) * PPD())
+//        return if (term.dayPast(now) > 0 && PPD() > 0) {
+//            AllPageWasRead() * 100 / (term.dayPast(now) * PPD())
 //        } else {
 //            0
 //        }
@@ -162,10 +162,10 @@
 //        var re: String? = ""
 //        if ("" != f1) {
 //            for (b in books) {
-//                if (b.name != f1) {
-//                    if (b.needHighPriorityRead(term.DayCount(),term.DayPast(now))>0) {
-//                        re = b.name
-//                        max = b.needHighPriorityRead(term.DayCount(),term.DayPast(now),max)
+//                if (b.type != f1) {
+//                    if (b.needHighPriorityRead(term.dayCount(),term.dayPast(now))>0) {
+//                        re = b.type
+//                        max = b.needHighPriorityRead(term.dayCount(),term.dayPast(now),max)
 //                    }
 //                }
 //            }
@@ -176,8 +176,8 @@
 //    }
 //
 //    fun TermDayPercent(now :String): Int {
-//        return if (term.DayCount() > 0) {
-//            term.DayPast(now) * 100 / term.DayCount()
+//        return if (term.dayCount() > 0) {
+//            term.dayPast(now) * 100 / term.dayCount()
 //        } else {
 //            0
 //        }
@@ -185,8 +185,8 @@
 //
 //    fun PagePerDayRemind(now :String): Int {
 //        val i: Int
-//        if (term.DayRemind(now) > 0) {
-//            i = (AllPageCount() - AllPageWasRead()) / term.DayRemind(now)// this i is PagePerDay should read till term_old endDate
+//        if (term.dayRemind(now) > 0) {
+//            i = (AllPageCount() - AllPageWasRead()) / term.dayRemind(now)// this i is PagePerDay should read till term_old endDate
 //        } else {
 //            i = 0
 //        }
@@ -197,14 +197,14 @@
 //
 //    fun BooksNeedPlane(now :String): String? {
 //        var re: String? = ""
-//        if (term.DayRemind(now) > 0) {
+//        if (term.dayRemind(now) > 0) {
 //            for (book in books) {
-//                val i = book.PageRemind() / term.DayRemind(now)// this i is PagePerDay should read till term_old endDate
+//                val i = book.PageRemind() / term.dayRemind(now)// this i is PagePerDay should read till term_old endDate
 //                if (i > 5 * book.avgPageWasReadedPerEveryRead() && TermDayPercent(now) > 60) {
 //                    if (re != "")
-//                        re = re + " و" + book.name//means it is too big , make a plan for read ..
+//                        re = re + " و" + book.type//means it is too big , make a plan for read ..
 //                    else
-//                        re = book.name
+//                        re = book.type
 //                }
 //            }
 //        }

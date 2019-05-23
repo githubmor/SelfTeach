@@ -22,7 +22,7 @@ package Unused
 //class Add_Term : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 //
 //
-//    private var name: EditText? = null
+//    private var type: EditText? = null
 //    private var start: EditText? = null
 //    private var end: EditText? = null
 //    private var TermName: String? = null
@@ -40,7 +40,7 @@ package Unused
 //
 //
 //
-//        name = findViewById<View>(R.id.TermName) as EditText
+//        type = findViewById<View>(R.id.TermName) as EditText
 //        start = findViewById<View>(R.id.StartDate) as EditText
 //        end = findViewById<View>(R.id.EndDate) as EditText
 //
@@ -79,7 +79,7 @@ package Unused
 //        } else {
 //            state = "ShowTerm"
 //
-//            TermName = term_old!!.termName
+//            TermName = term_old!!.type
 //            StartDate = term_old!!.startDate
 //            EndDate = term_old!!.endDate
 //
@@ -102,10 +102,10 @@ package Unused
 //            R.id.saveTerm -> if (state === "ShowTerm") {//Maybe Edit Term_old
 //
 //                try {
-//                    term_old!!.termName = name!!.text.toString()
+//                    term_old!!.type = type!!.text.toString()
 //                    term_old!!.setStartAndEndDate(start!!.text.toString(), end!!.text.toString())
 //                    //term_old.setEndDate(end.getText().toString());
-//                    //term_old = new Term_old(name.getText().toString(), start.getText().toString(), end.getText().toString());
+//                    //term_old = new Term_old(type.getText().toString(), start.getText().toString(), end.getText().toString());
 //                    term_old!!.save()
 //
 //                    Toast.makeText(applicationContext, "اطلاعات ترم ویرایش شد", Toast.LENGTH_SHORT).show()
@@ -114,13 +114,13 @@ package Unused
 //                    Toast.makeText(applicationContext, e.message.toString(), Toast.LENGTH_SHORT).show()
 //                }
 //
-//                //                        term_old.setTermName(name.getText().toString());
+//                //                        term_old.setType(type.getText().toString());
 //                //                        term_old.setStartDate(start.getText().toString());
 //                //                        term_old.setEndDate(end.getText().toString());
 //
 //            } else {//add new Term_old
 //
-//                TermName = name!!.text.toString()
+//                TermName = type!!.text.toString()
 //                StartDate = start!!.text.toString()
 //                EndDate = end!!.text.toString()
 //                try {
@@ -144,17 +144,17 @@ package Unused
 //
 //    internal fun ChangeState(state: String) {
 //        if (state === "AddNewTerm") {
-//            name!!.isEnabled = true
+//            type!!.isEnabled = true
 //            start!!.isEnabled = true
 //            end!!.isEnabled = true
 //            //term_old = null;
-//            name!!.text = null
+//            type!!.text = null
 //            start!!.text = null
 //            end!!.text = null
 //
 //        } else if (state == "ShowTerm") {
-//            name!!.setText(TermName)
-//            name!!.isEnabled = true
+//            type!!.setText(TermName)
+//            type!!.isEnabled = true
 //            start!!.setText(StartDate)
 //            start!!.isEnabled = true
 //            end!!.setText(EndDate)

@@ -42,10 +42,12 @@ class PerformanceFragment : BaseFragment() {
         val database = AppDatabase.getInstance(context!!)
 
         launch {
-            val term = Term(TermRepository(database.termDao()).getTerm()!!)
+            val term = TermRepository(database.termDao()).getTerm()!!
             val books = BookRepository(database.bookDao()).getAllBookWithRead()!!.map { Book(it) }
 
-            performance = Performance(term, books)
+            val pBooks = books.map { PerformanceBook(term,it) }
+
+            performance = Performance(term, pBooks)
 
 
 
@@ -54,9 +56,9 @@ class PerformanceFragment : BaseFragment() {
             v.today.text = performance.pageTo100Percent().toString()
             v.per_day.text = performance.pagePerDayRemind().toString()
 
-            v.day_remind.text = performance.term.termDateState()
+            v.day_remind.text = term.termDateState()
 
-            v.progressBar.progress = performance.term.dayPastPercent()
+            v.progressBar.progress = term.dayPastPercent()
 
             for (book in performance.readList()) {
                 val te = TextView(context)

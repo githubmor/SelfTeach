@@ -2,14 +2,29 @@ package BL
 
 import DAL.BookReadsdb
 
-class Book(val dbDto: BookReadsdb) {
+open class Book(val dbDto: BookReadsdb) {
 
     //يك اصل رو رعايت كن . اينجا فقط محاسبات عددي تصميمي نداريم
 
 
-    val pageCount = dbDto.book.pageCount
-    val name = dbDto.book.name
-    val priority = dbDto.book.priority
+
+    var pageCount
+        get() = dbDto.book.pageCount
+        set(value) {
+            dbDto.book.pageCount = value
+        }
+
+    var name
+        get() = dbDto.book.name
+        set(value) {
+            dbDto.book.name = value
+        }
+
+    var priority
+        get() = dbDto.book.priority
+        set(value) {
+            dbDto.book.priority = value
+        }
 
     fun pageWasReaded(): Int {
         return dbDto.reads.sumBy { it.pageRead }
@@ -22,31 +37,4 @@ class Book(val dbDto: BookReadsdb) {
     fun pageReadPercent(): Int {
         return ((pageWasReaded()*100)/ pageCount)
     }
-
-    private fun pageShouldReadTillToday(termDayPas: Int, termDayCount: Int) =
-            termDayPas * avgPagePerDay(termDayCount)
-
-    fun performance(termDayPas : Int, termDayCount : Int): Int {
-        val pageShouldRead = pageShouldReadTillToday(termDayPas, termDayCount)
-        return if (pageShouldRead > 0) pageWasReaded() * 100 / pageShouldRead else 0
-    }
-
-    fun pageRemindToGet100Percent(termDayPas : Int, termDayCount : Int)=
-            pageShouldReadTillToday(termDayPas, termDayCount) - pageWasReaded()
-
-
-    fun avgPagePerEveryRead(): Int
-        = when {
-            dbDto.reads.isNotEmpty() -> pageWasReaded() / dbDto.reads.size
-            else -> 0
-        }
-
-
-    private fun avgPagePerDay(termDayCount : Int): Int
-        = when {
-            termDayCount > 0 -> pageCount / termDayCount
-            else -> 0
-        }
-
-
 }

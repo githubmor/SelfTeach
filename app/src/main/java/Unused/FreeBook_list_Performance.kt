@@ -50,7 +50,7 @@
 //    // Replace the contents of a view (invoked by the layout manager)
 //    override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
 //        val b = bookOlds[i]
-//        holder.vbookName.text = b.name
+//        holder.vbookName.text = b.type
 //
 //        if (b.PageRemind() >= b.pageCount || b.PageRemind() < 0)
 //            holder.pageRemain.text = "هنوز شروع به خواندن نکردید"

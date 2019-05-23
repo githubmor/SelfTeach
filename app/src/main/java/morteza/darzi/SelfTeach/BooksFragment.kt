@@ -64,6 +64,7 @@ class BooksFragment : BaseFragment() {
 
         }
 
+
         v.fab.setOnClickListener {
             arrangeForSecondViewSwitcher(v)
         }
@@ -77,9 +78,9 @@ class BooksFragment : BaseFragment() {
         v.book_save.setOnClickListener {
             if (validateToSave(v)) {
                 launch {
-                    val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt())
+                    val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),v.priority.rating.toInt())
                     repository.insert(b)
-                    adapter.addNewBook(Book(BookReadsdb(b, listOf())))
+                    adapter.addNewBook(Book(BookReadsdb(b)))
                     arrangeForFirstViewSwitcher(v,true)
                 }
             }

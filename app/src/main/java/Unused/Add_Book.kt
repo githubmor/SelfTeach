@@ -18,7 +18,7 @@ package Unused
 // */
 //class Add_Book : AppCompatActivity() {
 //
-//    private var name: EditText? = null
+//    private var type: EditText? = null
 //    private var pagecount: EditText? = null
 //    private var bookOld: Book_Old? = null
 //    internal var free: Boolean = false
@@ -32,7 +32,7 @@ package Unused
 //
 //
 //        //save = (Button) findViewById(R.id.saveBook);
-//        name = findViewById(R.id.book_name)
+//        type = findViewById(R.id.book_name)
 //        pagecount = findViewById(R.id.book_pagecount)
 //
 //    }
@@ -46,10 +46,10 @@ package Unused
 //
 //        when (item.itemId) {
 //            R.id.savingBook -> try {
-//                bookOld = Book_Old(name!!.text.toString(), Integer.parseInt(pagecount!!.text.toString()), free)
+//                bookOld = Book_Old(type!!.text.toString(), Integer.parseInt(pagecount!!.text.toString()), free)
 //                bookOld!!.save()
 //                //dBhandeler.InsertBook(bookOld);
-//                Toast.makeText(applicationContext, "کتاب " + bookOld!!.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(applicationContext, "کتاب " + bookOld!!.type + " ذخیره شد", Toast.LENGTH_SHORT).show()
 //                val intent = Intent(applicationContext, Booking::class.java)
 //                intent.putExtra("free", free)
 //                startActivity(intent)

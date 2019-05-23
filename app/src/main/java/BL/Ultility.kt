@@ -1,6 +1,8 @@
 package BL
 
 import android.graphics.Color
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import morteza.darzi.SelfTeach.termType
 
 class Ultility{
     companion object {
@@ -13,6 +15,26 @@ class Ultility{
 
 
             return Color.HSVToColor(floats)
+        }
+
+        fun getStartDate(type:termType):String{
+            val year = PersianCalendar().persianYear
+            return when(type){
+                termType.nimsalAvl -> PersianCalendar().apply { setPersianDate(year,6,1)}.persianShortDate
+                termType.nimsalDovom -> PersianCalendar().apply { setPersianDate(year,10,1)}.persianShortDate
+                termType.termTabestan -> PersianCalendar().apply { setPersianDate(year,3,1)}.persianShortDate
+                termType.termManual -> ""
+            }
+        }
+
+        fun getEndDate(type: termType): String {
+            val year = PersianCalendar().persianYear
+            return when(type){
+                termType.nimsalAvl -> PersianCalendar().apply { setPersianDate(year,9,30)}.persianShortDate
+                termType.nimsalDovom -> PersianCalendar().apply { setPersianDate(year,2,31)}.persianShortDate
+                termType.termTabestan -> PersianCalendar().apply { setPersianDate(year,5,31)}.persianShortDate
+                termType.termManual -> ""
+            }
         }
     }
 }

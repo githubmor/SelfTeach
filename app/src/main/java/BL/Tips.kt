@@ -40,30 +40,30 @@ class Tips(val performance: Performance){
 //    }
 //
 //    private fun avgAllPagePerDayInTerm(): Int {
-//        return if (term.DayCount() > 0) {
-//            allPageCount() / term.DayCount()
+//        return if (term.dayCount() > 0) {
+//            allPageCount() / term.dayCount()
 //        } else {
 //            0
 //        }
 //    }
 //
 //    fun performancePercent(): Int {
-//        return if (term.DayPast(now) > 0 && avgAllPagePerDayInTerm() > 0) {
+//        return if (term.dayPast(now) > 0 && avgAllPagePerDayInTerm() > 0) {
 //            allPageWasRead() * 100 / pageShouldReadTillToday()
 //        } else {
 //            0
 //        }
 //    }
 //
-//    private fun pageShouldReadTillToday() = term.DayPast(now) * avgAllPagePerDayInTerm()
+//    private fun pageShouldReadTillToday() = term.dayPast(now) * avgAllPagePerDayInTerm()
 //
 //    private fun allPageWasRead() = books.sumBy { it.pageWasReaded() }
 //
 //    private fun allPageCount()= books.sumBy { it.pageCount }
 //
 //    fun pagePerDayRemind(): Int {
-//        val i: Int = if (term.DayRemind(now) > 0) {
-//            (allPageCount() - allPageWasRead()) / term.DayRemind(now)// this i is PagePerDay should read till term_old endDate
+//        val i: Int = if (term.dayRemind(now) > 0) {
+//            (allPageCount() - allPageWasRead()) / term.dayRemind(now)// this i is PagePerDay should read till term_old endDate
 //        } else {
 //            0
 //        }

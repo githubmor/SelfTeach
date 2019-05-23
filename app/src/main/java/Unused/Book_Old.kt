@@ -10,27 +10,27 @@
 // * Created by M on 14/11/23.
 // */
 //
-//@Table(name = "Books")
+//@Table(type = "Books")
 //class Book_Old : Model {
 //
-//    @Column(name = "name")
-//    var name: String? = null
+//    @Column(type = "type")
+//    var type: String? = null
 //        internal set
 //
-//    @Column(name = "pageCount")
+//    @Column(type = "pageCount")
 //    var pageCount: Int = 0
 //        internal set
 //
-//    @Column(name = "free")
+//    @Column(type = "free")
 //    private var free: Boolean = false
 //
 //    var reads: List<Read_Old> = ArrayList()
 //        private set
 //
 //
-//    constructor(name: String, pageCount: Int, free: Boolean) : super() {
-//        if ("" != name && pageCount > 0) {
-//            this.name = name
+//    constructor(type: String, pageCount: Int, free: Boolean) : super() {
+//        if ("" != type && pageCount > 0) {
+//            this.type = type
 //            this.pageCount = pageCount
 //            this.setFree(free)
 //        } else {
@@ -86,7 +86,7 @@
 //    }
 //
 //    override fun toString(): String {
-//        return name + " - " + PageRemind() + " صفحه"
+//        return type + " - " + PageRemind() + " صفحه"
 //    }
 //
 //    fun NotFree(): Boolean {
