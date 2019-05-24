@@ -6,7 +6,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 
 abstract class BaseDatePickerFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     abstract override val title: String
-    abstract val selectableDateList: Array<PersianCalendar>
+    abstract val selectableDateList: Array<PersianCalendar>?
 
     abstract override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int)
 
@@ -18,7 +18,8 @@ abstract class BaseDatePickerFragment : BaseFragment(), DatePickerDialog.OnDateS
                 persianCalendar.persianMonth,
                 persianCalendar.persianDay
         )
-        datePickerDialog.selectableDays = selectableDateList
+        if (selectableDateList!=null)
+            datePickerDialog.selectableDays = selectableDateList
 
         datePickerDialog.show(activity!!.fragmentManager, tag)
     }

@@ -25,11 +25,11 @@ class TermTest{
         assertEquals(name,term.type)
         assertEquals(startDate,term.startDate)
         assertEquals(endDate,term.endDate)
-        assertEquals(92,term.dayCount()) // ممكنه 91 روز هم بشه در شش ماهه دوم
-        assertEquals(31,term.dayPast())
-        assertEquals(61,term.dayRemind())
+        assertEquals(92,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
+        assertEquals(31,term.dayPast)
+        assertEquals(61,term.dayRemind)
         assertEquals(92,term.getTermDaysList().size)
-        assertEquals("( 31/92 ) روز",term.termDateState())
+        assertEquals("( 31/92 ) روز",term.termDateState)
     }
 
     @Test
@@ -56,11 +56,11 @@ class TermTest{
         assertEquals(cname,changedDb.name)
         assertEquals(cstartDate,term.startDate)
         assertEquals(cendDate,term.endDate)
-        assertEquals(154,term.dayCount()) // ممكنه 91 روز هم بشه در شش ماهه دوم
-        assertEquals(62,term.dayPast())
-        assertEquals(92,term.dayRemind())
+        assertEquals(154,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
+        assertEquals(62,term.dayPast)
+        assertEquals(92,term.dayRemind)
         assertEquals(154,term.getTermDaysList().size)
-        assertEquals("( 62/154 ) روز",term.termDateState())
+        assertEquals("( 62/154 ) روز",term.termDateState)
     }
 
 }

@@ -5,6 +5,7 @@ import BL.*
 import DAL.AppDatabase
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -51,14 +52,14 @@ class PerformanceFragment : BaseFragment() {
 
 
 
-            animateArcPerformance(performance.performance())
+            animateArcPerformance(performance.performance)
 
-            v.today.text = performance.pageTo100Percent().toString()
-            v.per_day.text = performance.pagePerDayRemind().toString()
+            v.today.text = performance.pageTo100Percent.toInt().toString()
+            v.per_day.text = performance.pagePerDayRemind.toInt().toString()
 
-            v.day_remind.text = term.termDateState()
+            v.day_remind.text = term.termDateState
 
-            v.progressBar.progress = term.dayPastPercent()
+            v.progressBar.progress = term.dayPastPercent
 
             for (book in performance.readList()) {
                 val te = TextView(context)
@@ -87,10 +88,10 @@ class PerformanceFragment : BaseFragment() {
     }
 
 
-    private fun animateArcPerformance(p: Int) {
+    private fun animateArcPerformance(p: Float) {
         var performance = p
         if (performance > 100) {
-            performance = 100
+            performance = 100F
         }
 
         val red = -0x40f600
@@ -101,27 +102,29 @@ class PerformanceFragment : BaseFragment() {
                 HsvEvaluator(),
                 red, green)
 
-        val performanceAnim = ObjectAnimator.ofFloat(performanceircle,
-                "progress",
-                0F,
-                performance.toFloat()) // anim 2
+        val vv = ValueAnimator.ofInt(0,performance.toInt()).apply {
+            addUpdateListener {
+                val valu = it.animatedValue as Int
+                performanceircle.progress = valu.toFloat()
+            }
+        }
 
 
         val animatorSet = AnimatorSet()
-        animatorSet.playTogether(storkColorAnim,performanceAnim)
+        animatorSet.playTogether(storkColorAnim,vv)
 
         animatorSet.startDelay = 1000
-        animatorSet.duration = timecal(performance).toLong()
+        animatorSet.duration = timecal(performance)
         animatorSet.interpolator = LinearInterpolator()
         animatorSet.start()
 
     }
 
-    private fun timecal(perf: Int): Int {
+    private fun timecal(perf: Float): Long {
         return if (perf < 20) {
             500
         } else {
-            perf * 2500 / 100
+            (perf * 2500 / 100).toLong()
         }
     }
 

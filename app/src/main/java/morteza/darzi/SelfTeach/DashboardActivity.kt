@@ -1,6 +1,7 @@
 package morteza.darzi.SelfTeach
 
-import BL.*
+import BL.BookRepository
+import BL.TermRepository
 import DAL.AppDatabase
 import android.os.Bundle
 import android.view.Menu
@@ -10,7 +11,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.dashboard_content.*
 import kotlinx.coroutines.launch
 
 
@@ -23,7 +23,9 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-        MyExceptionHandler(this)
+
+//        MyExceptionHandler(this)//comment this line if use debugger
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -100,11 +102,12 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
             R.id.Reseting -> {
                 launch {
                     val term = termRep.getTerm()
-                    termRep.delete(term!!)
+                    if (term!=null)
+                        termRep.delete(term)
 
                     val books = bookRepo.getAllBook()
-                    for (b in books!!) {
-                        bookRepo.delete(b)
+                    if (!books.isNullOrEmpty()) {
+                        bookRepo.deleteAll()
                     }
 
                     initializeFirst()

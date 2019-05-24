@@ -25,50 +25,43 @@ class Term(val db : Termdb) {
         }
     private val now: String = PersianCalendar().persianShortDate
 
-    fun termDateState()= "( " + dayPast() + "/" + dayCount() + " )" + " روز"
+    val termDateState get() = "( " + dayPast + "/" + dayCount + " )" + " روز"
 
-    fun dayCount()= DaysDiffCalculate(startDate, endDate)
+    val dayCount get() = daysDiffCalculate(startDate, endDate)
 
-    fun dayPast()= DaysDiffCalculate(startDate, now)
+    val dayPast get() = daysDiffCalculate(startDate, now)
 
-    fun dayRemind()= dayCount() - dayPast()
+    val dayRemind get() = dayCount - dayPast
 
-    fun dayPastPercent(): Int {
-        return if (dayCount() > 0) {
-            dayPast() * 100 / dayCount()
-        } else {
-            0
+    val dayPastPercent: Int
+        get() {
+            return if (dayCount > 0) {
+                dayPast * 100 / dayCount
+            } else {
+                0
+            }
         }
-    }
 
 //    fun isInTermRange(): Boolean {
 //        return if (now != "") {
-//            DaysDiffCalculate(startDate, now) > 0 && DaysDiffCalculate(now, endDate) > 0
+//            daysDiffCalculate(startDate, now) > 0 && daysDiffCalculate(now, endDate) > 0
 //        } else {
 //            false
 //        }
 //    }
 
-    private fun DaysDiffCalculate(s: String, e: String): Int {
+    private fun daysDiffCalculate(s: String, e: String): Int {
 
         val start = PersianDateParser(s).persianDate.timeInMillis
         val end = PersianDateParser(e).persianDate.timeInMillis
 
         val re = end - start
 
-        return (re/(1000*60*60*24)).toInt()+1
+        return ((re/(1000*60*60*24))+1).toInt()
     }
 
     fun getTermDaysList(): Array<PersianCalendar> {
-        val re = mutableListOf<PersianCalendar>()
-        val start = PersianDateParser(startDate).persianDate.timeInMillis
-        val end = PersianDateParser(endDate).persianDate.timeInMillis
-
-        for (b in start..end step (1000*60*60*24)){
-            re.add(PersianCalendar(b))
-        }
-
-        return re.toTypedArray()
+        return Ultility.getTermabledays(startDate,endDate)
     }
 
 }

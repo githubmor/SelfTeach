@@ -29,6 +29,12 @@ class BookRepository(private val dao: BookDAO) {
         }
     }
     @WorkerThread
+    suspend fun deleteAll() {
+        withContext(Dispatchers.IO) {
+            dao.deleteAll()
+        }
+    }
+    @WorkerThread
     suspend fun isBooksExist(): Boolean {
         return withContext(Dispatchers.IO) {
             val y = async {

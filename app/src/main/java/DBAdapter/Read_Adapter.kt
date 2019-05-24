@@ -46,7 +46,7 @@ class Read_Adapter
                     repository.delete(r.dbDto.read)
                     withContext(Dispatchers.Main){
                         Toast.makeText(context, "حذف شد", Toast.LENGTH_SHORT).show()
-                        reads.removeAt(i)
+                        reads.remove(r)
                         notifyItemRemoved(i)
                     }
 

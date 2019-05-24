@@ -1,38 +1,40 @@
 package BL
 
+import kotlin.math.round
+
 class PerformanceBook(val term:Term,val book : Book) : Book(book.dbDto) {
 
 
-
-    fun performance(): Int {
-        val pageShouldRead = pageShouldReadTillToday()
-        return if (pageShouldRead > 0) book.pageWasReaded() * 100 / pageShouldRead else 0
+    val performance: Float
+    get(){
+        val pageShouldRead = pageShouldReadTillToday
+        return if (pageShouldRead > 0) book.pageWasReaded * 100 / pageShouldRead.toFloat() else 0F
     }
 
-    fun pageRemindToGet100Percent()=
-            pageShouldReadTillToday() - book.pageWasReaded()
+    val pageRemindToGet100Percent get()= pageShouldReadTillToday - book.pageWasReaded
 
 
-    fun avgPagePerEveryRead(): Int
-            = when {
-        book.dbDto.reads.isNotEmpty() -> book.pageWasReaded() / book.dbDto.reads.size
+
+    val avgPagePerEveryRead: Int
+            get()= when {
+        book.dbDto.reads.isNotEmpty() -> book.pageWasReaded / book.dbDto.reads.size
         else -> 0
     }
 
-    private fun pageShouldReadTillToday() =
-            term.dayPast() * avgPagePerDay()
+    private val pageShouldReadTillToday = (term.dayPast * avgPagePerDay).toInt()
 
-    private fun avgPagePerDay(): Int
-            = when {
-        term.dayCount() > 0 -> book.pageCount / term.dayCount()
-        else -> 0
+    private val avgPagePerDay: Float
+           get() = when {
+        term.dayCount > 0 -> book.pageCount / term.dayCount.toFloat()
+        else -> 0F
     }
 
-    fun biggestPageCanRead(): Int {
-       return if (avgPagePerEveryRead()>pageShouldReadTillToday())
-            avgPagePerEveryRead()
-        else
-            avgPagePerEveryRead() + (avgPagePerEveryRead()*0.1).toInt()
+    val biggestPageCanRead: Int get(){
+        return when {
+            avgPagePerEveryRead>pageShouldReadTillToday -> avgPagePerEveryRead
+            avgPagePerEveryRead==0 -> return pageShouldReadTillToday
+            else -> (avgPagePerEveryRead + round(avgPagePerEveryRead*0.5F).toInt())
+        }
     }
 
 

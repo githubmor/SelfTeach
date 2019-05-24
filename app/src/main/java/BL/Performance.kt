@@ -1,45 +1,61 @@
 package BL
 
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendarConstants
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
+
 class Performance(private val term: Term,private val books : List<PerformanceBook>){
 
-    private fun PageWasRead() = books.sumBy { it.pageWasReaded() }
+    private val pageWasRead get() = books.sumBy { it.pageWasReaded }
 
-    private fun PageCount()= books.sumBy { it.pageCount }
+    private val pageCount get() = books.sumBy { it.pageCount }
 
-    private fun pageShouldReadTillToday() = term.dayPast() * avgPagePerDay()
+    private val pageShouldReadTillToday get() = term.dayPast * avgPagePerDay
 
-    fun pagePerDayRemind()= term.dayRemind() * avgPagePerDay()
+    val pagePerDayRemind get() = term.dayRemind * avgPagePerDay
 
-    fun avgBookReadPerDay(): Int{
-        return  0
-    }
-
-    fun pageTo100Percent(): Int {
-        return pageShouldReadTillToday() - PageWasRead()
-    }
-
-    private fun avgPagePerEveryRead(): Int {
-        val c =books.sumBy { it.dbDto.reads.count() }
-        return if (c>0) {
-            PageWasRead() / c
-        } else 0
-    }
-
-    private fun avgPagePerDay(): Int {
-        return if (term.dayCount() > 0) {
-            PageCount() / term.dayCount()
-        } else {
-            0
+    val avgBookReadPerDay: Float
+        get() {
+            val bookCountPerDay: MutableList<Int> = mutableListOf()
+            for (weekdayName in PersianCalendarConstants.persianWeekDays) {
+                bookCountPerDay.add(books.count { it ->
+                    it.book.dbDto.reads.any { dot ->
+                        PersianDateParser(dot.readDate).persianDate.persianWeekDayName == weekdayName
+                    }
+                })
+            }
+            return bookCountPerDay.average().toFloat()
         }
-    }
 
-    fun performance(): Int {
-        return if (term.dayPast() > 0 && avgPagePerDay() > 0) {
-            PageWasRead() * 100 / pageShouldReadTillToday()
-        } else {
-            0
+    val pageTo100Percent: Float
+        get() {
+            return pageShouldReadTillToday - pageWasRead
         }
-    }
+
+//    private val avgPagePerEveryRead: Int
+//        get() {
+//            val c = books.sumBy { it.dbDto.reads.count() }
+//            return if (c > 0) {
+//                pageWasRead / c
+//            } else 0
+//        }
+
+    private val avgPagePerDay: Float
+        get() {
+            return if (term.dayCount > 0) {
+                pageCount / term.dayCount.toFloat()
+            } else {
+                0F
+            }
+        }
+
+    val performance: Float
+        get() {
+            return if (term.dayPast > 0 && avgPagePerDay > 0) {
+                pageWasRead * 100 / pageShouldReadTillToday
+            } else {
+                0F
+            }
+        }
 
     fun readList(): List<String> {
 
@@ -48,17 +64,18 @@ class Performance(private val term: Term,private val books : List<PerformanceBoo
 
         val books = sortBookByPriorityAndPageNeedToRead(needToRead)
 
-        val avgBookRead = avgBookReadPerDay()
-        val pageTo100 = pageTo100Percent()
+        val avgBookRead = avgBookReadPerDay
+        val pageTo100 = pageTo100Percent
+
         val re : MutableList<String> = mutableListOf()
         var sum = 0
-        var i = 0
-            while (sum <= pageTo100 || re.size <= avgBookRead) {
-                val b = books[i]
-                sum += b.biggestPageCanRead()
-                re.add(b.name + " - " + b.biggestPageCanRead())
-                i++
-            }
+        for (b in books) {
+            if (sum <= pageTo100 || re.size <= avgBookRead) {
+                sum += b.biggestPageCanRead
+                re.add(b.name + " - " + b.biggestPageCanRead)
+            }else
+                return re
+        }
 
         return re
 
@@ -69,13 +86,13 @@ class Performance(private val term: Term,private val books : List<PerformanceBoo
                 .sortedWith(
                         compareBy(
                                 { it.priority },
-                                { it.pageRemindToGet100Percent() }
+                                { it.pageRemindToGet100Percent }
                         ))
         return bookWithHighPriorityAndHightPageToRead
     }
 
     private fun getBookHasPageToReadToday(): List<PerformanceBook> {
-        val needToRead = books.filter { it.pageRemindToGet100Percent() > 0 }
+        val needToRead = books.filter { it.pageRemindToGet100Percent > 0 }
         return needToRead
     }
 

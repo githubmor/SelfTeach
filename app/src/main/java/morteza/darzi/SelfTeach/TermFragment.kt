@@ -28,8 +28,12 @@ import kotlinx.coroutines.withContext
 
 
 class TermFragment : BaseDatePickerFragment() {
-    override val selectableDateList: Array<PersianCalendar>
-        get() = arrayOf()
+    override val selectableDateList: Array<PersianCalendar>?
+        get() {
+            val start = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH,-4)}.persianShortDate
+            val end = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH,4)}.persianShortDate
+            return  Ultility.getTermabledays(start,end)
+        }
 
     private lateinit var selectedTermType: termType
     private val termError = "لطفا نامی برای ترم انتخاب کنید"
@@ -66,11 +70,9 @@ class TermFragment : BaseDatePickerFragment() {
             }
 
             if (term!=null) {
-
                 showTermView(v)
                 loadTermInView(v)
             }
-
         }
 
 
@@ -98,10 +100,12 @@ class TermFragment : BaseDatePickerFragment() {
 
         v.term_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedTermType = termType.valueOf(adapterView.getItemAtPosition(i) as String)
+                selectedTermType = termType.values().single { it.typeName==adapterView.getItemAtPosition(i) as String}
 
-                v.term_start_date.setText(Ultility.getStartDate(selectedTermType))
-                v.term_end_date.setText(Ultility.getEndDate(selectedTermType))
+                if (!isTermEdit) {
+                    v.term_start_date.setText(Ultility.getStartDate(selectedTermType))
+                    v.term_end_date.setText(Ultility.getEndDate(selectedTermType))
+                }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {
@@ -126,7 +130,7 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun loadTermInView(v: View) {
-        v.term_type.setSelection(termType.valueOf(term!!.type).ordinal)
+        v.term_type.setSelection(termType.values().single{it.typeName==term!!.type}.ordinal)
         v.term_start_date.setText(term?.startDate)
         v.term_end_date.setText(term?.endDate)
     }
@@ -151,7 +155,6 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun getTermAndSave(v: View) {
 
-
         launch {
             if (isTermEdit){
                 term!!.type = selectedTermType.name
@@ -160,18 +163,15 @@ class TermFragment : BaseDatePickerFragment() {
 
                 termRep.update(term!!)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "ترم " + selectedTermType.typeName + " به روز شد", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,  selectedTermType.typeName + " به روز شد", Toast.LENGTH_SHORT).show()
                     listener!!.onSaveTermComplete()
                 }
             }else {
-                term!!.apply {
-                        type = selectedTermType.name
-                        startDate = v.term_start_date.text.toString()
-                        endDate = v.term_end_date.text.toString()}
+                term = Term(Termdb(0,selectedTermType.name,v.term_start_date.text.toString(),v.term_end_date.text.toString()))
 
                 termRep.insert(term!!)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "ترم " + selectedTermType.typeName + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,  selectedTermType.typeName + " ذخیره شد", Toast.LENGTH_SHORT).show()
                     listener!!.onSaveTermComplete()
                 }
             }
@@ -216,9 +216,11 @@ class TermFragment : BaseDatePickerFragment() {
     }
 }
 
+
+
 enum class termType(val typeName:String){
-    nimsalAvl("ترم اول"),
-    nimsalDovom("ترم دوم"),
-    termTabestan("ترم تابستان"),
-    termManual("دوره"),
+    nimsalAvl("ترم تحصیلی اول"),
+    nimsalDovom("ترم تحصیلی دوم"),
+    termTabestan("ترم تحصیلی تابستان"),
+    termManual("دوره آزاد"),
 }

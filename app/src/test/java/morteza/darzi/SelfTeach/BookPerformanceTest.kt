@@ -3,7 +3,6 @@ package morteza.darzi.SelfTeach
 import BL.Book
 import BL.PerformanceBook
 import BL.Term
-import BL.Ultility
 import DAL.BookReadsdb
 import DAL.Bookdb
 import DAL.Readdb
@@ -26,61 +25,19 @@ class BookPerformanceTest{
 
         val bookP = PerformanceBook(term,book)
 
-        assertEquals(50,bookP.avgPagePerEveryRead())
-        assertEquals(55,bookP.biggestPageCanRead())
-        assertEquals(10,bookP.pageRemindToGet100Percent())
-        assertEquals(10,bookP.performance())
+        assertEquals(avgPPR/5,bookP.avgPagePerEveryRead)
+        assertEquals(33,bookP.biggestPageCanRead)
+        assertEquals(98,bookP.pageRemindToGet100Percent)
+        assertEquals(60,bookP.performance)
     }
 
 
-
-//    @Test
-//    fun book_edit_IsOk() {
-//
-//        val name = "Book 1"
-//        val changeName = "Book 2"
-//        val page = 1000
-//        val changePage = 200
-//        val priority = 3
-//        val changePriority = 5
-//
-//        val db = Bookdb(1,name,page,priority)
-//
-//        val book = Book(BookReadsdb(db))
-//        book.name = changeName
-//        book.priority = changePriority
-//        book.pageCount = changePage
-//
-//        val editedDb = book.dbDto.book
-//
-//        assertEquals(changeName,editedDb.name)
-//        assertEquals(changePage,editedDb.pageCount)
-//        assertEquals(changePriority,editedDb.priority)
-//
-//    }
-//
-//    @Test
-//    fun book_readList_IsOk() {
-//
-//        val name = "Book 1"
-//        val page = 1000
-//        val priority = 3
-//        val readList = getReadList()
-//
-//        val db = Bookdb(1,name,page,priority)
-//
-//        val book = Book(BookReadsdb(db,readList))
-//
-//        assertEquals(50,book.pageReadPercent())
-//        assertEquals("( 500/1000 ) صفحه",book.pageReadState())
-//        assertEquals(500,book.pageWasReaded())
-//
-//    }
-
+    private var avgPPR = 0
     private fun getReadList(): List<Readdb> {
         val re : MutableList<Readdb> = mutableListOf()
-        for (i in 1..10){
-            re.add(Readdb(i,i,50,PersianCalendar().persianShortDate))
+        for (i in 1..5){
+            re.add(Readdb(i,1,i*10,PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK,i*2)}.persianShortDate))
+            avgPPR += i * 10
         }
 
         return re
@@ -88,7 +45,7 @@ class BookPerformanceTest{
 
     fun getBook():Book{
         val name = "Book 1"
-        val page = 1000
+        val page = 500
         val priority = 3
         val readList = getReadList()
 
@@ -98,7 +55,7 @@ class BookPerformanceTest{
     }
     private fun getTerm(): Term {
         val tname = termType.nimsalAvl.name
-        val startDate = PersianCalendar().apply { add(PersianCalendar.MONTH, -1) }.persianShortDate
+        val startDate = PersianCalendar().apply { add(PersianCalendar.MONTH, -2) }.persianShortDate
         val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH, 2) }.persianShortDate
 
         val tdb = Termdb(1, tname, startDate, endDate)

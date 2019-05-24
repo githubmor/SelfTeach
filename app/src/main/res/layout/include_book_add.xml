@@ -59,6 +59,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:isIndicator="false"
         android:numStars="5"
         android:rating="3"
         android:stepSize="1" />

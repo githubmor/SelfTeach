@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(foreignKeys = (arrayOf(ForeignKey(
         entity = Bookdb::class,
-        onUpdate = ForeignKey.CASCADE,
+        onDelete = ForeignKey.CASCADE,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("bookId")))))
 data class Readdb(

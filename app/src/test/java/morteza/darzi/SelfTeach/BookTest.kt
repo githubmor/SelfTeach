@@ -1,7 +1,6 @@
 package morteza.darzi.SelfTeach
 
 import BL.Book
-import BL.Ultility
 import DAL.BookReadsdb
 import DAL.Bookdb
 import DAL.Readdb
@@ -28,9 +27,9 @@ class BookTest{
         assertEquals(name,book.name)
         assertEquals(page,book.pageCount)
         assertEquals(priority,book.priority)
-        assertEquals(0,book.pageReadPercent())
-        assertEquals("( 0/1000 ) صفحه",book.pageReadState())
-        assertEquals(0,book.pageWasReaded())
+        assertEquals(0,book.pageReadPercent)
+        assertEquals("( 0/1000 ) صفحه",book.pageReadState)
+        assertEquals(0,book.pageWasReaded)
     }
 
     @Test
@@ -70,9 +69,9 @@ class BookTest{
 
         val book = Book(BookReadsdb(db,readList))
 
-        assertEquals(50,book.pageReadPercent())
-        assertEquals("( 500/1000 ) صفحه",book.pageReadState())
-        assertEquals(500,book.pageWasReaded())
+        assertEquals(50,book.pageReadPercent)
+        assertEquals("( 500/1000 ) صفحه",book.pageReadState)
+        assertEquals(500,book.pageWasReaded)
 
     }
 

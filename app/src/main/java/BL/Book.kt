@@ -6,8 +6,6 @@ open class Book(val dbDto: BookReadsdb) {
 
     //يك اصل رو رعايت كن . اينجا فقط محاسبات عددي تصميمي نداريم
 
-
-
     var pageCount
         get() = dbDto.book.pageCount
         set(value) {
@@ -26,15 +24,18 @@ open class Book(val dbDto: BookReadsdb) {
             dbDto.book.priority = value
         }
 
-    fun pageWasReaded(): Int {
-        return dbDto.reads.sumBy { it.pageRead }
-    }
+    val pageWasReaded: Int
+        get() {
+            return dbDto.reads.sumBy { it.pageRead }
+        }
 
-    fun pageReadState(): String {
-        return "( " + pageWasReaded() + "/" +  pageCount + " )" + " صفحه"
-    }
+    val pageReadState: String
+        get() {
+            return "( $pageWasReaded/$pageCount ) صفحه"
+        }
 
-    fun pageReadPercent(): Int {
-        return ((pageWasReaded()*100)/ pageCount)
-    }
+    val pageReadPercent: Float
+        get() {
+            return (pageWasReaded * 100) / pageCount.toFloat()
+        }
 }

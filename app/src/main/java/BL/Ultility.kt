@@ -2,6 +2,7 @@ package BL
 
 import android.graphics.Color
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 import morteza.darzi.SelfTeach.termType
 
 class Ultility{
@@ -35,6 +36,19 @@ class Ultility{
                 termType.termTabestan -> PersianCalendar().apply { setPersianDate(year,5,31)}.persianShortDate
                 termType.termManual -> ""
             }
+        }
+
+        fun getTermabledays(startDate:String,endDate:String): Array<PersianCalendar> {
+            val re = mutableListOf<PersianCalendar>()
+            val start = PersianDateParser(startDate).persianDate.timeInMillis
+            val end = PersianDateParser(endDate).persianDate.timeInMillis
+
+            for (b in start..end step (1000*60*60*24)){
+                re.add(PersianCalendar(b))
+            }
+
+            return re.toTypedArray()
+
         }
     }
 }

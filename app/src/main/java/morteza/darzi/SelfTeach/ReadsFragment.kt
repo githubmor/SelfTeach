@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
@@ -38,6 +37,7 @@ class ReadsFragment : BaseDatePickerFragment() {
     private val readDateErrorMessage = "لطفا زمان خواندن را مشخص كنيد"
     private val readPageCountErrorMessage = "لطفا تعداد صفحات خوانده شده را وارد كنيد"
     private val readSelectBookErrorMessage = "لطفا نام كتاب را وارد كنيد"
+    private val readPageBiggerThanPageErrorMessage = "تعداد صفحات خوانده شده نباید بیشتر از تعداد صفحات کتاب باشد"
 
     var books : List<Bookdb> = listOf()
     var reads : MutableList<Read> = mutableListOf()
@@ -100,6 +100,8 @@ class ReadsFragment : BaseDatePickerFragment() {
         errorTextChangeListner(v.read_page_count_lay, readPageCountErrorMessage)
         errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
 
+
+
         v.read_save.setOnClickListener {
             if (validateToSave(v)) {
                 launch {
@@ -126,14 +128,15 @@ class ReadsFragment : BaseDatePickerFragment() {
         launch {
             books = bookRepo.getAllBook()!!
 
-            val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map { it.name })
+            val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
+                it.name + " - " +  it.pageCount + " صفحه" })
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             v.spinner.adapter = dataAdapter
         }
 
         v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedBook = books.single { it.name == adapterView.getItemAtPosition(i) as String }
+                selectedBook = books.single { it.name == adapterView.getItemAtPosition(i).toString().substringBefore(" - ") }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {
@@ -151,6 +154,13 @@ class ReadsFragment : BaseDatePickerFragment() {
             v.read_page_count.text.isNullOrEmpty() -> {
                 v.read_page_count_lay.error = readPageCountErrorMessage
                 return false
+            }
+            selectedBook!=null-> {
+                if (v.read_page_count.text.toString().toInt() > selectedBook!!.pageCount) {
+                    v.read_page_count_lay.error = readPageBiggerThanPageErrorMessage
+                    return false
+                }else
+                    true
             }
             v.read_date.text.isNullOrEmpty() -> {
                 v.read_date_lay.error =readDateErrorMessage
