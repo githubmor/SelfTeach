@@ -118,7 +118,7 @@ package Unused
 //
 //                startActivity(Intent(this, MainActivity::class.java))
 //            }
-//            R.id.TermManaging -> startActivity(Intent(this, TermFragment::class.java))
+//            R.id.TermManaging -> startActivity(Intent(this, TermEditFragment::class.java))
 //
 //            R.id.AddRead -> {
 //                val i = Intent(this, Reading::class.java)

@@ -6,6 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/indicator_term_first"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <ViewSwitcher
         android:id="@+id/switcher"
         android:inAnimation="@android:anim/slide_in_left"
@@ -25,7 +31,8 @@
 
         <include layout="@layout/include_term_empty" />
 
-        <include layout="@layout/include_term_add" />
+    <include
+        layout="@layout/include_term_add" />
 
     </ViewSwitcher>
 </androidx.constraintlayout.widget.ConstraintLayout>

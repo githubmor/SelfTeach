@@ -7,6 +7,14 @@
     android:orientation="vertical"
     >
 
+    <ProgressBar
+        android:id="@+id/indicator_add_term"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <Spinner
         android:id="@+id/term_type"
         style="@style/Widget.AppCompat.Spinner.Underlined"

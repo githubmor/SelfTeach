@@ -18,7 +18,7 @@ import android.widget.Toast
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_term.view.*
+import kotlinx.android.synthetic.main.fragment_term_first.view.*
 import kotlinx.android.synthetic.main.include_term_add.*
 import kotlinx.android.synthetic.main.include_term_add.view.*
 import kotlinx.android.synthetic.main.include_term_empty.view.*
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class TermFragment : BaseDatePickerFragment() {
+class TermFirstFragment : BaseDatePickerFragment() {
     override val selectableDateList: Array<PersianCalendar>?
         get() {
             val start = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH,-4)}.persianShortDate
@@ -36,7 +36,6 @@ class TermFragment : BaseDatePickerFragment() {
         }
 
     private lateinit var selectedTermType: termType
-    private val termError = "لطفا نامی برای ترم انتخاب کنید"
     private val startDateError = "لطفا تاریخ شروع ترم را مشخص کنید"
     private val endDateError = "لطفا تاریخ پایان ترم را مشخص کنید"
 
@@ -60,7 +59,21 @@ class TermFragment : BaseDatePickerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_term, container, false)
+        val v = inflater.inflate(R.layout.fragment_term_first, container, false)
+
+        intializeBeforeSuspend(v)
+        intializeSuspend(v)
+        intializeNotRelatedToSuspend(v)
+
+        return v
+    }
+
+    private fun intializeBeforeSuspend(v:View) {
+        v.switcher.visibility = View.GONE
+        v.indicator_term_first.visibility = View.VISIBLE
+    }
+
+    private fun intializeSuspend(v: View) {
         launch {
             val bills = termRep.getTerm()
 
@@ -68,14 +81,34 @@ class TermFragment : BaseDatePickerFragment() {
                 term = bills
                 isTermEdit = true
             }
-
-            if (term!=null) {
-                showTermView(v)
-                loadTermInView(v)
-            }
+            intializeAfterSuspend(v)
         }
+    }
+    private fun intializeAfterSuspend(v: View) {
+        if (term!=null) {
+            show_EditTermView(v)
+        }
+        v.switcher.visibility = View.VISIBLE
+        v.indicator_term_first.visibility = View.GONE
+    }
 
+    private fun show_EditTermView(v: View) {
+        showTermView(v)
+        loadTermInView(v)
+    }
 
+    private fun showTermView(v: View) {
+        if (v.switcher.displayedChild==0)
+            v.switcher.showNext()
+    }
+
+    private fun loadTermInView(v: View) {
+        v.term_type.setSelection(termType.values().single{it.typeName==term!!.type}.ordinal)
+        v.term_start_date.setText(term?.startDate)
+        v.term_end_date.setText(term?.endDate)
+    }
+
+    private fun intializeNotRelatedToSuspend(v: View) {
         v.add_new_term.setOnClickListener {
             showTermView(v)
         }
@@ -94,13 +127,26 @@ class TermFragment : BaseDatePickerFragment() {
             showDatapicker(endTag)
         }
 
+        intializeSpinner(v)
+
+        errorTextChangeListner(v.term_start_date_lay, startDateError)
+        errorTextChangeListner(v.term_end_date_lay,endDateError)
+
+        v.term_save.setOnClickListener {
+            if(validateToSave(v)) {
+                getTermAndSave(v)
+            }
+        }
+    }
+
+    private fun intializeSpinner(v: View) {
         val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, termType.values().map { it.typeName })
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         v.term_type.adapter = dataAdapter
 
         v.term_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedTermType = termType.values().single { it.typeName==adapterView.getItemAtPosition(i) as String}
+                selectedTermType = termType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
 
                 if (!isTermEdit) {
                     v.term_start_date.setText(Ultility.getStartDate(selectedTermType))
@@ -112,35 +158,10 @@ class TermFragment : BaseDatePickerFragment() {
 
             }
         }
-//        errorTextChangeListner(v.term_name_lay, termError)
-        errorTextChangeListner(v.term_start_date_lay, startDateError)
-        errorTextChangeListner(v.term_end_date_lay,endDateError)
-
-        v.term_save.setOnClickListener {
-            if(validateToSave(v)) {
-                getTermAndSave(v)
-            }
-        }
-        return v
-    }
-
-    private fun showTermView(v: View) {
-        if (v.switcher.displayedChild==0)
-            v.switcher.showNext()
-    }
-
-    private fun loadTermInView(v: View) {
-        v.term_type.setSelection(termType.values().single{it.typeName==term!!.type}.ordinal)
-        v.term_start_date.setText(term?.startDate)
-        v.term_end_date.setText(term?.endDate)
     }
 
     private fun validateToSave(v:View):Boolean{
         return when {
-//            v.term_type.isSelected.isNullOrEmpty() ->{
-//                v.term_name_lay.error = termError
-//                false
-//            }
             v.term_start_date.text.isNullOrEmpty() -> {
                 v.term_start_date_lay.error = startDateError
                 false
@@ -154,7 +175,6 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun getTermAndSave(v: View) {
-
         launch {
             if (isTermEdit){
                 term!!.type = selectedTermType.name
@@ -216,11 +236,3 @@ class TermFragment : BaseDatePickerFragment() {
     }
 }
 
-
-
-enum class termType(val typeName:String){
-    nimsalAvl("ترم تحصیلی اول"),
-    nimsalDovom("ترم تحصیلی دوم"),
-    termTabestan("ترم تحصیلی تابستان"),
-    termManual("دوره آزاد"),
-}

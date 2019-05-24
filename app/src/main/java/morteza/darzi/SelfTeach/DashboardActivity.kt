@@ -6,20 +6,24 @@ import DAL.AppDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.launch
 
 
-class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractionListener
-        ,BooksFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
-        PerformanceFragment.OnFragmentInteractionListener {
+class DashboardActivity : ScopedAppActivity(), TermEditFragment.OnFragmentInteractionListener
+        ,BooksListFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
+        PerformanceFragment.OnFragmentInteractionListener,TermFirstFragment.OnFragmentInteractionListener ,
+BooksFirstFragment.OnFragmentInteractionListener{
 
     lateinit var termRep : TermRepository
     lateinit var bookRepo : BookRepository
+    lateinit var bottomNavigation: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -34,28 +38,55 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
         termRep = TermRepository(database.termDao())
         bookRepo = BookRepository(database.bookDao())
 
-        val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
-        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        intializeNotRelatedToSuspend()
 
-        initializeFirst()
+        intializeBeforeSuspend()
+        intializeSuspend()
+
     }
 
-    private fun initializeFirst() {
+    private fun intializeNotRelatedToSuspend() {
+        bottomNavigation = findViewById(R.id.navigationView)
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)    }
+
+    private fun intializeBeforeSuspend() {
+        changeToolbarAndNavigation(true)
+        indic_dashboard.visibility = View.VISIBLE
+    }
+
+    private fun intializeSuspend() {
         launch {
-            var frag = Fragment()
+            val frag: Fragment
 
             val termExist = termRep.isTermexist()
             val bookExist = bookRepo.isBooksExist()
 
-            frag = if (termExist)
-                if (bookExist)
-                    PerformanceFragment()
-                else
-                    BooksFragment()
-            else
-                TermFragment()
+            indic_dashboard.visibility = View.GONE
 
+            frag = if (termExist)
+                if (bookExist) {
+                    changeToolbarAndNavigation(false)
+                    PerformanceFragment()
+                }
+                else {
+                    changeToolbarAndNavigation(true)
+                    BooksFirstFragment()
+                }
+            else {
+                changeToolbarAndNavigation(true)
+                TermFirstFragment()
+            }
             Transaction(frag)
+        }
+    }
+
+    fun changeToolbarAndNavigation(hide:Boolean){
+        if (hide) {
+            supportActionBar!!.hide()
+            bottomNavigation.visibility = View.GONE
+        }else{
+            supportActionBar!!.show()
+            bottomNavigation.visibility = View.VISIBLE
         }
     }
 
@@ -70,7 +101,7 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
                 return@OnNavigationItemSelectedListener true
             }
             R.id.Booking -> {
-                Transaction(BooksFragment())
+                Transaction(BooksListFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -110,28 +141,28 @@ class DashboardActivity : ScopedAppActivity(), TermFragment.OnFragmentInteractio
                         bookRepo.deleteAll()
                     }
 
-                    initializeFirst()
+                    intializeSuspend()
                 }
             }
-            R.id.TermManaging -> Transaction(TermFragment())
+            R.id.TermManaging -> Transaction(TermEditFragment())
         }
 
         return super.onOptionsItemSelected(item)
 
     }
     override fun failOpenBooks() {
-        initializeFirst()
+        intializeSuspend()
         Toast.makeText(applicationContext,"fail book",Toast.LENGTH_LONG).show()
     }
     override fun failPerformance() {
-        initializeFirst()
+        intializeSuspend()
         Toast.makeText(applicationContext,"fail performance",Toast.LENGTH_LONG).show()
     }
     override fun onSaveTermComplete() {
-        initializeFirst()
+        intializeSuspend()
     }
     override fun failRead() {
-        initializeFirst()
+        intializeSuspend()
         Toast.makeText(applicationContext,"fail read",Toast.LENGTH_LONG).show()
     }
 }

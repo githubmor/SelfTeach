@@ -5,16 +5,16 @@
     android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/emptyText"
+    <ProgressBar
+        android:id="@+id/indic_book_list"
+        style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="لطفا کتاب های این ترم را معرفی کنید" />
+        android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>

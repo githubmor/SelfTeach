@@ -6,7 +6,7 @@ import BL.TermRepository
 import DAL.AppDatabase
 import DAL.BookReadsdb
 import DAL.Bookdb
-import DBAdapter.Book_Adapter
+import DBAdapter.Book_first_Adapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,13 +14,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_books.view.*
+import kotlinx.android.synthetic.main.fragment_books_first.view.*
 import kotlinx.android.synthetic.main.include_book_add.view.*
 import kotlinx.android.synthetic.main.include_book_list.view.*
 import kotlinx.coroutines.launch
 
 
-class BooksFragment : BaseFragment() {
+class BooksFirstFragment : BaseFragment() {
 
     private val bookNameErrorMessage = "لطفا نام كتاب را وارد كنيد"
     private val bookPageCountErrorMessage ="لطفا تعداد صفحات كتاب را وارد كنيد"
@@ -29,51 +29,71 @@ class BooksFragment : BaseFragment() {
 
     var books : MutableList<Book> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-
+    lateinit var repository : BookRepository
+    lateinit var adapter: Book_first_Adapter
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_books, container, false)
+        val v = inflater.inflate(R.layout.fragment_books_first, container, false)
 
-        val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-        val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
 
-        val adapter = Book_Adapter(context!!,books,repository)
+        intializeBeforeSuspend(v)
+        intializeSuspend(v)
+        intializeNotRelatedToSuspend(v)
 
+        return v
+    }
+
+    private fun intializeBeforeSuspend(v: View) {
+        v.indic_book_first.visibility = View.VISIBLE
+        v.switcher.visibility = View.GONE
+        v.emptyText.visibility = GONE
+        v.fab.hide()
+    }
+
+    private fun intializeSuspend(v: View) {
         launch {
+            val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
+            repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+
             if (!termRepo.isTermexist()) {
                 listener!!.failOpenBooks()
             }
 
             val bills = repository.getAllBookWithRead()
 
-            if (bills!=null) {
+            if (bills != null) {
                 for (bill in bills) {
                     books.add(Book(bill))
                 }
-                adapter.updateBooks(books.toList())
             }
-
-
-            if (books.size<=0){
-                arrangeForFirstViewSwitcher(v,false)
-            }else{
-                arrangeForFirstViewSwitcher(v,true)
-            }
+            intializeAfterSuspend(v)
 
         }
+    }
 
-
-        v.fab.setOnClickListener {
-            arrangeForSecondViewSwitcher(v)
-        }
-
+    private fun intializeAfterSuspend(v: View) {
+        adapter = Book_first_Adapter(context!!,books,repository)
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         v.list.adapter = adapter
 
-        errorTextChangeListner(v.book_name_lay, bookNameErrorMessage)
-        errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
+        v.switcher.visibility = View.VISIBLE
+        v.indic_book_first.visibility = GONE
+
+        if (books.size <= 0) {
+            arrangeForFirstViewSwitcher(v, false)
+        } else {
+            arrangeForFirstViewSwitcher(v, true)
+        }
+    }
+
+
+
+    private fun intializeNotRelatedToSuspend(v: View) {
+        v.fab.setOnClickListener {
+            arrangeForSecondViewSwitcher(v)
+        }
 
         v.book_save.setOnClickListener {
             if (validateToSave(v)) {
@@ -85,8 +105,9 @@ class BooksFragment : BaseFragment() {
                 }
             }
         }
+        errorTextChangeListner(v.book_name_lay, bookNameErrorMessage)
+        errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
 
-        return v
     }
 
     private fun validateToSave(v:View):Boolean {
@@ -126,6 +147,7 @@ class BooksFragment : BaseFragment() {
         v.fab.show()
         if (v.switcher.displayedChild==1)
             v.switcher.showPrevious()
+
 
     }
 
