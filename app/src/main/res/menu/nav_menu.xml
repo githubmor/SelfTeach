@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/AddRead"
-        android:icon="@android:drawable/ic_delete"
+        android:icon="@drawable/ic_read"
 
         android:title="@string/AddRead" />
 
@@ -16,7 +16,7 @@
         android:title="@string/PerformanceTitle" />
     <item
             android:id="@+id/Booking"
-        android:icon="@android:drawable/ic_delete"
+        android:icon="@drawable/ic_books"
         android:title="@string/Booking" />
 
 </menu>
