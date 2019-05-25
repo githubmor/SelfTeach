@@ -41,7 +41,7 @@ class Book_first_Adapter(private val context: Context, private val books: Mutabl
                 repository.delete(b.dbDto.book)
                 withContext(Dispatchers.Main){
                     Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
-                    books.removeAt(i)
+                    books.remove(b)
                     notifyItemRemoved(i)
                 }
 

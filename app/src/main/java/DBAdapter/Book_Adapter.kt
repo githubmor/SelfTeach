@@ -6,13 +6,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_book.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import morteza.darzi.SelfTeach.R
 
 
@@ -22,7 +17,7 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal val bookName = v.book_name_lab
         internal val pageCount = v.book_page_count_lab
-        internal val delBook = v.del_book
+//        internal val delBook = v.del_book
         internal val readProgress = v.read_progress
     }
 
@@ -38,18 +33,18 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
         holder.bookName.text = b.name
         holder.pageCount.text = b.pageReadState
         holder.readProgress.progress = b.pageReadPercent.toInt()
-        holder.delBook.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch{
-                repository.delete(b.dbDto.book)
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
-                    books.removeAt(i)
-                    notifyItemRemoved(i)
-                }
-
-            }
-
-        }
+//        holder.delBook.setOnClickListener {
+//            CoroutineScope(Dispatchers.IO).launch{
+//                repository.delete(b.dbDto.book)
+//                withContext(Dispatchers.Main){
+//                    Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
+//                    books.removeAt(i)
+//                    notifyItemRemoved(i)
+//                }
+//
+//            }
+//
+//        }
 
     }
 

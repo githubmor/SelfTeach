@@ -10,8 +10,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.include_book_list.view.*
+import kotlinx.android.synthetic.main.fragment_book_list.view.*
+import kotlinx.android.synthetic.main.include_book_list.view.list
 import kotlinx.coroutines.launch
 
 
@@ -30,7 +32,7 @@ class BooksListFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.include_book_list, container, false)
+        val v = inflater.inflate(R.layout.fragment_book_list, container, false)
 
         repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
 
@@ -71,6 +73,7 @@ class BooksListFragment : BaseFragment() {
         v.list.adapter = adapter
 
         v.indic_book_list.visibility = GONE
+        v.list.visibility= VISIBLE
     }
 
 

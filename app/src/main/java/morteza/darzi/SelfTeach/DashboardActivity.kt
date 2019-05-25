@@ -20,6 +20,9 @@ class DashboardActivity : ScopedAppActivity(), TermEditFragment.OnFragmentIntera
         ,BooksListFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
         PerformanceFragment.OnFragmentInteractionListener,TermFirstFragment.OnFragmentInteractionListener ,
 BooksFirstFragment.OnFragmentInteractionListener{
+    override fun completeBooksFirst() {
+        intializeSuspend()
+    }
 
     lateinit var termRep : TermRepository
     lateinit var bookRepo : BookRepository
@@ -144,7 +147,14 @@ BooksFirstFragment.OnFragmentInteractionListener{
                     intializeSuspend()
                 }
             }
-            R.id.TermManaging -> Transaction(TermEditFragment())
+            R.id.TermManaging -> {
+                changeToolbarAndNavigation(true)
+                Transaction(TermEditFragment())
+            }
+            R.id.book_first -> {
+                changeToolbarAndNavigation(true)
+                Transaction(BooksFirstFragment())
+            }
         }
 
         return super.onOptionsItemSelected(item)

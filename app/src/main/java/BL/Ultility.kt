@@ -2,7 +2,6 @@ package BL
 
 import android.graphics.Color
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 import morteza.darzi.SelfTeach.termType
 
 class Ultility{
@@ -40,8 +39,8 @@ class Ultility{
 
         fun getTermabledays(startDate:String,endDate:String): Array<PersianCalendar> {
             val re = mutableListOf<PersianCalendar>()
-            val start = PersianDateParser(startDate).persianDate.timeInMillis
-            val end = PersianDateParser(endDate).persianDate.timeInMillis
+            val start = PersianCalendar().apply { parse(startDate)}.timeInMillis
+            val end = PersianCalendar().apply { parse(endDate)}.timeInMillis
 
             for (b in start..end step (1000*60*60*24)){
                 re.add(PersianCalendar(b))

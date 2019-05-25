@@ -78,7 +78,6 @@ class BooksFirstFragment : BaseFragment() {
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         v.list.adapter = adapter
 
-        v.switcher.visibility = View.VISIBLE
         v.indic_book_first.visibility = GONE
 
         if (books.size <= 0) {
@@ -93,6 +92,9 @@ class BooksFirstFragment : BaseFragment() {
     private fun intializeNotRelatedToSuspend(v: View) {
         v.fab.setOnClickListener {
             arrangeForSecondViewSwitcher(v)
+        }
+        v.start.setOnClickListener {
+            listener!!.completeBooksFirst()
         }
 
         v.book_save.setOnClickListener {
@@ -132,17 +134,20 @@ class BooksFirstFragment : BaseFragment() {
         if (v.switcher.displayedChild==0)
             v.switcher.showNext()
         v.fab.hide()
+        v.start.visibility = GONE
     }
 
 
 
-    private fun arrangeForFirstViewSwitcher(v: View, isListShow:Boolean) {
-        if (isListShow) {
-            v.list.visibility = VISIBLE
+    private fun arrangeForFirstViewSwitcher(v: View,isListShow : Boolean) {
+        if (isListShow){
             v.emptyText.visibility = GONE
+            v.switcher.visibility = VISIBLE
+            v.start.visibility = VISIBLE
         }else{
-            v.list.visibility = GONE
             v.emptyText.visibility = VISIBLE
+            v.switcher.visibility = GONE
+            v.start.visibility = GONE
         }
         v.fab.show()
         if (v.switcher.displayedChild==1)
@@ -167,7 +172,7 @@ class BooksFirstFragment : BaseFragment() {
     }
 
     interface OnFragmentInteractionListener {
-
+        fun completeBooksFirst()
         fun failOpenBooks()
     }
 
