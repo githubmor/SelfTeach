@@ -1,0 +1,15 @@
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="vector"
+    android:width="501dp"
+    android:height="257dp"
+    android:viewportWidth="501"
+    android:viewportHeight="257">
+    <group android:name="group">
+        <path
+            android:name="aggpgoxyq"
+            android:pathData="M 249.836 245.667 C 252.136 245.667 253.996 247.537 253.996 249.837 C 253.996 250.667 253.996 249.007 253.996 249.837 C 253.996 252.137 252.136 253.997 249.836 253.997 L 5.166 253.997 C 2.866 253.997 0.996 252.137 0.996 249.837 C 0.996 249.007 0.996 250.667 0.996 249.837 C 0.996 247.537 2.866 245.667 5.166 245.667 L 249.836 245.667 Z"
+            android:fillColor="#000"
+            android:strokeWidth="1"/>
+    </group>
+</vector>
