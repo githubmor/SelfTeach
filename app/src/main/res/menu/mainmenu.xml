@@ -4,17 +4,17 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/TermManaging"
-        android:icon="@drawable/ic_term"
-        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_term2"
+        app:showAsAction="always"
         android:title="@string/Terming" />
     <item
         android:id="@+id/book_first"
-        android:icon="@drawable/ic_books"
-        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_books2"
+        app:showAsAction="always"
         android:title="@string/Booking" />
 
     <item
             android:id="@+id/Reseting"
         android:title="@string/Reseting"
-        app:showAsAction="ifRoom" />
+ />
 </menu>

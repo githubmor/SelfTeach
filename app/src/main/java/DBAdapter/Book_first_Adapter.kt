@@ -60,9 +60,4 @@ class Book_first_Adapter(private val context: Context, private val books: Mutabl
         notifyDataSetChanged()
     }
 
-    fun updateBooks(bs: List<Book>) {
-        books.clear()
-        books.addAll(bs)
-        notifyDataSetChanged()
-    }
 }
