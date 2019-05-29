@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">خودخوان</string>
     <string name="Terming">ترم تحصیلی</string>
-    <string name="termName">نام ترم</string>
     <string name="startDate">تاریخ شروع</string>
     <string name="endDate">تاریخ پایان</string>
     <string name="save">ثبت</string>

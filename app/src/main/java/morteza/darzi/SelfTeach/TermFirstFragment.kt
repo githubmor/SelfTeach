@@ -148,10 +148,10 @@ class TermFirstFragment : BaseDatePickerFragment() {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 selectedTermType = termType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
 
-                if (!isTermEdit) {
+//                if (!isTermEdit) {
                     v.term_start_date.setText(Ultility.getStartDate(selectedTermType))
                     v.term_end_date.setText(Ultility.getEndDate(selectedTermType))
-                }
+//                }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {

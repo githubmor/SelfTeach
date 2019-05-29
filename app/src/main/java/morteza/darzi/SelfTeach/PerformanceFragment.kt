@@ -1,4 +1,4 @@
-package morteza.darzi.SelfTeach
+﻿package morteza.darzi.SelfTeach
 
 
 import BL.*
@@ -80,6 +80,8 @@ class PerformanceFragment : BaseFragment() {
         v.per_day.text = performance.pagePerDayRemind.toInt().toString()
 
         v.day_remind.text = term.termDateState
+
+//        v.progressBar.animateProgress(1000, 0, term.dayPastPercent);
 
         v.progressBar.progress = term.dayPastPercent
 

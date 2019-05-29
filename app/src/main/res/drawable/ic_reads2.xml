@@ -9,37 +9,37 @@
       android:strokeAlpha="1"
       android:strokeWidth="2"
       android:fillAlpha="0"
-      android:strokeColor="#970ba9"/>
+      android:strokeColor="@color/colorAccent"/>
   <path
       android:fillColor="#FF000000"
       android:pathData="M21,3C17.77,3 15.75,3 14.94,3C13.32,3 12,4.31 12,5.93C12,8.6 12,13.74 12,16.43C12,18 13.27,19.27 14.84,19.27C15.66,19.27 17.72,19.27 21,19.27L21,3Z"
       android:strokeAlpha="1"
       android:strokeWidth="2"
       android:fillAlpha="0"
-      android:strokeColor="#970ba9"/>
+      android:strokeColor="@color/colorAccent"/>
   <path
       android:fillColor="#FF000000"
       android:pathData="M13,19.93C13,20.48 12.55,20.93 12,20.93C11.45,20.93 11,20.48 11,19.93C11,19.37 11.45,18.93 12,18.93C12.55,18.93 13,19.37 13,19.93Z"
       android:strokeAlpha="1"
       android:strokeWidth="2"
       android:fillAlpha="0"
-      android:strokeColor="#970ba9"/>
+      android:strokeColor="@color/colorAccent"/>
   <path
       android:fillColor="#FF000000"
       android:pathData="M21,16C17.77,16 15.75,16 14.94,16C13.32,16 12,14.68 12,13.06C12,11.05 12,7.83 12,5.79C12,4.25 13.25,3 14.8,3C15.62,3 17.69,3 21,3L21,16Z"
       android:strokeAlpha="1"
       android:strokeWidth="2"
       android:fillAlpha="0"
-      android:strokeColor="#970ba9"/>
+      android:strokeColor="@color/colorAccent"/>
   <path
       android:fillColor="#FF000000"
       android:pathData="M3,3C6.23,3 8.25,3 9.06,3C10.68,3 12,4.31 12,5.93C12,7.94 12,11.16 12,13.2C12,14.74 10.75,16 9.2,16C8.38,16 6.31,16 3,16L3,3Z"
       android:strokeAlpha="1"
       android:strokeWidth="2"
       android:fillAlpha="0"
-      android:strokeColor="#970ba9"/>
+      android:strokeColor="@color/colorAccent"/>
   <path
       android:pathData="M17.25,7.34L16.75,8.19L16.75,3.19L18.75,3.19L18.75,8.19L18.25,7.34L17.75,6.5L17.25,7.34Z"
-      android:fillColor="#970ba9"
+      android:fillColor="@color/colorAccent"
       android:fillAlpha="1"/>
 </vector>
