@@ -112,8 +112,12 @@ BooksFirstFragment.OnFragmentInteractionListener{
     }
 
     protected fun Transaction(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit()
+        val fragmentManager = supportFragmentManager.beginTransaction()
+        fragmentManager.setCustomAnimations(R.animator.fragment_slide_left_enter,
+                R.animator.fragment_slide_left_exit,
+                R.animator.fragment_slide_right_enter,
+                R.animator.fragment_slide_right_exit)
+        fragmentManager.replace(R.id.container, fragment).addToBackStack(null).commit()
     }
 
     override fun onBackPressed() {

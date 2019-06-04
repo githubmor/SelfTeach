@@ -7,6 +7,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -88,6 +89,12 @@ class PerformanceFragment : BaseFragment() {
         for (book in performance.readList()) {
             val te = TextView(context)
             te.text = book + " صفحه بخوان"
+            if (Build.VERSION.SDK_INT < 23) {
+                te.setTextAppearance(context, R.style.creditCardText);
+            } else {
+                te.setTextAppearance(R.style.creditCardText);
+            }
+            te.setTextColor(v.per_day_lab.textColors)
             te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
             v.read_list.addView(te)
