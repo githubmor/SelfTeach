@@ -31,7 +31,7 @@ BooksFirstFragment.OnFragmentInteractionListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-//        MyExceptionHandler(this)//comment this line if use debugger
+        MyExceptionHandler(this)//comment this line if use debugger
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -117,7 +117,7 @@ BooksFirstFragment.OnFragmentInteractionListener{
                 R.animator.fragment_slide_left_exit,
                 R.animator.fragment_slide_right_enter,
                 R.animator.fragment_slide_right_exit)
-        fragmentManager.replace(R.id.container, fragment).addToBackStack(null).commit()
+        fragmentManager.replace(R.id.container, fragment).commit()
     }
 
     override fun onBackPressed() {

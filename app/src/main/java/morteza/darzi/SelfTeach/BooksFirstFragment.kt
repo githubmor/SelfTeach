@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_books_first.view.*
 import kotlinx.android.synthetic.main.include_book_add.view.*
 import kotlinx.android.synthetic.main.include_book_list.view.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -54,6 +55,7 @@ class BooksFirstFragment : BaseFragment() {
 
     private fun intializeSuspend(v: View) {
         launch {
+            delay(500)
             val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
             repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
 

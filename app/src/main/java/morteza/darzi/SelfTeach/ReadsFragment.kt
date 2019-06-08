@@ -24,6 +24,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -60,6 +61,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         val adapter = intializeReadList(v)
 
         launch {
+            delay(500)
             if (!bookRepo.isBooksExist()) {
                 listener!!.failRead()
             }else

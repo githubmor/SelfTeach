@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.include_term_add.*
 import kotlinx.android.synthetic.main.include_term_add.view.*
 import kotlinx.android.synthetic.main.include_term_empty.view.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -75,6 +76,7 @@ class TermFirstFragment : BaseDatePickerFragment() {
 
     private fun intializeSuspend(v: View) {
         launch {
+            delay(500)
             val bills = termRep.getTerm()
 
             if (bills!=null) {

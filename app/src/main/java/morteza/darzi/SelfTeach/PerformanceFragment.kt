@@ -18,6 +18,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import com.github.lzyzsd.circleprogress.DonutProgress
 import kotlinx.android.synthetic.main.fragment_performance.view.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PerformanceFragment : BaseFragment() {
@@ -42,9 +43,24 @@ class PerformanceFragment : BaseFragment() {
         return v
     }
 
+    private fun intializeBeforeSuspend(v: View) {
+        v.indic_performance.visibility = VISIBLE
+        v.today.visibility = GONE
+        v.per_day.visibility = GONE
+        v.day_remind.visibility = GONE
+        v.progressBar.visibility = GONE
+        v.read_list.visibility = GONE
+        v.performanceCircle.visibility = GONE
+        v.today_lab.visibility = GONE
+        v.per_day_lab.visibility = GONE
+        v.safe_1.visibility = GONE
+        v.safe_2.visibility = GONE
+    }
+
     private fun intializeSuspend(v: View) {
 
         launch {
+            delay(500)
             repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
             if (!repository.isBooksExist()) {
                 listener!!.failPerformance()
@@ -72,6 +88,8 @@ class PerformanceFragment : BaseFragment() {
         v.performanceCircle.visibility = VISIBLE
         v.today_lab.visibility = VISIBLE
         v.per_day_lab.visibility = VISIBLE
+        v.safe_1.visibility = VISIBLE
+        v.safe_2.visibility = VISIBLE
 
         performanceircle = v.performanceCircle
 
@@ -81,8 +99,6 @@ class PerformanceFragment : BaseFragment() {
         v.per_day.text = performance.pagePerDayRemind.toInt().toString()
 
         v.day_remind.text = term.termDateState
-
-//        v.progressBar.animateProgress(1000, 0, term.dayPastPercent);
 
         v.progressBar.progress = term.dayPastPercent
 
@@ -101,17 +117,7 @@ class PerformanceFragment : BaseFragment() {
         }
     }
 
-    private fun intializeBeforeSuspend(v: View) {
-        v.indic_performance.visibility = View.VISIBLE
-        v.today.visibility = GONE
-        v.per_day.visibility = GONE
-        v.day_remind.visibility = GONE
-        v.progressBar.visibility = GONE
-        v.read_list.visibility = GONE
-        v.performanceCircle.visibility = GONE
-        v.today_lab.visibility = GONE
-        v.per_day_lab.visibility = GONE
-    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

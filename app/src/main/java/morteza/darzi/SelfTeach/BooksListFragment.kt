@@ -14,6 +14,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_book_list.view.*
 import kotlinx.android.synthetic.main.include_book_list.view.list
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -49,6 +50,7 @@ class BooksListFragment : BaseFragment() {
 
     private fun intializeSuspend(v: View) {
         launch {
+            delay(500)
             val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
 
             if (!termRepo.isTermexist()) {
