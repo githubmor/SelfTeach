@@ -3,7 +3,7 @@ package BL
 import DAL.Termdb
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
-import morteza.darzi.SelfTeach.termType
+import morteza.darzi.SelfTeach2.termType
 
 class Term(val db : Termdb) {
 

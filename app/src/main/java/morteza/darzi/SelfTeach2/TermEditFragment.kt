@@ -1,4 +1,4 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
 
 
@@ -18,17 +18,15 @@ import android.widget.Toast
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_term_first.view.*
 import kotlinx.android.synthetic.main.include_term_add.*
 import kotlinx.android.synthetic.main.include_term_add.view.*
-import kotlinx.android.synthetic.main.include_term_empty.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class TermFirstFragment : BaseDatePickerFragment() {
+class TermEditFragment : BaseDatePickerFragment() {
     override val selectableDateList: Array<PersianCalendar>?
         get() {
             val start = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH,-4)}.persianShortDate
@@ -60,18 +58,23 @@ class TermFirstFragment : BaseDatePickerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_term_first, container, false)
+        val v = inflater.inflate(R.layout.include_term_add, container, false)
 
         intializeBeforeSuspend(v)
         intializeSuspend(v)
+
         intializeNotRelatedToSuspend(v)
 
         return v
     }
 
     private fun intializeBeforeSuspend(v:View) {
-        v.switcher.visibility = View.GONE
-        v.indicator_term_first.visibility = View.VISIBLE
+//        v.switcher.visibility = View.GONE
+        v.term_type.isEnabled = false
+        v.term_start_date_lay.isEnabled = false
+        v.term_end_date_lay.isEnabled = false
+        v.term_save.isEnabled = false
+        v.indicator_add_term.visibility = View.VISIBLE
     }
 
     private fun intializeSuspend(v: View) {
@@ -90,19 +93,23 @@ class TermFirstFragment : BaseDatePickerFragment() {
         if (term!=null) {
             show_EditTermView(v)
         }
-        v.switcher.visibility = View.VISIBLE
-        v.indicator_term_first.visibility = View.GONE
+//        v.switcher.visibility = View.VISIBLE
+        v.term_type.isEnabled = true
+        v.term_save.isEnabled = true
+        v.term_start_date_lay.isEnabled = true
+        v.term_end_date_lay.isEnabled = true
+        v.indicator_add_term.visibility = View.GONE
     }
 
     private fun show_EditTermView(v: View) {
-        showTermView(v)
+//        showTermView(v)
         loadTermInView(v)
     }
 
-    private fun showTermView(v: View) {
-        if (v.switcher.displayedChild==0)
-            v.switcher.showNext()
-    }
+//    private fun showTermView(v: View) {
+//        if (v.switcher.displayedChild==0)
+//            v.switcher.showNext()
+//    }
 
     private fun loadTermInView(v: View) {
         v.term_type.setSelection(termType.values().single{it.typeName==term!!.type}.ordinal)
@@ -111,9 +118,9 @@ class TermFirstFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeNotRelatedToSuspend(v: View) {
-        v.add_new_term.setOnClickListener {
-            showTermView(v)
-        }
+//        v.add_new_term.setOnClickListener {
+//            showTermView(v)
+//        }
 
         v.term_start_date.setOnClickListener {
             showDatapicker(startTag)
@@ -150,10 +157,10 @@ class TermFirstFragment : BaseDatePickerFragment() {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 selectedTermType = termType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
 
-//                if (!isTermEdit) {
+                if (!isTermEdit) {
                     v.term_start_date.setText(Ultility.getStartDate(selectedTermType))
                     v.term_end_date.setText(Ultility.getEndDate(selectedTermType))
-//                }
+                }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {
@@ -178,7 +185,7 @@ class TermFirstFragment : BaseDatePickerFragment() {
 
     private fun getTermAndSave(v: View) {
         launch {
-            if (isTermEdit){
+            if (isTermEdit){//TODO اینجا نباید اصلا ایجاد ترم باشد . فقط ویرایش
                 term!!.type = selectedTermType.name
                 term!!.startDate = v.term_start_date.text.toString()
                 term!!.endDate = v.term_end_date.text.toString()
@@ -238,3 +245,11 @@ class TermFirstFragment : BaseDatePickerFragment() {
     }
 }
 
+
+
+enum class termType(val typeName:String){
+    nimsalAvl("ترم تحصیلی اول"),
+    nimsalDovom("ترم تحصیلی دوم"),
+    termTabestan("ترم تحصیلی تابستان"),
+    termManual("دوره آزاد"),
+}

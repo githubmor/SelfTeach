@@ -1,4 +1,4 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
 import android.content.Intent
 import android.os.Bundle

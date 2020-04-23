@@ -1,4 +1,4 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
 import BL.BookRepository
 import BL.TermRepository

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_book.view.*
-import morteza.darzi.SelfTeach.R
+import morteza.darzi.SelfTeach2.R
 
 
 class Book_Adapter(private val context: Context, private val books: MutableList<Book>,val repository: BookRepository)

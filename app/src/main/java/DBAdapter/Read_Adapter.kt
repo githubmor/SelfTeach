@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import morteza.darzi.SelfTeach.R
+import morteza.darzi.SelfTeach2.R
 
 class Read_Adapter
 (private val context: Context, private val reads: MutableList<Read>?,val repository: ReadRepository)

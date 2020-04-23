@@ -2,7 +2,7 @@ package BL
 
 import android.graphics.Color
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import morteza.darzi.SelfTeach.termType
+import morteza.darzi.SelfTeach2.termType
 
 class Ultility{
     companion object {

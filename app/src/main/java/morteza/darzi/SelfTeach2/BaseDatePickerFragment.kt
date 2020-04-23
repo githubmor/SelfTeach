@@ -1,6 +1,5 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
-import android.app.FragmentManager
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 

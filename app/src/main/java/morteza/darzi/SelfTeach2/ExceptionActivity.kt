@@ -1,7 +1,6 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 

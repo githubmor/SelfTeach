@@ -1,10 +1,9 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 
 

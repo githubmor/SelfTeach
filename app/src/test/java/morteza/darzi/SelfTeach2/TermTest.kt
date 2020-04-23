@@ -1,8 +1,10 @@
-package morteza.darzi.SelfTeach
+package morteza.darzi.SelfTeach2
 
 import BL.Term
 import DAL.Termdb
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendarConstants
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendarUtils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -14,18 +16,19 @@ class TermTest{
     @Test
     fun term_Create_IsOk() {
 
-        val name = termType.nimsalAvl.name
-        val startDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-1)}.persianShortDate
-        val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH,2)}.persianShortDate
+        val name = termType.nimsalAvl
+        val startDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-1)}
+        val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH,2)}
 
-        val db = Termdb(1,name,startDate,endDate)
+        val dayDif = PersianCalendar(). = endDate.timeInMillis - startDate.timeInMillis
+        val db = Termdb(1,name.name,startDate.persianShortDate,endDate.persianShortDate)
 
         val term = Term(db)
 
-        assertEquals(name,term.type)
-        assertEquals(startDate,term.startDate)
-        assertEquals(endDate,term.endDate)
-        assertEquals(92,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
+        assertEquals(name.typeName,term.type)
+        assertEquals(startDate.persianShortDate,term.startDate)
+        assertEquals(endDate.persianShortDate,term.endDate)
+        assertEquals(startDate.,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
         assertEquals(31,term.dayPast)
         assertEquals(61,term.dayRemind)
         assertEquals(92,term.getTermDaysList().size)
