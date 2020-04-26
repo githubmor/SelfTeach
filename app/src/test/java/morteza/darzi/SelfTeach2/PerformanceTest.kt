@@ -26,7 +26,7 @@ class PerformanceTest{
 
         val bookP = Performance(term,book)
 
-        assertEquals(2,bookP.avgBookReadPerDay)
+        assertEquals(2.142857F,bookP.avgBookReadPerDay)
         assertEquals(61,bookP.pagePerDayRemind)
         assertEquals(-8,bookP.pageTo100Percent)
         assertEquals(112,bookP.performance)

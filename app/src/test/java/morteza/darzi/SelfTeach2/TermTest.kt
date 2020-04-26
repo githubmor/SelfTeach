@@ -3,8 +3,8 @@ package morteza.darzi.SelfTeach2
 import BL.Term
 import DAL.Termdb
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendarConstants
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendarUtils
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -14,13 +14,16 @@ import org.junit.Test
 class TermTest{
 
     @Test
-    fun term_Create_IsOk() {
+    fun CreatTermWithStartAndEndDate() {
 
         val name = termType.nimsalAvl
         val startDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-1)}
-        val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH,2)}
+        val endDate =  PersianCalendar().apply { add(PersianCalendar.MONTH,2)}
 
-        val dayDif = PersianCalendar(). = endDate.timeInMillis - startDate.timeInMillis
+        val dayCount = daysDiffCalculate(startDate.persianShortDate,endDate.persianShortDate)
+        val pas = daysDiffCalculate(startDate.persianShortDate,PersianCalendar().persianShortDate)
+        val remi = dayCount-pas
+
         val db = Termdb(1,name.name,startDate.persianShortDate,endDate.persianShortDate)
 
         val term = Term(db)
@@ -28,42 +31,58 @@ class TermTest{
         assertEquals(name.typeName,term.type)
         assertEquals(startDate.persianShortDate,term.startDate)
         assertEquals(endDate.persianShortDate,term.endDate)
-        assertEquals(startDate.,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
-        assertEquals(31,term.dayPast)
-        assertEquals(61,term.dayRemind)
-        assertEquals(92,term.getTermDaysList().size)
-        assertEquals("( 31/92 ) روز",term.termDateState)
+        assertEquals(dayCount,term.dayCount)
+        assertEquals(pas,term.dayPast)
+        assertEquals(remi,term.dayRemind)
+        assertEquals(dayCount,term.getTermDaysList().size)
+        assertEquals("( "+pas+"/"+dayCount+" ) روز",term.termDateState)
+    }
+
+    private fun daysDiffCalculate(s: String, e: String): Int {
+
+        val start = PersianDateParser(s).persianDate.timeInMillis
+        val end = PersianDateParser(e).persianDate.timeInMillis
+
+        val re = end - start
+
+        return ((re/(1000*60*60*24))+1).toInt()
     }
 
     @Test
     fun term_Edit_IsOk() {
 
         val name = termType.nimsalAvl.name
-        val startDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-1)}.persianShortDate
-        val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH,2)}.persianShortDate
+        val startDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-1)}
+        val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH,2)}
 
-        val db = Termdb(1,name,startDate,endDate)
+
+
+        val db = Termdb(1,name,startDate.persianShortDate,endDate.persianShortDate)
 
         val term = Term(db)
 
         val cname = termType.termTabestan.name
-        val cstartDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-2)}.persianShortDate
-        val cendDate = PersianCalendar().apply { add(PersianCalendar.MONTH,3)}.persianShortDate
+        val cstartDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-2)}
+        val cendDate = PersianCalendar().apply { add(PersianCalendar.MONTH,3)}
+
+        val dayCount = daysDiffCalculate(cstartDate.persianShortDate,cendDate.persianShortDate)
+        val pas = daysDiffCalculate(cstartDate.persianShortDate,PersianCalendar().persianShortDate)
+        val remi = dayCount-pas
 
         term.type = cname
-        term.startDate = cstartDate
-        term.endDate = cendDate
+        term.startDate = cstartDate.persianShortDate
+        term.endDate = cendDate.persianShortDate
 
         val changedDb = term.db
 
         assertEquals(cname,changedDb.name)
-        assertEquals(cstartDate,term.startDate)
-        assertEquals(cendDate,term.endDate)
-        assertEquals(154,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
-        assertEquals(62,term.dayPast)
-        assertEquals(92,term.dayRemind)
-        assertEquals(154,term.getTermDaysList().size)
-        assertEquals("( 62/154 ) روز",term.termDateState)
+        assertEquals(cstartDate.persianShortDate,term.startDate)
+        assertEquals(cendDate.persianShortDate,term.endDate)
+        assertEquals(dayCount,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
+        assertEquals(pas,term.dayPast)
+        assertEquals(remi,term.dayRemind)
+        assertEquals(dayCount,term.getTermDaysList().size)
+        assertEquals("( "+pas+"/"+dayCount+" ) روز",term.termDateState)
     }
 
 }

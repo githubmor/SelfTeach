@@ -17,10 +17,10 @@ class UltilityTest{
         val manual = Ultility.getStartDate(termType.termManual)
         val tabestan = Ultility.getStartDate(termType.termTabestan)
 
-        assertEquals("1398/07/01",aval)
-        assertEquals("1398/11/01",dovom)
+        assertEquals("1399/07/01",aval)
+        assertEquals("1399/11/01",dovom)
         assertEquals("",manual)
-        assertEquals("1398/04/01",tabestan)
+        assertEquals("1399/04/01",tabestan)
 
     }
 
@@ -32,10 +32,10 @@ class UltilityTest{
         val manual = Ultility.getEndDate(termType.termManual)
         val tabestan = Ultility.getEndDate(termType.termTabestan)
 
-        assertEquals("1398/10/30",aval)
-        assertEquals("1398/03/31",dovom)
+        assertEquals("1399/10/30",aval)
+        assertEquals("1399/03/31",dovom)
         assertEquals("",manual)
-        assertEquals("1398/06/31",tabestan)
+        assertEquals("1399/06/31",tabestan)
 
     }
 

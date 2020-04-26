@@ -27,7 +27,7 @@ class BookTest{
         assertEquals(name,book.name)
         assertEquals(page,book.pageCount)
         assertEquals(priority,book.priority)
-        assertEquals(0,book.pageReadPercent)
+        assertEquals(0F,book.pageReadPercent)
         assertEquals("( 0/1000 ) صفحه",book.pageReadState)
         assertEquals(0,book.pageWasReaded)
     }
@@ -69,7 +69,7 @@ class BookTest{
 
         val book = Book(BookReadsdb(db,readList))
 
-        assertEquals(50,book.pageReadPercent)
+        assertEquals(50F,book.pageReadPercent)
         assertEquals("( 500/1000 ) صفحه",book.pageReadState)
         assertEquals(500,book.pageWasReaded)
 
