@@ -22,7 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class BooksFirstFragment : BaseFragment() {
+class BooksFragment : BaseFragment() {
 
     private val bookNameErrorMessage = "لطفا نام كتاب را وارد كنيد"
     private val bookPageCountErrorMessage ="لطفا تعداد صفحات كتاب را وارد كنيد"
@@ -34,105 +34,36 @@ class BooksFirstFragment : BaseFragment() {
     lateinit var repository : BookRepository
     lateinit var adapter: Book_first_Adapter
 
+    lateinit var v: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_books_first, container, false)
+        v = inflater.inflate(R.layout.fragment_books_first, container, false)
 
-
-        intializeBeforeSuspend(v)
-        intializeSuspend(v)
+        intializeBeforeSuspend()
+        intializeSuspend()
 
         return v
     }
 
-    private fun intializeBeforeSuspend(v: View) {
-        v.indic_book_first.visibility = VISIBLE
-        v.switcher.visibility = GONE
-        v.emptyText.visibility = GONE
-        v.fab.hide()
-    }
+    private fun intializeBeforeSuspend() {
 
-    private fun intializeSuspend(v: View) {
-        launch {
-            delay(500)
-            val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
-            repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-
-            if (!termRepo.isTermexist()) {
-                listener!!.failOpenBooks()
-            }
-
-            val bills = repository.getAllBookWithRead()
-
-            if (bills != null) {
-                books.addAll(bills.map { Book(it) })
-            }
-            intializeAfterSuspend(v)
-
-        }
-    }
-
-    private fun intializeAfterSuspend(v: View) {
-        adapterIntialize(v)
-
-        preViewSwitcherIntialize(v)
-
-
-        arrangeForFirstViewSwitcher(v)
-    }
-
-    private fun adapterIntialize(v: View) {
-        adapter = Book_first_Adapter(context!!, books, repository)
-        v.list.layoutManager = LinearLayoutManager(context)
-        v.list.adapter = adapter
-    }
-
-    private fun preViewSwitcherIntialize(v: View) {
-        v.switcher.visibility = VISIBLE
-        v.indic_book_first.visibility = GONE
-    }
-
-    private fun arrangeForFirstViewSwitcher(v: View) {
-        val isListShow = books.size > 0
-        if (isListShow){
-            v.emptyText.visibility = GONE
-            v.list.visibility = VISIBLE
-            v.start.visibility = VISIBLE
-        }else{
-            v.emptyText.visibility = VISIBLE
-            v.list.visibility = GONE
-            v.start.visibility = GONE
-        }
-        v.fab.show()
-        if (v.switcher.displayedChild==1)
-            v.switcher.showPrevious()
+        ShowLoader(true)
 
         v.fab.setOnClickListener {
-            arrangeForSecondViewSwitcher(v)
+            showAddNewBookSwitcher()
         }
-        v.start.setOnClickListener {
+        v.complete.setOnClickListener {
             listener!!.completeBooksFirst()
         }
-    }
 
-    private fun arrangeForSecondViewSwitcher(v: View) {
-        v.book_name.setText("")
-        v.book_name_lay.isErrorEnabled = false
-        v.book_page_count.setText("")
-        v.book_page_count_lay.isErrorEnabled = false
-        if (v.switcher.displayedChild==0)
-            v.switcher.showNext()
-        v.fab.hide()
-        v.start.visibility = GONE
-        v.emptyText.visibility = GONE
         v.book_save.setOnClickListener {
-            if (validateToSave(v)) {
+            if (validateToSave()) {
                 launch {
                     val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),v.priority.rating.toInt())
                     repository.insert(b)
                     adapter.addNewBook(Book(BookReadsdb(b)))
-                    arrangeForFirstViewSwitcher(v)
+                    ShowBookListSwitcher()
                 }
             }
         }
@@ -140,7 +71,104 @@ class BooksFirstFragment : BaseFragment() {
         errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
     }
 
-    private fun validateToSave(v:View):Boolean {
+    private fun intializeSuspend() {
+        launch {
+            delay(500)
+
+            checkHasTerm()
+
+            GetBookList()
+
+            intializeAfterSuspend()
+
+        }
+    }
+
+    private suspend fun GetBookList() {
+
+        repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+
+        val list = repository.getAllBookWithRead()
+
+        if (list != null) {
+            books.addAll(list.map { Book(it) })
+        }
+        adapterIntialize()
+    }
+
+    private suspend fun checkHasTerm() {
+        val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
+
+        if (!termRepo.isTermexist()) {
+            listener!!.failOpenBooks()
+        }
+    }
+
+    private fun intializeAfterSuspend() {
+
+        ShowLoader(false)
+        ShowBookListSwitcher()
+    }
+
+    private fun adapterIntialize() {
+        adapter = Book_first_Adapter(context!!, books, repository)
+        v.list.layoutManager = LinearLayoutManager(context)
+        v.list.adapter = adapter
+    }
+
+    private fun ShowLoader(isShow:Boolean) {
+        if (isShow) {
+            v.switcher.visibility = GONE
+            v.indic_book_first.visibility = VISIBLE
+            v.PLZDefineBooks.visibility = GONE
+            v.fab.hide()
+        }else{
+            v.switcher.visibility = VISIBLE
+            v.indic_book_first.visibility = GONE
+            v.PLZDefineBooks.visibility = VISIBLE
+            v.fab.show()
+        }
+    }
+
+    private fun ShowBookListSwitcher() {
+
+        isShowListOfBooks(books.size > 0)
+
+        v.fab.show()
+
+        if (v.switcher.displayedChild==1)
+            v.switcher.showPrevious()
+    }
+
+    private fun isShowListOfBooks(isShow:Boolean) {
+        if (isShow){
+            v.PLZDefineBooks.visibility = GONE
+            v.list.visibility = VISIBLE
+            v.complete.visibility = VISIBLE
+        }else{
+            v.PLZDefineBooks.visibility = VISIBLE
+            v.list.visibility = GONE
+            v.complete.visibility = GONE
+        }
+
+    }
+
+    private fun showAddNewBookSwitcher() {
+        v.book_name.setText("")
+        v.book_name_lay.isErrorEnabled = false
+        v.book_page_count.setText("")
+        v.book_page_count_lay.isErrorEnabled = false
+
+        if (v.switcher.displayedChild==0)
+            v.switcher.showNext()
+
+        v.fab.hide()
+
+        v.complete.visibility = GONE
+        v.PLZDefineBooks.visibility = GONE
+    }
+
+    private fun validateToSave():Boolean {
         return when {
             v.book_name.text.isNullOrEmpty() -> {
                 v.book_name_lay.error = bookNameErrorMessage

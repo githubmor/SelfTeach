@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mdtp_white"
-    tools:context=".BooksListFragment">
+    tools:context=".BooksPerformanceFragment">
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/indic_book_first"
@@ -15,12 +15,12 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/emptyText"
+        android:id="@+id/PLZDefineBooks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:text="لطفا کتاب های این ترم را معرفی کنید"
+        android:text="@string/PLZDefineBooks"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -59,6 +59,7 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,20 +16,29 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.launch
 
 
-class DashboardActivity : ScopedAppActivity(), TermEditFragment.OnFragmentInteractionListener
-        ,BooksListFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
-        PerformanceFragment.OnFragmentInteractionListener,TermFirstFragment.OnFragmentInteractionListener ,
-BooksFirstFragment.OnFragmentInteractionListener{
-    override fun completeBooksFirst() {
-        intializeSuspend()
-    }
+class DashboardActivity : ScopedAppActivity()
+        ,BooksPerformanceFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
+        PerformanceFragment.OnFragmentInteractionListener,TermFragment.OnFragmentInteractionListener ,
+BooksFragment.OnFragmentInteractionListener{
 
-    lateinit var termRep : TermRepository
-    lateinit var bookRepo : BookRepository
-    lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var termRepository : TermRepository
+    private lateinit var bookRepository : BookRepository
+    private lateinit var bottomNavigation: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        intializeNotRelatedToSuspend()
+
+        intializeBeforeSuspend()
+
+        intializeSuspend()
+
+    }
+
+    private fun intializeNotRelatedToSuspend() {
 
         MyExceptionHandler(this)//comment this line if use debugger
 
@@ -38,80 +47,78 @@ BooksFirstFragment.OnFragmentInteractionListener{
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         val database = AppDatabase.getInstance(applicationContext)
-        termRep = TermRepository(database.termDao())
-        bookRepo = BookRepository(database.bookDao())
+        termRepository = TermRepository(database.termDao())
+        bookRepository = BookRepository(database.bookDao())
 
-        intializeNotRelatedToSuspend()
-
-        intializeBeforeSuspend()
-        intializeSuspend()
-
+        bottomNavigation = findViewById(R.id.navigationView)
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
-    private fun intializeNotRelatedToSuspend() {
-        bottomNavigation = findViewById(R.id.navigationView)
-        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)    }
-
     private fun intializeBeforeSuspend() {
-        changeToolbarAndNavigation(true)
-        indic_dashboard.visibility = View.VISIBLE
+        hideToolbarAndNavigation(true)
+        showLoader(true)
     }
 
     private fun intializeSuspend() {
         launch {
             val frag: Fragment
 
-            val termExist = termRep.isTermexist()
-            val bookExist = bookRepo.isBooksExist()
+            val termExist = termRepository.isTermexist()
+            val bookExist = bookRepository.isBooksExist()
 
-            indic_dashboard.visibility = View.GONE
+            showLoader(false)
 
             frag = if (termExist)
                 if (bookExist) {
-                    changeToolbarAndNavigation(false)
+                    hideToolbarAndNavigation(false)
                     PerformanceFragment()
                 }
                 else {
-                    changeToolbarAndNavigation(true)
-                    BooksFirstFragment()
+                    hideToolbarAndNavigation(true)
+                    BooksFragment()
                 }
             else {
-                changeToolbarAndNavigation(true)
-                TermFirstFragment()
+                hideToolbarAndNavigation(true)
+                TermFragment()
             }
-            Transaction(frag)
+
+            showFragment(frag)
         }
     }
 
-    fun changeToolbarAndNavigation(hide:Boolean){
-        if (hide) {
-            supportActionBar!!.hide()
-            bottomNavigation.visibility = View.GONE
-        }else{
-            supportActionBar!!.show()
-            bottomNavigation.visibility = View.VISIBLE
-        }
+    private fun showLoader(isShowing:Boolean) = if (isShowing) {
+        wainting_Loader_dashboard.visibility = View.VISIBLE
+    }else{
+        wainting_Loader_dashboard.visibility = View.GONE
+    }
+
+    private fun hideToolbarAndNavigation(hide:Boolean) = if (hide) {
+        supportActionBar!!.hide()
+        bottomNavigation.visibility = View.GONE
+    }else{
+        supportActionBar!!.show()
+        bottomNavigation.visibility = View.VISIBLE
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.performancing -> {
-                Transaction(PerformanceFragment())
+                showFragment(PerformanceFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.AddRead -> {
-                Transaction(ReadsFragment())
+                showFragment(ReadsFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.Booking -> {
-                Transaction(BooksListFragment())
+                showFragment(BooksPerformanceFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
-    protected fun Transaction(fragment: Fragment) {
+    private fun showFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager.beginTransaction()
         fragmentManager.setCustomAnimations(R.animator.fragment_slide_left_enter,
                 R.animator.fragment_slide_left_exit,
@@ -130,34 +137,32 @@ BooksFirstFragment.OnFragmentInteractionListener{
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.mainmenu, menu)
-
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.Reseting -> {
                 launch {
-                    val term = termRep.getTerm()
+                    val term = termRepository.getTerm()
                     if (term!=null)
-                        termRep.delete(term)
+                        termRepository.delete(term)
 
-                    val books = bookRepo.getAllBook()
+                    val books = bookRepository.getAllBook()
                     if (!books.isNullOrEmpty()) {
-                        bookRepo.deleteAll()
+                        bookRepository.deleteAll()
                     }
 
                     intializeSuspend()
                 }
             }
             R.id.TermManaging -> {
-                changeToolbarAndNavigation(true)
-                Transaction(TermEditFragment())
+                hideToolbarAndNavigation(true)
+                showFragment(TermFragment())
             }
             R.id.book_first -> {
-                changeToolbarAndNavigation(true)
-                Transaction(BooksFirstFragment())
+                hideToolbarAndNavigation(true)
+                showFragment(BooksFragment())
             }
         }
 
@@ -166,17 +171,20 @@ BooksFirstFragment.OnFragmentInteractionListener{
     }
     override fun failOpenBooks() {
         intializeSuspend()
-        Toast.makeText(applicationContext,"fail book",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext,"در نمايش كتاب هاي ايرادي به وجود آمده",Toast.LENGTH_LONG).show()
     }
     override fun failPerformance() {
         intializeSuspend()
-        Toast.makeText(applicationContext,"fail performance",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext,"در نمايش پيشرفت درسي ايرادي به وجود آمده",Toast.LENGTH_LONG).show()
     }
     override fun onSaveTermComplete() {
         intializeSuspend()
     }
+    override fun completeBooksFirst() {
+        intializeSuspend()
+    }
     override fun failRead() {
         intializeSuspend()
-        Toast.makeText(applicationContext,"fail read",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext,"در نمايش ليست خوانده شده ها ايرادي به وجود آمده",Toast.LENGTH_LONG).show()
     }
 }

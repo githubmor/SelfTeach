@@ -44,53 +44,58 @@ class ReadsFragment : BaseDatePickerFragment() {
     var reads : MutableList<Read> = mutableListOf()
     lateinit var term :Term
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var readRepo : ReadRepository
-    lateinit var bookRepo : BookRepository
-    lateinit var termRepo : TermRepository
+    lateinit var readRepository : ReadRepository
+    lateinit var bookRepository : BookRepository
+    lateinit var termRepository : TermRepository
+
+    lateinit var v : View
 
     private var selectedBook: Bookdb? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_reads, container, false)
+        v = inflater.inflate(R.layout.fragment_reads, container, false)
 
-        readRepo = ReadRepository(AppDatabase.getInstance(context!!).readDao())
-        bookRepo = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-        termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
+        intializeNotRelatedSuspend()
 
-        val adapter = intializeReadList(v)
+        intializeSuspend()
 
+        return v
+    }
+
+    private fun intializeSuspend() {
         launch {
+
             delay(500)
-            if (!bookRepo.isBooksExist()) {
-                listener!!.failRead()
-            }else
-                intializeBookList(v)
 
-            term = termRepo.getTerm()!!
+            intializeSpinnerBookList()
 
-            val rs = readRepo.getAllReadsWithBookName()
+            term = termRepository.getTerm()!!
 
-            if (rs!=null) {
+            val rs = readRepository.getAllReadsWithBookName()
+
+            if (rs != null) {
                 for (r in rs) {
                     reads.add(Read(r))
                 }
             }
 
-            if (reads.size<=0){
-                arrangeForShowFirstViewSwitcher(v,false)
-            }else{
-                arrangeForShowFirstViewSwitcher(v,true)
+            if (reads.size <= 0) {
+                arrangeForShowFirstViewSwitcher(false)
+            } else {
+                arrangeForShowFirstViewSwitcher(true)
             }
         }
+    }
 
-        readDate = v.read_date
+    private fun intializeNotRelatedSuspend() {
+        readRepository = ReadRepository(AppDatabase.getInstance(context!!).readDao())
+        bookRepository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+        termRepository = TermRepository(AppDatabase.getInstance(context!!).termDao())
 
         v.fab.setOnClickListener {
-            arrangeToShowSecondViewSwitcher(v)
+            arrangeToShowSecondViewSwitcher()
         }
-
-
 
         v.read_date_lay.setOnClickListener {
             showDatapicker("")
@@ -103,32 +108,34 @@ class ReadsFragment : BaseDatePickerFragment() {
         errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
 
 
+        val adapter = intializeReadList()
 
         v.read_save.setOnClickListener {
-            if (validateToSave(v)) {
+            if (validateToSave()) {
                 launch {
                     val read = Readdb(0,selectedBook!!.id,v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
-                    readRepo.insert(read)
+                    readRepository.insert(read)
                     adapter.addNewRead(Read(ReadBookdb(read,selectedBook!!.name)))
-                    arrangeForShowFirstViewSwitcher(v,true)
+                    arrangeForShowFirstViewSwitcher(true)
                 }
             }
         }
 
-
-        return v
+        readDate = v.read_date
     }
 
-    private fun intializeReadList(v: View): Read_Adapter {
+    private fun intializeReadList(): Read_Adapter {
         v.list.layoutManager = LinearLayoutManager(context)
-        val adapter = Read_Adapter(context!!, reads,readRepo)
+        val adapter = Read_Adapter(context!!, reads,readRepository)
         v.list.adapter = adapter
         return adapter
     }
 
-    private fun intializeBookList(v: View) {
+    private fun intializeSpinnerBookList() {
         launch {
-            books = bookRepo.getAllBook()!!
+            if (!bookRepository.isBooksExist())
+                listener!!.failRead()
+            books = bookRepository.getAllBook()!!
 
             val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
                 it.name + " - " +  it.pageCount + " صفحه" })
@@ -147,7 +154,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         }
     }
 
-    private fun validateToSave(v:View):Boolean{
+    private fun validateToSave():Boolean{
         return when {
             selectedBook==null ->{
                 Toast.makeText(context!!, readSelectBookErrorMessage,Toast.LENGTH_SHORT).show()
@@ -172,7 +179,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         }
     }
 
-    private fun arrangeToShowSecondViewSwitcher(v: View) {
+    private fun arrangeToShowSecondViewSwitcher() {
         v.read_page_count.setText("")
         v.read_page_count_lay.isErrorEnabled = false
         v.read_date.setText("")
@@ -183,13 +190,13 @@ class ReadsFragment : BaseDatePickerFragment() {
     }
 
 
-    private fun arrangeForShowFirstViewSwitcher(v: View, isListShow :Boolean) {
+    private fun arrangeForShowFirstViewSwitcher( isListShow :Boolean) {
         if (isListShow) {
             v.list.visibility = VISIBLE
-            v.emptyText.visibility = GONE
+            v.PLZDefineReads.visibility = GONE
         }else{
             v.list.visibility = GONE
-            v.emptyText.visibility = VISIBLE
+            v.PLZDefineReads.visibility = VISIBLE
         }
         v.fab.show()
         if (v.switcher.displayedChild==1)
@@ -218,16 +225,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         val selectedDate = PersianCalendar().apply {
             setPersianDate(year, monthOfYear, dayOfMonth)
         }
-//        val start = PersianDateParser(term.startDate).persianDate.timeInMillis
-//        val end = PersianDateParser(term.endDate).persianDate.timeInMillis
-//
-//        if (selectedDate.timeInMillis in (start + 1) until end)
             readDate.setText(selectedDate.persianShortDate)
-//        else {
-//            readDate.setText("")
-//
-//        }
-
     }
 
     interface OnFragmentInteractionListener {

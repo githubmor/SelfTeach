@@ -18,10 +18,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class BooksListFragment : BaseFragment() {
+class BooksPerformanceFragment : BaseFragment() {
 
-    private val bookNameErrorMessage = "لطفا نام كتاب را وارد كنيد"
-    private val bookPageCountErrorMessage ="لطفا تعداد صفحات كتاب را وارد كنيد"
     override val title: String
         get() = "كتاب ها"
 
@@ -30,25 +28,25 @@ class BooksListFragment : BaseFragment() {
     lateinit var repository : BookRepository
     lateinit var adapter: Book_Adapter
 
+    lateinit var v: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_book_list, container, false)
+        v = inflater.inflate(R.layout.fragment_book_list, container, false)
 
         repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
 
-        intializeBeforeSuspend(v)
-        intializeSuspend(v)
+        intializeBeforeSuspend()
+        intializeSuspend()
 
         return v
     }
 
-    private fun intializeBeforeSuspend(v: View) {
-        v.indic_book_list.visibility = View.VISIBLE
-        v.list.visibility = View.GONE
+    private fun intializeBeforeSuspend() {
+        ShowLoader(true)
     }
 
-    private fun intializeSuspend(v: View) {
+    private fun intializeSuspend() {
         launch {
             delay(500)
             val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
@@ -57,28 +55,36 @@ class BooksListFragment : BaseFragment() {
                 listener!!.failOpenBooks()
             }
 
-            val bills = repository.getAllBookWithRead()
+            val list = repository.getAllBookWithRead()
 
-            if (bills != null) {
-                for (bill in bills) {
+            if (list != null) {
+                for (bill in list) {
                     books.add(Book(bill))
                 }
             }
-            intializeAfterSuspend(v)
+            intializeAfterSuspend()
 
         }
     }
 
-    private fun intializeAfterSuspend(v: View) {
+    private fun intializeAfterSuspend() {
         adapter = Book_Adapter(context!!,books,repository)
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         v.list.adapter = adapter
 
-        v.indic_book_list.visibility = GONE
-        v.list.visibility= VISIBLE
+        ShowLoader(false)
     }
 
 
+    private fun ShowLoader(isShowder:Boolean){
+        if (isShowder){
+            v.indic_book_list.visibility = VISIBLE
+            v.list.visibility = GONE
+        }else{
+            v.indic_book_list.visibility = GONE
+            v.list.visibility= VISIBLE
+        }
+    }
 
 
     override fun onAttach(context: Context) {

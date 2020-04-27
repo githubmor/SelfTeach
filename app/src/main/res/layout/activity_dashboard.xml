@@ -28,7 +28,7 @@
         layout="@layout/dashboard_content" />
 
     <ProgressBar
-        android:id="@+id/indic_dashboard"
+        android:id="@+id/wainting_Loader_dashboard"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

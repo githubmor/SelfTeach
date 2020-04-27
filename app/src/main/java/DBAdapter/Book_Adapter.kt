@@ -17,11 +17,10 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal val bookName = v.book_name_lab
         internal val pageCount = v.book_page_count_lab
-//        internal val delBook = v.del_book
         internal val readProgress = v.read_progress
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Book_Adapter.BookListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookListViewHolder {
         val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_book, parent, false)
 
@@ -33,33 +32,11 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
         holder.bookName.text = b.name
         holder.pageCount.text = b.pageReadState
         holder.readProgress.progress = b.pageReadPercent.toInt()
-//        holder.delBook.setOnClickListener {
-//            CoroutineScope(Dispatchers.IO).launch{
-//                repository.delete(b.dbDto.book)
-//                withContext(Dispatchers.Main){
-//                    Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
-//                    books.removeAt(i)
-//                    notifyItemRemoved(i)
-//                }
-//
-//            }
-//
-//        }
-
     }
 
     override fun getItemCount(): Int {
         return books.size
     }
 
-    fun addNewBook(b: Book) {
-        books.add(b)
-        notifyDataSetChanged()
-    }
 
-    fun updateBooks(bs: List<Book>) {
-        books.clear()
-        books.addAll(bs)
-        notifyDataSetChanged()
-    }
 }

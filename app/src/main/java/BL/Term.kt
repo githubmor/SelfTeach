@@ -11,17 +11,20 @@ class Term(val db : Termdb) {
         get() = db.endDate
         set(value) {
             db.endDate = value
+
         }
 
     var startDate
         get() = db.startDate
         set(value) {
             db.startDate = value
+
         }
     var type
         get() = termType.valueOf(db.name).typeName
         set(value) {
             db.name = value
+
         }
     private val now: String = PersianCalendar().persianShortDate
 
@@ -42,13 +45,6 @@ class Term(val db : Termdb) {
             }
         }
 
-//    fun isInTermRange(): Boolean {
-//        return if (now != "") {
-//            daysDiffCalculate(startDate, now) > 0 && daysDiffCalculate(now, endDate) > 0
-//        } else {
-//            false
-//        }
-//    }
 
     private fun daysDiffCalculate(s: String, e: String): Int {
 
