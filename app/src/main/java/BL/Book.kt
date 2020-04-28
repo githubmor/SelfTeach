@@ -29,10 +29,10 @@ open class Book(val dbDto: BookReadsdb) {
             return dbDto.reads.sumBy { it.pageRead }
         }
 
-    val pageReadState: String
-        get() {
-            return "( $pageWasReaded/$pageCount ) صفحه"
-        }
+//    val pageReadState: String
+//        get() {
+//            return "( $pageWasReaded/$pageCount ) صفحه"
+//        }
 
     val pageReadPercent: Float
         get() {

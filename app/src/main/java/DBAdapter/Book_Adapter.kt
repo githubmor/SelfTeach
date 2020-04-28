@@ -1,7 +1,7 @@
 package DBAdapter
 
-import BL.Book
 import BL.BookRepository
+import BL.PerformanceBook
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_book.view.*
 import morteza.darzi.SelfTeach2.R
 
 
-class Book_Adapter(private val context: Context, private val books: MutableList<Book>,val repository: BookRepository)
+class Book_Adapter(private val context: Context, private val books: MutableList<PerformanceBook>, val repository: BookRepository)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -28,9 +28,9 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     }
 
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
-        val b = books[i]
+        val b = books[i].book
         holder.bookName.text = b.name
-        holder.pageCount.text = b.pageReadState
+        holder.pageCount.text = "(" + b.pageWasReaded + "/" + b.pageCount + ")"
         holder.readProgress.progress = b.pageReadPercent.toInt()
     }
 

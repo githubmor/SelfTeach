@@ -1,8 +1,6 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
-import BL.BookRepository
-import BL.TermRepository
+import BL.*
 import DAL.AppDatabase
 import DBAdapter.Book_Adapter
 import android.content.Context
@@ -23,7 +21,7 @@ class BooksPerformanceFragment : BaseFragment() {
     override val title: String
         get() = "كتاب ها"
 
-    var books : MutableList<Book> = mutableListOf()
+    var books : MutableList<PerformanceBook> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
     lateinit var repository : BookRepository
     lateinit var adapter: Book_Adapter
@@ -54,12 +52,13 @@ class BooksPerformanceFragment : BaseFragment() {
             if (!termRepo.isTermexist()) {
                 listener!!.failOpenBooks()
             }
+            val term = termRepo.getTerm()!!
 
             val list = repository.getAllBookWithRead()
 
             if (list != null) {
-                for (bill in list) {
-                    books.add(Book(bill))
+                for (bookReadsdb in list) {
+                    books.add(PerformanceBook(term,Book(bookReadsdb)))
                 }
             }
             intializeAfterSuspend()

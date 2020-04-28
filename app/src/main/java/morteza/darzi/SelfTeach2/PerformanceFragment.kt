@@ -22,87 +22,117 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PerformanceFragment : BaseFragment() {
-    private lateinit var term: Term
-    private lateinit var repository: BookRepository
+//    private lateinit var term: Term
+//    private lateinit var repository: BookRepository
     override val title: String
         get() = "خود خوان"
 
-    private lateinit var performance: Performance
+    private lateinit var performance: TermPerformance
     private lateinit var performanceircle: DonutProgress
     private var listener: OnFragmentInteractionListener? = null
 
-
+    private lateinit var fragmentView :View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val v = inflater.inflate(R.layout.fragment_performance, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_performance, container, false)
 
-        intializeBeforeSuspend(v)
-        intializeSuspend(v)
+        intializeBeforeSuspend()
+        intializeSuspend()
 
-        return v
+        return fragmentView
     }
 
-    private fun intializeBeforeSuspend(v: View) {
-        v.indic_performance.visibility = VISIBLE
-        v.today.visibility = GONE
-        v.per_day.visibility = GONE
-        v.day_remind.visibility = GONE
-        v.progressBar.visibility = GONE
-        v.read_list.visibility = GONE
-        v.performanceCircle.visibility = GONE
-        v.today_lab.visibility = GONE
-        v.per_day_lab.visibility = GONE
-        v.safe_1.visibility = GONE
-        v.safe_2.visibility = GONE
+    private fun intializeBeforeSuspend() {
+        ShowLoadr(true)
+        performanceircle = fragmentView.performanceCircle
     }
 
-    private fun intializeSuspend(v: View) {
-
-        launch {
-            delay(500)
-            repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-            if (!repository.isBooksExist()) {
-                listener!!.failPerformance()
-            }
-
-            term = TermRepository(AppDatabase.getInstance(context!!).termDao()).getTerm()!!
-            val books = BookRepository(AppDatabase.getInstance(context!!).bookDao()).getAllBookWithRead()!!.map { Book(it) }
-
-            val pBooks = books.map { PerformanceBook(term,it) }
-
-            performance = Performance(term, pBooks)
-
-            intializeAfterSusped(v)
+    private fun ShowLoadr(isShow:Boolean) {
+        if (isShow) {
+            fragmentView.indic_performance.visibility = VISIBLE
+            fragmentView.today.visibility = GONE
+            fragmentView.per_day.visibility = GONE
+            fragmentView.day_remind.visibility = GONE
+            fragmentView.progressBar.visibility = GONE
+            fragmentView.read_list.visibility = GONE
+            fragmentView.performanceCircle.visibility = GONE
+            fragmentView.today_lab.visibility = GONE
+            fragmentView.per_day_lab.visibility = GONE
+            fragmentView.safe_1.visibility = GONE
+            fragmentView.safe_2.visibility = GONE
+        }else{
+            fragmentView.indic_performance.visibility = GONE
+            fragmentView.today.visibility = VISIBLE
+            fragmentView.per_day.visibility = VISIBLE
+            fragmentView.day_remind.visibility = VISIBLE
+            fragmentView.progressBar.visibility = VISIBLE
+            fragmentView.read_list.visibility = VISIBLE
+            fragmentView.performanceCircle.visibility = VISIBLE
+            fragmentView.today_lab.visibility = VISIBLE
+            fragmentView.per_day_lab.visibility = VISIBLE
+            fragmentView.safe_1.visibility = VISIBLE
+            fragmentView.safe_2.visibility = VISIBLE
         }
     }
 
-    private fun intializeAfterSusped(v: View) {
+    private fun intializeSuspend() {
 
-        v.indic_performance.visibility = GONE
-        v.today.visibility = VISIBLE
-        v.per_day.visibility = VISIBLE
-        v.day_remind.visibility = VISIBLE
-        v.progressBar.visibility = VISIBLE
-        v.read_list.visibility = VISIBLE
-        v.performanceCircle.visibility = VISIBLE
-        v.today_lab.visibility = VISIBLE
-        v.per_day_lab.visibility = VISIBLE
-        v.safe_1.visibility = VISIBLE
-        v.safe_2.visibility = VISIBLE
+        launch {
 
-        performanceircle = v.performanceCircle
+            delay(500)
 
-        animateArcPerformance(performance.performance)
+            CreatePerformance()
 
-        v.today.text = performance.pageTo100Percent.toInt().toString()
-        v.per_day.text = performance.pagePerDayRemind.toInt().toString()
+            intializeAfterSusped()
+        }
+    }
 
-        v.day_remind.text = term.termDateState
+    private suspend fun CreatePerformance() {
+        val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+        if (!repository.isBooksExist()) {
+            listener!!.failPerformance()
+        }
 
-        v.progressBar.progress = term.dayPastPercent
+        val database = AppDatabase.getInstance(context!!)
 
-        for (book in performance.readList()) {
+        val term = TermRepository(database.termDao()).getTerm()!!
+        val books = BookRepository(database.bookDao()).getAllBookWithRead()!!.map { Book(it) }
+
+        performance = TermPerformance(term,books)
+
+        suggest = SuggestionRead(books.map { PerformanceBook(term,it) })
+
+    }
+
+    private fun intializeAfterSusped() {
+
+        ShowLoadr(false)
+
+        LoadPerformanceDataToUI()
+    }
+
+    private fun LoadPerformanceDataToUI() {
+
+        animatePerformanceCircle(performance.performance)
+
+        LoadPerformanceData()
+
+        LoadBookSuggestionData()
+    }
+
+    private fun LoadPerformanceData() {
+        fragmentView.today.text = performance.pageReadTo100Percent.toString()
+        fragmentView.per_day.text = performance.avgPagePerDayRemind.toString()
+
+        fragmentView.day_remind.text = performance.term.termDateState
+
+        fragmentView.progressBar.progress = performance.term.dayPastPercent
+    }
+    private lateinit var suggest : SuggestionRead
+    private fun LoadBookSuggestionData() {
+
+        for (book in suggest.readList()) {
             val te = TextView(context)
             te.text = book + " صفحه بخوان"
             if (Build.VERSION.SDK_INT < 23) {
@@ -110,13 +140,12 @@ class PerformanceFragment : BaseFragment() {
             } else {
                 te.setTextAppearance(R.style.creditCardText);
             }
-            te.setTextColor(v.per_day_lab.textColors)
+            te.setTextColor(fragmentView.per_day_lab.textColors)
             te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            v.read_list.addView(te)
+            fragmentView.read_list.addView(te)
         }
     }
-
 
 
     override fun onAttach(context: Context) {
@@ -134,7 +163,7 @@ class PerformanceFragment : BaseFragment() {
     }
 
 
-    private fun animateArcPerformance(p: Float) {
+    private fun animatePerformanceCircle(p: Float) {
         var performance = p
         if (performance > 100) {
             performance = 100F

@@ -28,7 +28,7 @@ class BookTest{
         assertEquals(page,book.pageCount)
         assertEquals(priority,book.priority)
         assertEquals(0F,book.pageReadPercent)
-        assertEquals("( 0/1000 ) صفحه",book.pageReadState)
+//        assertEquals("( 0/1000 ) صفحه",book.pageReadState)
         assertEquals(0,book.pageWasReaded)
     }
 
@@ -63,23 +63,24 @@ class BookTest{
         val name = "Book 1"
         val page = 1000
         val priority = 3
-        val readList = getReadList()
+        val page_read = 50
+        val readList = getReadList(page_read)
 
         val db = Bookdb(1,name,page,priority)
 
         val book = Book(BookReadsdb(db,readList))
 
-        assertEquals(50F,book.pageReadPercent)
-        assertEquals("( 500/1000 ) صفحه",book.pageReadState)
-        assertEquals(500,book.pageWasReaded)
+        assertEquals((page_read*100/page).toFloat(),book.pageReadPercent)
+//        assertEquals("( 500/1000 ) صفحه",book.pageReadState)
+        assertEquals(page_read,book.pageWasReaded)
 
     }
 
-    private fun getReadList(): List<Readdb> {
+    private fun getReadList(page_read:Int): List<Readdb> {
         val re : MutableList<Readdb> = mutableListOf()
-        for (i in 1..10){
-            re.add(Readdb(i,i,50,PersianCalendar().persianShortDate))
-        }
+
+        re.add(Readdb(1,1,page_read,PersianCalendar().persianShortDate))
+
 
         return re
     }

@@ -1,6 +1,6 @@
 package BL
 
-class Tips(val performance: Performance){
+class Tips(val performance: PerformanceBook){
 
 
 

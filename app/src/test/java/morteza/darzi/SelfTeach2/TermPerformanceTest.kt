@@ -1,9 +1,6 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
-import BL.Performance
-import BL.PerformanceBook
-import BL.Term
+import BL.*
 import DAL.BookReadsdb
 import DAL.Bookdb
 import DAL.Readdb
@@ -15,22 +12,20 @@ import org.junit.Test
 /**
  * Created by M on 19/04/05.
  */
-class PerformanceTest{
+class TermPerformanceTest{
 
     @Test
     fun book_Create_IsOk() {
 
-        val book = getBookList()
+        val books = getBookList()
 
         val term = getTerm()
 
-        val bookP = Performance(term,book)
+        val bookP = TermPerformance(term,books)
 
-        assertEquals(2.142857F,bookP.avgBookReadPerDay)
-        assertEquals(61,bookP.pagePerDayRemind)
-        assertEquals(-8,bookP.pageTo100Percent)
-        assertEquals(112,bookP.performance)
-        assertEquals(0,bookP.readList().size)
+        assertEquals(200.0F,bookP.performance)
+        assertEquals(0,bookP.avgPagePerDayRemind)
+        assertEquals(-75,bookP.pageReadTo100Percent)
     }
 
 
@@ -43,14 +38,13 @@ class PerformanceTest{
         return re
     }
 
-    fun getBookList(): MutableList<PerformanceBook> {
+    fun getBookList(): MutableList<Book> {
         val name = "Book"
         val page = 10
-        val re : MutableList<PerformanceBook> = mutableListOf()
+        val re : MutableList<Book> = mutableListOf()
 
         for (i in 1..5) {
-            re.add(PerformanceBook(getTerm(),
-                    Book(BookReadsdb(Bookdb(i, name + i, page * i, i),getReadList(i,i)))))
+            re.add(Book(BookReadsdb(Bookdb(i, name + i, page * i, i),getReadList(i,i))))
         }
 
         return re
