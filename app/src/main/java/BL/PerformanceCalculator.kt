@@ -7,14 +7,26 @@ open class PerformanceCalculator(dayCount:Int, pasDay:Int, pageCount:Int,private
     private val avgPageEveryday = pageCount.toFloat() / dayCount.toFloat()
     private val pageShouldBeReadTillToday = (pasDay * avgPageEveryday).toInt()
 
-    val avgPagePerDayRemind: Int get() = pageRemind/dayRemind
-    val pageReadTo100Percent: Int get()= pageShouldBeReadTillToday-PageReaded
+    val avgPagePerDayRemind: Int get() =
+        if (dayRemind > 0)
+            Math.round(pageRemind.toFloat()/dayRemind.toFloat())
+        else
+            pageRemind
+
+    val pageReadTo100Percent: Int get()=
+        if (PageReaded < pageShouldBeReadTillToday)
+           pageShouldBeReadTillToday - PageReaded
+        else
+            0
+
 
     val performance : Float get() =
-        if(pageShouldBeReadTillToday>0) {
-            ((PageReaded * 100) / pageShouldBeReadTillToday).toFloat()
-        }
-        else {
-            0F
-        }
+        if (PageReaded<pageShouldBeReadTillToday) {
+            if (pageShouldBeReadTillToday > 0) {
+                ((PageReaded * 100) / pageShouldBeReadTillToday).toFloat()
+            } else {
+                0F
+            }
+        }else
+            100F
 }

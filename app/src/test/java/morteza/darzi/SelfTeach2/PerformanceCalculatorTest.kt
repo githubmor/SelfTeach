@@ -10,7 +10,7 @@ import org.junit.Test
 class PerformanceCalculatorTest{
 
     @Test
-    fun performance_calculator_ISOK() {
+    fun performance_manual_calculator_ISOK() {
 
         val daycount = 100
         val pasDay = 20
@@ -18,53 +18,36 @@ class PerformanceCalculatorTest{
         val pageRead = 50
         val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 500-50
-        val dayRemind = 100-20
-        val avgPageEveryday = 500/100
-        val pageShouldBeReadTillToday = 20*5
+        val pageRemind = 450 //pageCount - pageRead
+        val dayRemind = 80 //daycount - pasDay
+        val avgPageEveryday = 5 //pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 100 //(pasDay * avgPageEveryday).toInt()
 
-        assertEquals(5,performanceBook.avgPagePerDayRemind)
+        assertEquals(6,performanceBook.avgPagePerDayRemind)
         assertEquals(50,performanceBook.pageReadTo100Percent)
-        assertEquals(50F,performanceBook.performance)
+        assertEquals(50.0F,performanceBook.performance)
     }
+
     @Test
-    fun performance_NotClearNumber_ISOK() {
-
-        val daycount = 105
-        val pasDay = 30
-        val pageCount = 274
-        val pageRead = 84
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
-
-        val pageRemind = pageCount - pageRead
-        val dayRemind = daycount - pasDay
-        val avgPageEveryday = pageCount.toFloat() / daycount.toFloat()
-        val pageShouldBeReadTillToday = (pasDay * avgPageEveryday).toInt()
-
-        assertEquals(pageRemind/dayRemind,performanceBook.avgPagePerDayRemind)
-        assertEquals(pageShouldBeReadTillToday-pageRead,performanceBook.pageReadTo100Percent)
-        assertEquals(((pageRead*100)/pageShouldBeReadTillToday).toFloat(),performanceBook.performance)
-    }
-    @Test
-    fun performance_ZeroNumber_ISOK() {
+    fun performance_pageRead_Zero() {
 
         val daycount = 100
         val pasDay = 30
         val pageCount = 200
-        val pageRead = 0
+        val pageRead = 0 // هنوز شروع به خواندن نکرده
         val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 200 - 0
-        val dayRemind = 100 - 30
-        val avgPageEveryday = 200 / 100
-        val pageShouldBeReadTillToday = 30 * 2
+        val pageRemind = 200 //pageCount - pageRead
+        val dayRemind = 70 //daycount - pasDay
+        val avgPageEveryday = 2 //pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 60 //(pasDay * avgPageEveryday).toInt()
 
-        assertEquals(200/70,performanceBook.avgPagePerDayRemind)
-        assertEquals(60-0,performanceBook.pageReadTo100Percent)
-        assertEquals(0,performanceBook.performance)
+        assertEquals(3,performanceBook.avgPagePerDayRemind)
+        assertEquals(60,performanceBook.pageReadTo100Percent)
+        assertEquals(0F,performanceBook.performance)
     }
     @Test
-    fun performance_ZeroPageCountNumber_ISOK() {
+    fun performance_pageShouldBeReadTillToday_zero() {
 
         val daycount = 105
         val pasDay = 30
@@ -72,17 +55,17 @@ class PerformanceCalculatorTest{
         val pageRead = 1
         val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = pageCount - pageRead
-        val dayRemind = daycount - pasDay
-        val avgPageEveryday = pageCount.toFloat() / daycount.toFloat()
-        val pageShouldBeReadTillToday = (pasDay * avgPageEveryday).toInt()
+        val pageRemind = 32 //pageCount - pageRead
+        val dayRemind = 75 //daycount - pasDay
+        val avgPageEveryday = 0.028 //pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 0 //(pasDay * avgPageEveryday).toInt()
 
-        assertEquals(pageRemind/dayRemind,performanceBook.avgPagePerDayRemind)
-        assertEquals(pageShouldBeReadTillToday-pageRead,performanceBook.pageReadTo100Percent)
-        assertEquals(0F,performanceBook.performance)
+        assertEquals(0,performanceBook.avgPagePerDayRemind)
+        assertEquals(0,performanceBook.pageReadTo100Percent)
+        assertEquals(100F,performanceBook.performance)
     }
     @Test
-    fun performance_ReadAllPage() {
+    fun performance_pageRemind_zero() {
 
         val daycount = 100
         val pasDay = 20
@@ -90,68 +73,51 @@ class PerformanceCalculatorTest{
         val pageRead = 50
         val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = pageCount - pageRead
-        val dayRemind = daycount - pasDay
-        val avgPageEveryday = pageCount.toFloat() / daycount.toFloat()
-        val pageShouldBeReadTillToday = (pasDay * avgPageEveryday).toInt()
+        val pageRemind = 0 //pageCount - pageRead
+        val dayRemind = 80 // daycount - pasDay
+        val avgPageEveryday = 0.5 // pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 10 // (pasDay * avgPageEveryday).toInt()
 
-        assertEquals(pageRemind/dayRemind,performanceBook.avgPagePerDayRemind)
-        assertEquals(pageShouldBeReadTillToday-pageRead,performanceBook.pageReadTo100Percent)
-        assertEquals(((pageRead*100)/pageShouldBeReadTillToday).toFloat(),performanceBook.performance)
+        assertEquals(0,performanceBook.avgPagePerDayRemind)
+        assertEquals(0,performanceBook.pageReadTo100Percent)
+        assertEquals(100F,performanceBook.performance)
     }
     @Test
-    fun performance_error_pageRead_IsOver() {
+    fun performance_pasDay_zero() {
 
         val daycount = 100
-        val pasDay = 20
-        val pageCount = 50
-        val pageRead = 60
+        val pasDay = 0
+        val pageCount = 500
+        val pageRead = 50
         val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = pageCount - pageRead
-        val dayRemind = daycount - pasDay
-        val avgPageEveryday = pageCount.toFloat() / daycount.toFloat()
-        val pageShouldBeReadTillToday = (pasDay * avgPageEveryday).toInt()
+        val pageRemind = 450 //pageCount - pageRead
+        val dayRemind = 100 // daycount - pasDay
+        val avgPageEveryday = 5 // pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 0 // (pasDay * avgPageEveryday).toInt()
 
-        assertEquals(pageRemind/dayRemind,performanceBook.avgPagePerDayRemind)
-        assertEquals(pageShouldBeReadTillToday-pageRead,performanceBook.pageReadTo100Percent)
-        assertEquals(((pageRead*100)/pageShouldBeReadTillToday).toFloat(),performanceBook.performance)
+        assertEquals(5,performanceBook.avgPagePerDayRemind)
+        assertEquals(0,performanceBook.pageReadTo100Percent)
+        assertEquals(100F,performanceBook.performance)
     }
 
     @Test
-    fun performance_error_pasDay_IsOver() {
+    fun performance_dayRemind_zero() {
 
         val daycount = 100
-        val pasDay = 110
+        val pasDay = 100
         val pageCount = 50
         val pageRead = 30
         val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = pageCount - pageRead
-        val dayRemind = daycount - pasDay
-        val avgPageEveryday = pageCount.toFloat() / daycount.toFloat()
-        val pageShouldBeReadTillToday = (pasDay * avgPageEveryday).toInt()
+        val pageRemind = 20 //pageCount - pageRead
+        val dayRemind = 0 // daycount - pasDay
+        val avgPageEveryday = 0.5 // pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 50 // (pasDay * avgPageEveryday).toInt()
 
-        assertEquals(pageRemind/dayRemind,performanceBook.avgPagePerDayRemind)
-        assertEquals(pageShouldBeReadTillToday-pageRead,performanceBook.pageReadTo100Percent)
-        assertEquals(((pageRead*100)/pageShouldBeReadTillToday).toFloat(),performanceBook.performance)
+        assertEquals(20,performanceBook.avgPagePerDayRemind)
+        assertEquals(20,performanceBook.pageReadTo100Percent)
+        assertEquals(60F,performanceBook.performance)
     }
 
-    @Test
-    fun performance_by_Constant_Number() {
-
-        val daycount = 100
-        val pasDay = 20
-        val pageCount = 200
-        val pageRead = 120
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
-
-        val pageRemind = 80
-        val dayRemind = 80
-        val pageShouldBeReadTillToday = 40
-
-        assertEquals(pageRemind/dayRemind,performanceBook.avgPagePerDayRemind)
-        assertEquals(pageShouldBeReadTillToday-pageRead,performanceBook.pageReadTo100Percent)
-        assertEquals(((pageRead*100)/pageShouldBeReadTillToday).toFloat(),performanceBook.performance)
-    }
 }
