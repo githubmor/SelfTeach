@@ -97,14 +97,15 @@ class PerformanceFragment : BaseFragment() {
         }
 
         val term = TermService(context!!).getTerm()!!
-        val books = bookService.getAllBook()!!
+        val books = bookService.getAllBookWithRead()!!
+//        val reads = ReadService(context!!).getAllReadsWithBookName()
 
         performance = TermPerformance(term,books)
 
         var remindPage = performance.pageReadTo100Percent
 
-        books.forEach {
-            val suggestion =  Suggestion(BookPlan(it),PerformanceBook(term,it))
+        books.forEach { book ->
+            val suggestion =  Suggestion(BookPlan(book,book.reads),PerformanceBook(term,book))
             if(suggestion.HasSuggest(remindPage)){
                 suggest = suggest + suggestion
                 remindPage -= suggestion.suggestBookList()

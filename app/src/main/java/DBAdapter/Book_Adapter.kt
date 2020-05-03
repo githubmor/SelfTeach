@@ -1,7 +1,5 @@
 package DBAdapter
 
-import BL.BookService
-import DAL.BookRepository
 import BL.PerformanceBook
 import android.content.Context
 import android.view.LayoutInflater
@@ -29,10 +27,10 @@ class Book_Adapter(private val context: Context, private val books: MutableList<
     }
 
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
-        val b = books[i].book
-        holder.bookName.text = b.name
-        holder.pageCount.text = "(" + b.pageWasReaded + "/" + b.pageCount + ")"
-        holder.readProgress.progress = b.pageReadPercent.toInt()
+        val performanceBook = books[i]
+        holder.bookName.text = performanceBook.book.name
+        holder.pageCount.text = "(" + performanceBook.book.pageWasReaded + "/" + performanceBook.book.pageCount + ")"
+        holder.readProgress.progress = performanceBook.pageReadPercent.toInt()
     }
 
     override fun getItemCount(): Int {

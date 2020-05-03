@@ -28,11 +28,4 @@ open class Book (val dbDto : BookSumReaddb){
         get() {
             return dbDto.readSum
         }
-
-
-    val pageReadPercent: Float
-        get() {
-            return (pageWasReaded * 100) / pageCount.toFloat()
-        }
-
 }

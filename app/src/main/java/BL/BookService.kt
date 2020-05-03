@@ -58,15 +58,15 @@ class BookService(context:Context) {
 //        }
     }
 
-//    @WorkerThread
-//    suspend fun getAllBookWithRead(): List<Book>? {
-////        return withContext(Dispatchers.IO) {
-////            val y = async {
-//                dao.getAllBookWithReads()
-////            }
-////            withContext(Dispatchers.Main){
-////                y.await()
-////            }
-////        }
-//    }
+    @WorkerThread
+    suspend fun getAllBookWithRead(): List<BookRead>? {
+//        return withContext(Dispatchers.IO) {
+//            val y = async {
+              return  dao.getAllBookWithRead()!!.map { BookRead(it) }
+//            }
+//            withContext(Dispatchers.Main){
+//                y.await()
+//            }
+//        }
+    }
 }

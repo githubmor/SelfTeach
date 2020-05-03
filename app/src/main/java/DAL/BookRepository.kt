@@ -1,5 +1,6 @@
 package DAL
 
+import BL.BookRead
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -54,17 +55,17 @@ class BookRepository(private val dao: BookDAO) {
 //        }
 //    }
 
-//    @WorkerThread
-//    suspend fun getAllBookWithRead(): List<BookReadsdb>? {
-//        return withContext(Dispatchers.IO) {
-//            val y = async {
-//                dao.getAllBookWithReads()
-//            }
-//            withContext(Dispatchers.Main){
-//                y.await()
-//            }
-//        }
-//    }
+    @WorkerThread
+    suspend fun getAllBookWithRead(): List<BookReadsdb>? {
+        return withContext(Dispatchers.IO) {
+            val y = async {
+                dao.getAllBookWithReads()
+            }
+            withContext(Dispatchers.Main){
+                y.await()
+            }
+        }
+    }
 
     @WorkerThread
     suspend fun getAllNewBook(): List<BookSumReaddb>? {

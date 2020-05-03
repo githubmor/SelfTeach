@@ -1,6 +1,6 @@
 package BL
 
-open class PerformanceCalculator(dayCount:Int, pasDay:Int, pageCount:Int,private val PageReaded:Int) {
+open class PerformanceCalculator(dayCount:Int, pasDay:Int,private val pageCount:Int,private val PageReaded:Int) {
 
     private val pageRemind = pageCount - PageReaded
     private val dayRemind = dayCount - pasDay
@@ -29,4 +29,8 @@ open class PerformanceCalculator(dayCount:Int, pasDay:Int, pageCount:Int,private
             }
         }else
             100F
+    val pageReadPercent: Float
+        get() {
+            return (PageReaded * 100) / pageCount.toFloat()
+        }
 }

@@ -1,7 +1,7 @@
 package BL
 
-class BookPlan (val book:Book){
+class BookPlan (val book:Book,val reads:List<Read>){
     fun MaxPageReaded(): Int {
-        return 0
+        return reads.maxBy { it.pageReadCount }!!.pageReadCount
     }
 }

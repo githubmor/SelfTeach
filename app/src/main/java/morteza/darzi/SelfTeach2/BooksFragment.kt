@@ -89,16 +89,12 @@ class BooksFragment : BaseFragment() {
 
         books = service.getAllBook()!!.toMutableList()
 
-//        if (list != null) {
-//            books.addAll(list.map { Book(it.) })
-//        }
         adapterIntialize()
     }
 
     private suspend fun checkHasTerm() {
-        val termRepo = TermService(context!!)
 
-        if (!termRepo.isTermexist()) {
+        if (!TermService(context!!).isTermexist()) {
             listener!!.failOpenBooks()
         }
     }
