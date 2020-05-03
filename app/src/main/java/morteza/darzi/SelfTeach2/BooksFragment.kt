@@ -1,11 +1,10 @@
 package morteza.darzi.SelfTeach2
 
 import BL.Book
-import BL.BookRepository
-import BL.TermRepository
-import DAL.AppDatabase
-import DAL.BookReadsdb
-import DAL.Bookdb
+import BL.BookService
+import BL.TermService
+//import DAL.TermRepository
+//import DAL.AppDatabase
 import DBAdapter.Book_first_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -31,7 +30,7 @@ class BooksFragment : BaseFragment() {
 
     var books : MutableList<Book> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var repository : BookRepository
+    lateinit var service : BookService
     lateinit var adapter: Book_first_Adapter
 
     lateinit var v: View
@@ -60,9 +59,9 @@ class BooksFragment : BaseFragment() {
         v.book_save.setOnClickListener {
             if (validateToSave()) {
                 launch {
-                    val b = Bookdb(0,v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),v.priority.rating.toInt())
-                    repository.insert(b)
-                    adapter.addNewBook(Book(BookReadsdb(b)))
+                    val b = Book(v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),v.priority.rating.toInt())
+                    service.insert(b)
+                    adapter.addNewBook(b)
                     ShowBookListSwitcher()
                 }
             }
@@ -86,18 +85,18 @@ class BooksFragment : BaseFragment() {
 
     private suspend fun GetBookList() {
 
-        repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+        service = BookService(context!!)
 
-        val list = repository.getAllBookWithRead()
+        books = service.getAllBook()!!.toMutableList()
 
-        if (list != null) {
-            books.addAll(list.map { Book(it) })
-        }
+//        if (list != null) {
+//            books.addAll(list.map { Book(it.) })
+//        }
         adapterIntialize()
     }
 
     private suspend fun checkHasTerm() {
-        val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
+        val termRepo = TermService(context!!)
 
         if (!termRepo.isTermexist()) {
             listener!!.failOpenBooks()
@@ -111,7 +110,7 @@ class BooksFragment : BaseFragment() {
     }
 
     private fun adapterIntialize() {
-        adapter = Book_first_Adapter(context!!, books, repository)
+        adapter = Book_first_Adapter(context!!, books)
         v.list.layoutManager = LinearLayoutManager(context)
         v.list.adapter = adapter
     }

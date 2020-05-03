@@ -57,7 +57,7 @@
 //            }
 //        }
 //
-////    fun readList(): List<String> {
+////    fun suggestBookList(): List<String> {
 ////
 ////
 ////        val needToRead = getBookHasPageToReadToday()

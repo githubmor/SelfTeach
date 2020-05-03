@@ -63,12 +63,12 @@ class Tips(val performance: PerformanceBook){
 //
 //    fun pagePerDayRemind(): Int {
 //        val i: Int = if (term.dayRemind(now) > 0) {
-//            (allPageCount() - allPageWasRead()) / term.dayRemind(now)// this i is PagePerDay should read till term_old endDate
+//            (allPageCount() - allPageWasRead()) / term.dayRemind(now)// this i is PagePerDay should readSum till term_old endDate
 //        } else {
 //            0
 //        }
 //        return if (i > 5 * avgAllPageCountWasReadPerEveryRead() && term.dayPastPercent(now) > 60) {
-//            i + 1000//means it is too big , make a plan for read ..
+//            i + 1000//means it is too big , make a plan for readSum ..
 //        } else i
 //    }
 

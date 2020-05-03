@@ -1,7 +1,7 @@
 package DBAdapter
 
 import BL.Book
-import BL.BookRepository
+import BL.BookService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +16,10 @@ import kotlinx.coroutines.withContext
 import morteza.darzi.SelfTeach2.R
 
 
-class Book_first_Adapter(private val context: Context, private val books: MutableList<Book>, val repository: BookRepository)
+class Book_first_Adapter(private val context: Context, private val books: MutableList<Book>)
     : RecyclerView.Adapter<Book_first_Adapter.BookListViewHolder>() {
+
+    private lateinit var bookService: BookService
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal val bookName = v.book_name_lab
@@ -28,7 +30,7 @@ class Book_first_Adapter(private val context: Context, private val books: Mutabl
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Book_first_Adapter.BookListViewHolder {
         val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_book_first, parent, false)
-
+        bookService = BookService(context)
         return BookListViewHolder(v)
     }
 
@@ -38,7 +40,7 @@ class Book_first_Adapter(private val context: Context, private val books: Mutabl
         holder.pageCount.text = b.pageCount.toString()
         holder.delBook.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch{
-                repository.delete(b.dbDto.book)
+                bookService.delete(b)
                 withContext(Dispatchers.Main){
                     Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
                     books.remove(b)

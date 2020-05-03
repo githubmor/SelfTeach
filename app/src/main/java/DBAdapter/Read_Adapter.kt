@@ -1,7 +1,7 @@
 package DBAdapter
 
 import BL.Read
-import BL.ReadRepository
+import BL.ReadService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +16,10 @@ import kotlinx.coroutines.withContext
 import morteza.darzi.SelfTeach2.R
 
 class Read_Adapter
-(private val context: Context, private val reads: MutableList<Read>?,val repository: ReadRepository)
+(private val context: Context, private val reads: MutableList<Read>?)
     : RecyclerView.Adapter<Read_Adapter.ReadListViewHolder>() {
+
+    private lateinit var readService: ReadService
 
     class ReadListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal var readbook= v.read_book_name_lab
@@ -31,19 +33,20 @@ class Read_Adapter
                                     viewType: Int): Read_Adapter.ReadListViewHolder {
         val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_read, parent, false)
+        readService = ReadService(context)
         return ReadListViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ReadListViewHolder, i: Int) {
         if (reads!=null) {
             val r = reads[i]
-            holder.readbook.text = r.book
+            holder.readbook.text = r.dbDto.bookName
             holder.readpagecount.text = r.pageReadCount.toString() + " صفحه"
             holder.readdate.text = r.readDate.toString()
 
             holder.delRead.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch{
-                    repository.delete(r.dbDto.read)
+                    readService.delete(r)
                     withContext(Dispatchers.Main){
                         Toast.makeText(context, "حذف شد", Toast.LENGTH_SHORT).show()
                         reads.remove(r)

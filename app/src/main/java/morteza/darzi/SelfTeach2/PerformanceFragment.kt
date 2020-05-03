@@ -2,7 +2,9 @@
 
 
 import BL.*
-import DAL.AppDatabase
+//import DAL.AppDatabase
+//import DAL.BookRepository
+//import DAL.TermRepository
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -23,7 +25,7 @@ import kotlinx.coroutines.launch
 
 class PerformanceFragment : BaseFragment() {
 //    private lateinit var term: Term
-//    private lateinit var repository: BookRepository
+//    private lateinit var service: BookRepository
     override val title: String
         get() = "خود خوان"
 
@@ -89,19 +91,25 @@ class PerformanceFragment : BaseFragment() {
     }
 
     private suspend fun CreatePerformance() {
-        val repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-        if (!repository.isBooksExist()) {
+        val bookService = BookService(context!!)
+        if (!bookService.isBooksExist()) {
             listener!!.failPerformance()
         }
 
-        val database = AppDatabase.getInstance(context!!)
-
-        val term = TermRepository(database.termDao()).getTerm()!!
-        val books = BookRepository(database.bookDao()).getAllBookWithRead()!!.map { Book(it) }
+        val term = TermService(context!!).getTerm()!!
+        val books = bookService.getAllBook()!!
 
         performance = TermPerformance(term,books)
 
-        suggest = SuggestionRead(books.map { PerformanceBook(term,it) })
+        var remindPage = performance.pageReadTo100Percent
+
+        books.forEach {
+            val suggestion =  Suggestion(BookPlan(it),PerformanceBook(term,it))
+            if(suggestion.HasSuggest(remindPage)){
+                suggest = suggest + suggestion
+                remindPage -= suggestion.suggestBookList()
+            }
+        }
 
     }
 
@@ -129,21 +137,24 @@ class PerformanceFragment : BaseFragment() {
 
         fragmentView.progressBar.progress = performance.term.dayPastPercent
     }
-    private lateinit var suggest : SuggestionRead
+    private lateinit var suggest : List<Suggestion>
+
     private fun LoadBookSuggestionData() {
 
-        for (book in suggest.readList()) {
-            val te = TextView(context)
-            te.text = book + " صفحه بخوان"
-            if (Build.VERSION.SDK_INT < 23) {
-                te.setTextAppearance(context, R.style.creditCardText);
-            } else {
-                te.setTextAppearance(R.style.creditCardText);
-            }
-            te.setTextColor(fragmentView.per_day_lab.textColors)
-            te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        suggest.forEach {
+//            if (it.HasSuggest()) {
+                val te = TextView(context)
+                te.text = it.bookName + it.suggestBookList() + " صفحه بخوان"
+                if (Build.VERSION.SDK_INT < 23) {
+                    te.setTextAppearance(context, R.style.creditCardText);
+                } else {
+                    te.setTextAppearance(R.style.creditCardText);
+                }
+                te.setTextColor(fragmentView.per_day_lab.textColors)
+                te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            fragmentView.read_list.addView(te)
+                fragmentView.read_list.addView(te)
+//            }
         }
     }
 

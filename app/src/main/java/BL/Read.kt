@@ -1,13 +1,30 @@
 package BL
 
-import DAL.ReadBookdb
+import DAL.ReadBookNamedb
+import DAL.Readdb
 
 
-class Read(val dbDto: ReadBookdb) {
+class Read(val dbDto : ReadBookNamedb) {
 
-    val pageReadCount = dbDto.read.pageRead
+    constructor(bookId:Int,bookName:String, pageReadCount:Int, readDate:String ) :
+            this(ReadBookNamedb(Readdb(0,bookId,pageReadCount,readDate),bookName))
 
-    val readDate = dbDto.read.readDate
+    var name
+        get() = dbDto.bookName
+        set(value) {
+            dbDto.bookName = value
 
-    val book = dbDto.bookName
+        }
+    var pageReadCount
+        get() = dbDto.read.pageRead
+        set(value) {
+            dbDto.read.pageRead= value
+
+        }
+    var readDate
+        get() = dbDto.read.readDate
+        set(value) {
+            dbDto.read.readDate = value
+
+        }
 }

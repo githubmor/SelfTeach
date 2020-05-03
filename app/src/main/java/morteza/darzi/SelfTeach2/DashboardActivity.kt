@@ -1,8 +1,10 @@
 package morteza.darzi.SelfTeach2
 
-import BL.BookRepository
-import BL.TermRepository
-import DAL.AppDatabase
+//import DAL.BookRepository
+//import DAL.TermRepository
+//import DAL.AppDatabase
+import BL.BookService
+import BL.TermService
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,8 +23,8 @@ class DashboardActivity : ScopedAppActivity()
         PerformanceFragment.OnFragmentInteractionListener,TermFragment.OnFragmentInteractionListener ,
 BooksFragment.OnFragmentInteractionListener{
 
-    private lateinit var termRepository : TermRepository
-    private lateinit var bookRepository : BookRepository
+    private lateinit var termService : TermService
+    private lateinit var bookService : BookService
     private lateinit var bottomNavigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +48,8 @@ BooksFragment.OnFragmentInteractionListener{
         setSupportActionBar(toolbar)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
-        val database = AppDatabase.getInstance(applicationContext)
-        termRepository = TermRepository(database.termDao())
-        bookRepository = BookRepository(database.bookDao())
+        termService = TermService(applicationContext)
+        bookService = BookService(applicationContext)
 
         bottomNavigation = findViewById(R.id.navigationView)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -63,8 +64,8 @@ BooksFragment.OnFragmentInteractionListener{
         launch {
             val frag: Fragment
 
-            val termExist = termRepository.isTermexist()
-            val bookExist = bookRepository.isBooksExist()
+            val termExist = termService.isTermexist()
+            val bookExist = bookService.isBooksExist()
 
             showLoader(false)
 
@@ -144,13 +145,13 @@ BooksFragment.OnFragmentInteractionListener{
         when (item.itemId) {
             R.id.Reseting -> {
                 launch {
-                    val term = termRepository.getTerm()
+                    val term = termService.getTerm()
                     if (term!=null)
-                        termRepository.delete(term)
+                        termService.delete(term)
 
-                    val books = bookRepository.getAllBook()
+                    val books = bookService.getAllBook()
                     if (!books.isNullOrEmpty()) {
-                        bookRepository.deleteAll()
+                        bookService.deleteAll()
                     }
 
                     intializeSuspend()

@@ -1,7 +1,6 @@
-package BL
+package DAL
 
-import DAL.TermDAO
-import DAL.Termdb
+import BL.Term
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -10,21 +9,21 @@ import kotlinx.coroutines.withContext
 class TermRepository(private val dao: TermDAO) {
 
     @WorkerThread
-    suspend fun insert(term: Term) {
+    suspend fun insert(term: Termdb) {
         withContext(Dispatchers.IO) {
-            dao.insert(term.db)
+            dao.insert(term)
         }
     }
     @WorkerThread
-    suspend fun delete(term: Term) {
+    suspend fun delete(term: Termdb) {
         withContext(Dispatchers.IO) {
-            dao.delete(term.db)
+            dao.delete(term)
         }
     }
     @WorkerThread
-    suspend fun update(term: Term) {
+    suspend fun update(term: Termdb) {
         withContext(Dispatchers.IO) {
-            dao.update(term.db)
+            dao.update(term)
         }
     }
     @WorkerThread
@@ -39,7 +38,7 @@ class TermRepository(private val dao: TermDAO) {
         }
     }
     @WorkerThread
-    suspend fun getTerm(): Term? {
+    suspend fun getTerm(): Termdb? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getTerm()
@@ -49,7 +48,7 @@ class TermRepository(private val dao: TermDAO) {
                 return@withContext if (t == null)
                     null
                 else
-                    Term(t)
+                    t
             }
         }
     }

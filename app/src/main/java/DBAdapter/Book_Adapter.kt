@@ -1,6 +1,7 @@
 package DBAdapter
 
-import BL.BookRepository
+import BL.BookService
+import DAL.BookRepository
 import BL.PerformanceBook
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,7 +12,7 @@ import kotlinx.android.synthetic.main.item_book.view.*
 import morteza.darzi.SelfTeach2.R
 
 
-class Book_Adapter(private val context: Context, private val books: MutableList<PerformanceBook>, val repository: BookRepository)
+class Book_Adapter(private val context: Context, private val books: MutableList<PerformanceBook>)
     : RecyclerView.Adapter<Book_Adapter.BookListViewHolder>() {
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {

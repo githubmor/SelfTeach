@@ -2,10 +2,7 @@ package morteza.darzi.SelfTeach2
 
 
 import BL.*
-import DAL.AppDatabase
-import DAL.Bookdb
-import DAL.ReadBookdb
-import DAL.Readdb
+//import DAL.*
 import DBAdapter.Read_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -40,17 +37,17 @@ class ReadsFragment : BaseDatePickerFragment() {
     private val readSelectBookErrorMessage = "لطفا نام كتاب را وارد كنيد"
     private val readPageBiggerThanPageErrorMessage = "تعداد صفحات خوانده شده نباید بیشتر از تعداد صفحات کتاب باشد"
 
-    var books : List<Bookdb> = listOf()
+    var books : List<Book> = listOf()
     var reads : MutableList<Read> = mutableListOf()
     lateinit var term :Term
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var readRepository : ReadRepository
-    lateinit var bookRepository : BookRepository
-    lateinit var termRepository : TermRepository
+    lateinit var readService : ReadService
+    lateinit var bookService : BookService
+    lateinit var termRepository : TermService
 
     lateinit var v : View
 
-    private var selectedBook: Bookdb? = null
+    private var selectedBook: Book? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -72,13 +69,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
             term = termRepository.getTerm()!!
 
-            val rs = readRepository.getAllReadsWithBookName()
-
-            if (rs != null) {
-                for (r in rs) {
-                    reads.add(Read(r))
-                }
-            }
+            reads = readService.getAllReadsWithBookName()!!
 
             if (reads.size <= 0) {
                 arrangeForShowFirstViewSwitcher(false)
@@ -89,9 +80,9 @@ class ReadsFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeNotRelatedSuspend() {
-        readRepository = ReadRepository(AppDatabase.getInstance(context!!).readDao())
-        bookRepository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
-        termRepository = TermRepository(AppDatabase.getInstance(context!!).termDao())
+        readService = ReadService(context!!)
+        bookService = BookService(context!!)
+        termRepository = TermService(context!!)
 
         v.fab.setOnClickListener {
             arrangeToShowSecondViewSwitcher()
@@ -113,9 +104,11 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.read_save.setOnClickListener {
             if (validateToSave()) {
                 launch {
-                    val read = Readdb(0,selectedBook!!.id,v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
-                    readRepository.insert(read)
-                    adapter.addNewRead(Read(ReadBookdb(read,selectedBook!!.name)))
+                    val read =
+                            Read(selectedBook!!.dbDto.book.id,selectedBook!!.dbDto.book.name,
+                                    v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
+                    readService.insert(read)
+                    adapter.addNewRead(read)
                     arrangeForShowFirstViewSwitcher(true)
                 }
             }
@@ -126,16 +119,16 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun intializeReadList(): Read_Adapter {
         v.list.layoutManager = LinearLayoutManager(context)
-        val adapter = Read_Adapter(context!!, reads,readRepository)
+        val adapter = Read_Adapter(context!!, reads)
         v.list.adapter = adapter
         return adapter
     }
 
     private fun intializeSpinnerBookList() {
         launch {
-            if (!bookRepository.isBooksExist())
+            if (!bookService.isBooksExist())
                 listener!!.failRead()
-            books = bookRepository.getAllBook()!!
+            books = bookService.getAllBook()!!
 
             val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
                 it.name + " - " +  it.pageCount + " صفحه" })

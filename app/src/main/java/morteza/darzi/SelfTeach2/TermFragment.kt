@@ -1,9 +1,8 @@
 package morteza.darzi.SelfTeach2
 
-
-
 import BL.Term
-import BL.TermRepository
+import BL.TermService
+import DAL.TermRepository
 import BL.Ultility
 import DAL.AppDatabase
 import DAL.Termdb
@@ -42,14 +41,13 @@ class TermFragment : BaseDatePickerFragment() {
     private var term :Term ? = null
     private val startTag = "start"
     private val endTag = "end"
-    lateinit var termRepository : TermRepository
+    lateinit var termRepository : TermService
     var isTermEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val database = AppDatabase.getInstance(context!!)
-        termRepository = TermRepository(database.termDao())
+        termRepository = TermService(context!!)
     }
 
     private lateinit var fragmentView:View

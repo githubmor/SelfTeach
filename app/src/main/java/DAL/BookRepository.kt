@@ -1,8 +1,5 @@
-package BL
+package DAL
 
-import DAL.BookDAO
-import DAL.BookReadsdb
-import DAL.Bookdb
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -22,12 +19,12 @@ class BookRepository(private val dao: BookDAO) {
             dao.delete(book)
         }
     }
-    @WorkerThread
-    suspend fun update(book: Bookdb) {
-        withContext(Dispatchers.IO) {
-            dao.update(book)
-        }
-    }
+//    @WorkerThread
+//    suspend fun update(book: Bookdb) {
+//        withContext(Dispatchers.IO) {
+//            dao.update(book)
+//        }
+//    }
     @WorkerThread
     suspend fun deleteAll() {
         withContext(Dispatchers.IO) {
@@ -45,23 +42,35 @@ class BookRepository(private val dao: BookDAO) {
             }
         }
     }
-    @WorkerThread
-    suspend fun getAllBook(): List<Bookdb>? {
-        return withContext(Dispatchers.IO) {
-            val y = async {
-                dao.getAllBook()
-            }
-            withContext(Dispatchers.Main){
-                y.await()
-            }
-        }
-    }
+//    @WorkerThread
+//    suspend fun getAllBook(): List<Bookdb>? {
+//        return withContext(Dispatchers.IO) {
+//            val y = async {
+//                dao.getAllBook()
+//            }
+//            withContext(Dispatchers.Main){
+//                y.await()
+//            }
+//        }
+//    }
+
+//    @WorkerThread
+//    suspend fun getAllBookWithRead(): List<BookReadsdb>? {
+//        return withContext(Dispatchers.IO) {
+//            val y = async {
+//                dao.getAllBookWithReads()
+//            }
+//            withContext(Dispatchers.Main){
+//                y.await()
+//            }
+//        }
+//    }
 
     @WorkerThread
-    suspend fun getAllBookWithRead(): List<BookReadsdb>? {
+    suspend fun getAllNewBook(): List<BookSumReaddb>? {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.getAllBookWithReads()
+                dao.getAllNewBook()
             }
             withContext(Dispatchers.Main){
                 y.await()

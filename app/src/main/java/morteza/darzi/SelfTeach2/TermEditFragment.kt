@@ -3,7 +3,7 @@
 //
 //
 //import BL.Term
-//import BL.TermRepository
+//import DAL.TermRepository
 //import BL.Ultility
 //import DAL.AppDatabase
 //import DAL.Termdb

@@ -1,7 +1,9 @@
 package morteza.darzi.SelfTeach2
 
 import BL.*
-import DAL.AppDatabase
+//import DAL.AppDatabase
+//import DAL.BookRepository
+//import DAL.TermRepository
 import DBAdapter.Book_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -23,7 +25,7 @@ class BooksPerformanceFragment : BaseFragment() {
 
     var books : MutableList<PerformanceBook> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var repository : BookRepository
+    lateinit var bookService : BookService
     lateinit var adapter: Book_Adapter
 
     lateinit var v: View
@@ -32,7 +34,7 @@ class BooksPerformanceFragment : BaseFragment() {
                               savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_book_list, container, false)
 
-        repository = BookRepository(AppDatabase.getInstance(context!!).bookDao())
+        bookService = BookService(context!!)
 
         intializeBeforeSuspend()
         intializeSuspend()
@@ -47,18 +49,18 @@ class BooksPerformanceFragment : BaseFragment() {
     private fun intializeSuspend() {
         launch {
             delay(500)
-            val termRepo = TermRepository(AppDatabase.getInstance(context!!).termDao())
+            val termService = TermService(context!!)
 
-            if (!termRepo.isTermexist()) {
+            if (!termService.isTermexist()) {
                 listener!!.failOpenBooks()
             }
-            val term = termRepo.getTerm()!!
+            val term = termService.getTerm()!!
 
-            val list = repository.getAllBookWithRead()
+            val list = bookService.getAllBook()
 
             if (list != null) {
                 for (bookReadsdb in list) {
-                    books.add(PerformanceBook(term,Book(bookReadsdb)))
+                    books.add(PerformanceBook(term,bookReadsdb))
                 }
             }
             intializeAfterSuspend()
@@ -67,7 +69,7 @@ class BooksPerformanceFragment : BaseFragment() {
     }
 
     private fun intializeAfterSuspend() {
-        adapter = Book_Adapter(context!!,books,repository)
+        adapter = Book_Adapter(context!!,books)
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         v.list.adapter = adapter
 
