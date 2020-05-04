@@ -1,52 +1,35 @@
 package BL
 
-class Suggestion(val booksPaln:BookPlan, val booksPerformance:BookPerformance) {
+class Suggestion(val booksPaln:BookPlan, val pageReadTo100Percent:Int) {
     val bookName
-            get()=booksPerformance.book.name
+            get()=booksPaln.name
 
-    fun suggestBookList(): Int {
+    fun suggestRead(): Int {
 
         var re = 0
         if(getBookHasPageToReadToday()) {
 
-//        val sortedNeekReadbooks = sortBookByPriorityAndPageNeedToRead(needToRead)
-
-
-            //اينجا بايد شرط هاي ديگر مثل روزهايي كه اينو ميخواند و غيره را در نظر بگيرم
-//        sortedNeekReadbooks.forEach { sbook ->
-//            val plan = booksPaln.find { it.book.name==sbook.book.name }!!
-            if (isOverPlan()) {
-                re = booksPerformance.pageReadTo100Percent
+            re = if (isOverPlan()) {
+                pageReadTo100Percent
             } else {
-                re = booksPaln.MaxPageReaded()
+                booksPaln.MaxPageReaded()
             }
         }
-//        }
 
         return re
 
     }
 
     fun isOverPlan(): Boolean {
-        return booksPerformance.pageReadTo100Percent >= booksPaln.MaxPageReaded()
+        return pageReadTo100Percent >= booksPaln.MaxPageReaded()
     }
 
-//    private fun sortBookByPriorityAndPageNeedToRead(needToRead: List<BookPerformance>): List<BookPerformance> {
-//        val bookWithHighPriorityAndHightPageToRead = needToRead
-//                .sortedWith(
-//                        compareBy(
-//                                { it.book.priority },
-//                                { it.pageReadTo100Percent }
-//                        ))
-//        return bookWithHighPriorityAndHightPageToRead
-//    }
-
     private fun getBookHasPageToReadToday(): Boolean {
-        return booksPerformance.pageReadTo100Percent>0
+        return pageReadTo100Percent>0
     }
 
     fun HasSuggest(remindPage:Int): Boolean {
-        return booksPerformance.pageReadTo100Percent<=remindPage
+        return pageReadTo100Percent<=remindPage
     }
 
 }

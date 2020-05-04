@@ -57,7 +57,7 @@ class Tips(val performance: BookPerformance){
 //
 //    private fun pageShouldReadTillToday() = term.dayPast(now) * avgAllPagePerDayInTerm()
 //
-//    private fun allPageWasRead() = bookPerformances.sumBy { it.pageWasReaded() }
+//    private fun allPageWasRead() = bookPerformances.sumBy { it.readSum() }
 //
 //    private fun allPageCount()= bookPerformances.sumBy { it.pageCount }
 //

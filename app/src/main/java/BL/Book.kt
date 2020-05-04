@@ -3,39 +3,33 @@ package BL
 import DAL.Book_db
 
 open class Book (){
-    private  var dbDto = Book_db(0,"",0,0)
 
-    private var readSum  = 0
+    private var bookdb = Book_db(0,"",0,0)
+    var readSum  = 0
 
-    constructor(dbDto : Book_db, readSum:Int):this(){
-        this.dbDto = dbDto
+    constructor(dto : Book_db, readSum:Int):this(){
+        this.bookdb = dto
         this.readSum = readSum
     }
 
     var name
-        get() = dbDto.name
+        get() = bookdb.name
         set(value) {
-            dbDto.name = value
+            bookdb.name = value
 
         }
     var pageCount
-        get() = dbDto.pageCount
+        get() = bookdb.pageCount
         set(value) {
-            dbDto.pageCount = value
+            bookdb.pageCount = value
 
         }
     var priority
-        get() = dbDto.priority
+        get() = bookdb.priority
         set(value) {
-            dbDto.priority = value
+            bookdb.priority = value
 
         }
-    val pageWasReaded: Int
-        get() {
-            return readSum
-        }
 
-    fun getDto(): Book_db {
-        return dbDto
-    }
+    fun getDto(): Book_db = bookdb
 }

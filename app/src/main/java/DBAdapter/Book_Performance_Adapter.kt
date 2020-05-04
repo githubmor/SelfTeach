@@ -29,7 +29,7 @@ class Book_Performance_Adapter(private val context: Context, private val bookPer
     override fun onBindViewHolder(holder: BookListViewHolder, i: Int) {
         val performanceBook = bookPerformances[i]
         holder.bookName.text = performanceBook.book.name
-        holder.pageCount.text = "(" + performanceBook.book.pageWasReaded + "/" + performanceBook.book.pageCount + ")"
+        holder.pageCount.text = "(" + performanceBook.book.readSum + "/" + performanceBook.book.pageCount + ")"
         holder.readProgress.progress = performanceBook.pageReadPercent.toInt()
     }
 

@@ -104,10 +104,10 @@ class TermPerformanceFragment : BaseFragment() {
         var remindPage = termPerformance.pageReadTo100Percent
 
         books.forEach { book ->
-            val suggestion =  Suggestion(BookPlan(book),BookPerformance(term,book))
+            val suggestion =  Suggestion(BookPlan(book),BookPerformance(term,book).pageReadTo100Percent)
             if(suggestion.HasSuggest(remindPage)){
                 suggest = suggest + suggestion
-                remindPage -= suggestion.suggestBookList()
+                remindPage -= suggestion.suggestRead()
             }
         }
 
@@ -144,7 +144,7 @@ class TermPerformanceFragment : BaseFragment() {
         suggest.forEach {
 //            if (it.HasSuggest()) {
                 val te = TextView(context)
-                te.text = it.bookName + it.suggestBookList() + " صفحه بخوان"
+                te.text = it.bookName + it.suggestRead() + " صفحه بخوان"
                 if (Build.VERSION.SDK_INT < 23) {
                     te.setTextAppearance(context, R.style.creditCardText);
                 } else {

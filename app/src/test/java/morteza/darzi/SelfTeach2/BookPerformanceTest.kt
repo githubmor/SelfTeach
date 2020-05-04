@@ -51,7 +51,7 @@ class BookPerformanceTest{
 
         val db = Book_db(1,name,page,priority)
 
-        return Book(Book_Reads_db(db,readList))
+        return Book(db,readList.sumBy { it.pageRead })
     }
     private fun getTerm(): Term {
         val tname = termType.nimsalAvl.name
