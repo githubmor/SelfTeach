@@ -1,32 +1,32 @@
 package DAL
 
-import BL.BookRead
 import androidx.room.*
 
 @Dao
 interface BookDAO {
 
-    @Query("SELECT * FROM Bookdb")
-    fun getAllBookWithReads(): List<BookReadsdb>?
+    @Transaction
+    @Query("SELECT * FROM Book_db")
+    fun getAllBookWithReads(): List<Book_Reads_db>?
 
-    @Query("SELECT Bookdb.*,SUM(Readdb.pageRead) as readSum FROM Bookdb INNER JOIN Readdb ON Bookdb.id = Readdb.bookId")
-    fun getAllNewBook(): List<BookSumReaddb>?
+    @Query("SELECT Book_db.*,SUM(Read_db.pageRead) as readSum FROM Book_db INNER JOIN Read_db ON Book_db.id = Read_db.bookId")
+    fun getAllNewBook(): List<Book_SumRead_db>?
 
     @Insert
-    fun insert(book: Bookdb)
+    fun insert(book: Book_db)
 
 //    @Update
-//    fun update(book: Bookdb)
+//    fun update(book: Book_db)
 
-    @Query("DELETE FROM Bookdb")
+    @Query("DELETE FROM Book_db")
     fun deleteAll()
 
     @Delete
-    fun delete(todo: Bookdb)
+    fun delete(todo: Book_db)
 
-    @Query("SELECT * FROM Bookdb")
-    fun getAllBook() : List<Bookdb>?
+//    @Query("SELECT * FROM Book_db")
+//    fun getAllBookWithSumRead() : List<Book_db>?
 
-    @Query("SELECT COUNT(*) FROM Bookdb")
+    @Query("SELECT COUNT(*) FROM Book_db")
     fun existBook(): Int
 }

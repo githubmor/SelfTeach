@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class DashboardActivity : ScopedAppActivity()
         ,BooksPerformanceFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
-        PerformanceFragment.OnFragmentInteractionListener,TermFragment.OnFragmentInteractionListener ,
+        TermPerformanceFragment.OnFragmentInteractionListener,TermFragment.OnFragmentInteractionListener ,
 BooksFragment.OnFragmentInteractionListener{
 
     private lateinit var termService : TermService
@@ -72,7 +72,7 @@ BooksFragment.OnFragmentInteractionListener{
             frag = if (termExist)
                 if (bookExist) {
                     hideToolbarAndNavigation(false)
-                    PerformanceFragment()
+                    TermPerformanceFragment()
                 }
                 else {
                     hideToolbarAndNavigation(true)
@@ -104,7 +104,7 @@ BooksFragment.OnFragmentInteractionListener{
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.performancing -> {
-                showFragment(PerformanceFragment())
+                showFragment(TermPerformanceFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.AddRead -> {
@@ -149,7 +149,7 @@ BooksFragment.OnFragmentInteractionListener{
                     if (term!=null)
                         termService.delete(term)
 
-                    val books = bookService.getAllBook()
+                    val books = bookService.getAllBookWithSumRead()
                     if (!books.isNullOrEmpty()) {
                         bookService.deleteAll()
                     }

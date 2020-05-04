@@ -1,7 +1,7 @@
 package DBAdapter
 
-import BL.Read
 import BL.ReadService
+import BL.ReadBook
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import morteza.darzi.SelfTeach2.R
 
 class Read_Adapter
-(private val context: Context, private val reads: MutableList<Read>?)
+(private val context: Context, private val reads: MutableList<ReadBook>?)
     : RecyclerView.Adapter<Read_Adapter.ReadListViewHolder>() {
 
     private lateinit var readService: ReadService
@@ -40,7 +40,7 @@ class Read_Adapter
     override fun onBindViewHolder(holder: ReadListViewHolder, i: Int) {
         if (reads!=null) {
             val r = reads[i]
-            holder.readbook.text = r.dbDto.bookName
+            holder.readbook.text = r.bookName
             holder.readpagecount.text = r.pageReadCount.toString() + " صفحه"
             holder.readdate.text = r.readDate.toString()
 
@@ -62,7 +62,7 @@ class Read_Adapter
         return reads?.size ?: 0
     }
 
-    fun addNewRead(b: Read) {
+    fun addNewRead(b: ReadBook) {
         reads?.add(b)
         notifyDataSetChanged()
     }

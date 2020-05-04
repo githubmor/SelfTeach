@@ -23,13 +23,13 @@ import kotlinx.android.synthetic.main.fragment_performance.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PerformanceFragment : BaseFragment() {
+class TermPerformanceFragment : BaseFragment() {
 //    private lateinit var term: Term
 //    private lateinit var service: BookRepository
     override val title: String
         get() = "خود خوان"
 
-    private lateinit var performance: TermPerformance
+    private lateinit var termPerformance: TermPerformance
     private lateinit var performanceircle: DonutProgress
     private var listener: OnFragmentInteractionListener? = null
 
@@ -97,15 +97,14 @@ class PerformanceFragment : BaseFragment() {
         }
 
         val term = TermService(context!!).getTerm()!!
-        val books = bookService.getAllBookWithRead()!!
-//        val reads = ReadService(context!!).getAllReadsWithBookName()
+        val books = bookService.getAllBookWithListRead()!!
 
-        performance = TermPerformance(term,books)
+        termPerformance = TermPerformance(term,books)
 
-        var remindPage = performance.pageReadTo100Percent
+        var remindPage = termPerformance.pageReadTo100Percent
 
         books.forEach { book ->
-            val suggestion =  Suggestion(BookPlan(book,book.reads),PerformanceBook(term,book))
+            val suggestion =  Suggestion(BookPlan(book),BookPerformance(term,book))
             if(suggestion.HasSuggest(remindPage)){
                 suggest = suggest + suggestion
                 remindPage -= suggestion.suggestBookList()
@@ -123,7 +122,7 @@ class PerformanceFragment : BaseFragment() {
 
     private fun LoadPerformanceDataToUI() {
 
-        animatePerformanceCircle(performance.performance)
+        animatePerformanceCircle(termPerformance.performance)
 
         LoadPerformanceData()
 
@@ -131,12 +130,12 @@ class PerformanceFragment : BaseFragment() {
     }
 
     private fun LoadPerformanceData() {
-        fragmentView.today.text = performance.pageReadTo100Percent.toString()
-        fragmentView.per_day.text = performance.avgPagePerDayRemind.toString()
+        fragmentView.today.text = termPerformance.pageReadTo100Percent.toString()
+        fragmentView.per_day.text = termPerformance.avgPagePerDayRemind.toString()
 
-        fragmentView.day_remind.text = performance.term.termDateState
+        fragmentView.day_remind.text = termPerformance.term.termDateState
 
-        fragmentView.progressBar.progress = performance.term.dayPastPercent
+        fragmentView.progressBar.progress = termPerformance.term.dayPastPercent
     }
     private lateinit var suggest : List<Suggestion>
 

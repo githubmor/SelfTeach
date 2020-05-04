@@ -1,11 +1,11 @@
 package morteza.darzi.SelfTeach2
 
 import BL.Book
-import BL.PerformanceBook
+import BL.BookPerformance
 import BL.Term
-import DAL.BookReadsdb
-import DAL.Bookdb
-import DAL.Readdb
+import DAL.Book_Reads_db
+import DAL.Book_db
+import DAL.Read_db
 import DAL.Termdb
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
@@ -23,7 +23,7 @@ class BookPerformanceTest{
 
         val term = getTerm()
 
-        val performanceBook = PerformanceBook(term,book)
+        val performanceBook = BookPerformance(term,book)
 
         assertEquals(40,performanceBook.avgPagePerDayRemind)
         assertEquals(40,performanceBook.pageReadTo100Percent)
@@ -32,11 +32,11 @@ class BookPerformanceTest{
 
     private var count = 2
     private var avgPPR = 0
-    private fun getReadList(): List<Readdb> {
-        val re : MutableList<Readdb> = mutableListOf()
+    private fun getReadList(): List<Read_db> {
+        val re : MutableList<Read_db> = mutableListOf()
         for (i in 1..count){
             val p = 10
-            re.add(Readdb(i,1,p,PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK,i*2)}.persianShortDate))
+            re.add(Read_db(i,1,p,PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK,i*2)}.persianShortDate))
             avgPPR += p
         }
 
@@ -49,9 +49,9 @@ class BookPerformanceTest{
         val priority = 3
         val readList = getReadList()
 
-        val db = Bookdb(1,name,page,priority)
+        val db = Book_db(1,name,page,priority)
 
-        return Book(BookReadsdb(db,readList))
+        return Book(Book_Reads_db(db,readList))
     }
     private fun getTerm(): Term {
         val tname = termType.nimsalAvl.name

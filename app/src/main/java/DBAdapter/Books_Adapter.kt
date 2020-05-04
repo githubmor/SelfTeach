@@ -16,8 +16,8 @@ import kotlinx.coroutines.withContext
 import morteza.darzi.SelfTeach2.R
 
 
-class Book_first_Adapter(private val context: Context, private val books: MutableList<Book>)
-    : RecyclerView.Adapter<Book_first_Adapter.BookListViewHolder>() {
+class Books_Adapter(private val context: Context, private val books: MutableList<Book>)
+    : RecyclerView.Adapter<Books_Adapter.BookListViewHolder>() {
 
     private lateinit var bookService: BookService
 
@@ -27,7 +27,7 @@ class Book_first_Adapter(private val context: Context, private val books: Mutabl
         internal val delBook = v.del_book
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Book_first_Adapter.BookListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Books_Adapter.BookListViewHolder {
         val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_book_first, parent, false)
         bookService = BookService(context)

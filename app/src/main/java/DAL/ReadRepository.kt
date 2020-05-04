@@ -8,19 +8,19 @@ import kotlinx.coroutines.withContext
 class ReadRepository(private val dao: ReadDAO) {
 
     @WorkerThread
-    suspend fun insert(read: Readdb) {
+    suspend fun insert(read: Read_db) {
         withContext(Dispatchers.IO) {
             dao.insert(read)
         }
     }
     @WorkerThread
-    suspend fun delete(read: Readdb) {
+    suspend fun delete(read: Read_db) {
         withContext(Dispatchers.IO) {
             dao.delete(read)
         }
     }
 //    @WorkerThread
-//    suspend fun update(term_old: Readdb) {
+//    suspend fun update(term_old: Read_db) {
 //        withContext(Dispatchers.IO) {
 //            dao.update(term_old)
 //        }
@@ -37,7 +37,7 @@ class ReadRepository(private val dao: ReadDAO) {
 //        }
 //    }
 //    @WorkerThread
-//    suspend fun getAllReads(): List<Readdb>? {
+//    suspend fun getAllReads(): List<Read_db>? {
 //        return withContext(Dispatchers.IO) {
 //            val y = async {
 //                dao.getAllReads()
@@ -49,7 +49,7 @@ class ReadRepository(private val dao: ReadDAO) {
 //    }
 
     @WorkerThread
-    suspend fun getAllReadsWithBookName(): List<ReadBookNamedb>? {
+    suspend fun getAllReadsWithBookName(): List<Read_BookName_db>? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllReadsWithBookName()

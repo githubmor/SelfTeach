@@ -38,7 +38,7 @@ class ReadsFragment : BaseDatePickerFragment() {
     private val readPageBiggerThanPageErrorMessage = "تعداد صفحات خوانده شده نباید بیشتر از تعداد صفحات کتاب باشد"
 
     var books : List<Book> = listOf()
-    var reads : MutableList<Read> = mutableListOf()
+    var reads : MutableList<ReadBook> = mutableListOf()
     lateinit var term :Term
     private var listener: OnFragmentInteractionListener? = null
     lateinit var readService : ReadService
@@ -69,7 +69,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
             term = termRepository.getTerm()!!
 
-            reads = readService.getAllReadsWithBookName()!!
+            reads = readService.getAllReadsWithBookName()!!.toMutableList()
 
             if (reads.size <= 0) {
                 arrangeForShowFirstViewSwitcher(false)
@@ -104,11 +104,15 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.read_save.setOnClickListener {
             if (validateToSave()) {
                 launch {
-                    val read =
-                            Read(selectedBook!!.dbDto.book.id,selectedBook!!.dbDto.book.name,
-                                    v.read_page_count.text.toString().toInt(),v.read_date.text.toString())
+
+                    val read = Read(selectedBook!!.getDto().id)
+
+                    read.pageReadCount = v.read_page_count.text.toString().toInt()
+                    read.readDate = v.read_date.text.toString()
+
                     readService.insert(read)
-                    adapter.addNewRead(read)
+
+                    adapter.addNewRead(ReadBook(read.getDto(),selectedBook!!.name))
                     arrangeForShowFirstViewSwitcher(true)
                 }
             }
@@ -128,7 +132,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         launch {
             if (!bookService.isBooksExist())
                 listener!!.failRead()
-            books = bookService.getAllBook()!!
+            books = bookService.getAllBookWithSumRead()!!
 
             val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
                 it.name + " - " +  it.pageCount + " صفحه" })

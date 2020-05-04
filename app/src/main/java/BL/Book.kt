@@ -1,31 +1,41 @@
 package BL
-import DAL.Bookdb
-import DAL.BookSumReaddb
 
-open class Book (val dbDto : BookSumReaddb){
-    constructor(name: String, pageCount: Int, priprity: Int) :
-            this(BookSumReaddb(Bookdb(0,name,pageCount,priprity),0))
+import DAL.Book_db
+
+open class Book (){
+    private  var dbDto = Book_db(0,"",0,0)
+
+    private var readSum  = 0
+
+    constructor(dbDto : Book_db, readSum:Int):this(){
+        this.dbDto = dbDto
+        this.readSum = readSum
+    }
 
     var name
-        get() = dbDto.book.name
+        get() = dbDto.name
         set(value) {
-            dbDto.book.name = value
+            dbDto.name = value
 
         }
     var pageCount
-        get() = dbDto.book.pageCount
+        get() = dbDto.pageCount
         set(value) {
-            dbDto.book.pageCount = value
+            dbDto.pageCount = value
 
         }
     var priority
-        get() = dbDto.book.priority
+        get() = dbDto.priority
         set(value) {
-            dbDto.book.priority = value
+            dbDto.priority = value
 
         }
     val pageWasReaded: Int
         get() {
-            return dbDto.readSum
+            return readSum
         }
+
+    fun getDto(): Book_db {
+        return dbDto
+    }
 }

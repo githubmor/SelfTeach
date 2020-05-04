@@ -3,26 +3,23 @@ package BL
 import DAL.*
 import android.content.Context
 import androidx.annotation.WorkerThread
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 
 class ReadService(context: Context) {
     var dao  = ReadRepository(AppDatabase.getInstance(context).readDao())
     @WorkerThread
-    suspend fun insert(read: Read) {
+    suspend fun insert(read: Read)  {
 //        withContext(Dispatchers.IO) {
-            dao.insert(read.dbDto.read)
+           dao.insert(read.getDto())
 //        }
     }
     @WorkerThread
     suspend fun delete(read: Read) {
 //        withContext(Dispatchers.IO) {
-            dao.delete(read.dbDto.read)
+            dao.delete(read.getDto())
 //        }
     }
     //    @WorkerThread
-//    suspend fun update(term_old: Readdb) {
+//    suspend fun update(term_old: Read_db) {
 //        withContext(Dispatchers.IO) {
 //            dao.update(term_old)
 //        }
@@ -51,10 +48,10 @@ class ReadService(context: Context) {
 //    }
 
     @WorkerThread
-    suspend fun getAllReadsWithBookName(): MutableList<Read>? {
+    suspend fun getAllReadsWithBookName(): List<ReadBook>? {
 //        return withContext(Dispatchers.IO) {
 //            val y = async {
-              return   dao.getAllReadsWithBookName()!!.map { Read(it) }.toMutableList()
+              return   dao.getAllReadsWithBookName()!!.map { ReadBook(it.read,it.bookName) }
 //            }
 //            withContext(Dispatchers.Main){
 //                y.await()

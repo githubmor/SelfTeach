@@ -1,13 +1,13 @@
 package morteza.darzi.SelfTeach2
 
-import BL.PerformanceCalculator
+import BL.Performance
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
  * Created by M on 19/04/05.
  */
-class PerformanceCalculatorTest{
+class PerformanceTest{
 
     @Test
     fun performance_manual_calculator_ISOK() {
@@ -16,7 +16,7 @@ class PerformanceCalculatorTest{
         val pasDay = 20
         val pageCount = 500
         val pageRead = 50
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
+        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
         val pageRemind = 450 //pageCount - pageRead
         val dayRemind = 80 //daycount - pasDay
@@ -35,7 +35,7 @@ class PerformanceCalculatorTest{
         val pasDay = 30
         val pageCount = 200
         val pageRead = 0 // هنوز شروع به خواندن نکرده
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
+        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
         val pageRemind = 200 //pageCount - pageRead
         val dayRemind = 70 //daycount - pasDay
@@ -53,7 +53,7 @@ class PerformanceCalculatorTest{
         val pasDay = 30
         val pageCount = 3
         val pageRead = 1
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
+        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
         val pageRemind = 32 //pageCount - pageRead
         val dayRemind = 75 //daycount - pasDay
@@ -71,7 +71,7 @@ class PerformanceCalculatorTest{
         val pasDay = 20
         val pageCount = 50
         val pageRead = 50
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
+        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
         val pageRemind = 0 //pageCount - pageRead
         val dayRemind = 80 // daycount - pasDay
@@ -89,7 +89,7 @@ class PerformanceCalculatorTest{
         val pasDay = 0
         val pageCount = 500
         val pageRead = 50
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
+        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
         val pageRemind = 450 //pageCount - pageRead
         val dayRemind = 100 // daycount - pasDay
@@ -108,7 +108,7 @@ class PerformanceCalculatorTest{
         val pasDay = 100
         val pageCount = 50
         val pageRead = 30
-        val performanceBook = PerformanceCalculator(daycount,pasDay,pageCount,pageRead)
+        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
         val pageRemind = 20 //pageCount - pageRead
         val dayRemind = 0 // daycount - pasDay

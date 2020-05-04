@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class Bookdb(
+data class Book_db(
         @PrimaryKey(autoGenerate = true)
         var id : Int,
         var name: String,

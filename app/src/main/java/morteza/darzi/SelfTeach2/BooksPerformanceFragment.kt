@@ -4,7 +4,7 @@ import BL.*
 //import DAL.AppDatabase
 //import DAL.BookRepository
 //import DAL.TermRepository
-import DBAdapter.Book_Adapter
+import DBAdapter.Book_Performance_Adapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,10 +23,10 @@ class BooksPerformanceFragment : BaseFragment() {
     override val title: String
         get() = "كتاب ها"
 
-    var books : MutableList<PerformanceBook> = mutableListOf()
+    var bookPerformances : MutableList<BookPerformance> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
     lateinit var bookService : BookService
-    lateinit var adapter: Book_Adapter
+    lateinit var performanceAdapter: Book_Performance_Adapter
 
     lateinit var v: View
 
@@ -56,11 +56,11 @@ class BooksPerformanceFragment : BaseFragment() {
             }
             val term = termService.getTerm()!!
 
-            val list = bookService.getAllBook()
+            val list = bookService.getAllBookWithSumRead()
 
             if (list != null) {
-                for (bookReadsdb in list) {
-                    books.add(PerformanceBook(term,bookReadsdb))
+                for (book in list) {
+                    bookPerformances.add(BookPerformance(term,book))
                 }
             }
             intializeAfterSuspend()
@@ -69,9 +69,9 @@ class BooksPerformanceFragment : BaseFragment() {
     }
 
     private fun intializeAfterSuspend() {
-        adapter = Book_Adapter(context!!,books)
+        performanceAdapter = Book_Performance_Adapter(context!!,bookPerformances)
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        v.list.adapter = adapter
+        v.list.adapter = performanceAdapter
 
         ShowLoader(false)
     }

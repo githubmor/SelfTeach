@@ -1,9 +1,9 @@
 package morteza.darzi.SelfTeach2
 
 import BL.Book
-import DAL.BookReadsdb
-import DAL.Bookdb
-import DAL.Readdb
+import DAL.Book_Reads_db
+import DAL.Book_db
+import DAL.Read_db
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -20,9 +20,9 @@ class BookTest{
         val page = 1000
         val priority = 3
 
-        val db = Bookdb(1,name,page,priority)
+        val db = Book_db(1,name,page,priority)
 
-        val book = Book(BookReadsdb(db))
+        val book = Book(Book_Reads_db(db))
 
         assertEquals(name,book.name)
         assertEquals(page,book.pageCount)
@@ -42,9 +42,9 @@ class BookTest{
         val priority = 3
         val changePriority = 5
 
-        val db = Bookdb(1,name,page,priority)
+        val db = Book_db(1,name,page,priority)
 
-        val book = Book(BookReadsdb(db))
+        val book = Book(Book_Reads_db(db))
         book.name = changeName
         book.priority = changePriority
         book.pageCount = changePage
@@ -66,9 +66,9 @@ class BookTest{
         val page_read = 50
         val readList = getReadList(page_read)
 
-        val db = Bookdb(1,name,page,priority)
+        val db = Book_db(1,name,page,priority)
 
-        val book = Book(BookReadsdb(db,readList))
+        val book = Book(Book_Reads_db(db,readList))
 
         assertEquals((page_read*100/page).toFloat(),book.pageReadPercent)
 //        assertEquals("( 500/1000 ) صفحه",book.pageReadState)
@@ -76,10 +76,10 @@ class BookTest{
 
     }
 
-    private fun getReadList(page_read:Int): List<Readdb> {
-        val re : MutableList<Readdb> = mutableListOf()
+    private fun getReadList(page_read:Int): List<Read_db> {
+        val re : MutableList<Read_db> = mutableListOf()
 
-        re.add(Readdb(1,1,page_read,PersianCalendar().persianShortDate))
+        re.add(Read_db(1,1,page_read,PersianCalendar().persianShortDate))
 
 
         return re

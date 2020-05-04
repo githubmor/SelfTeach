@@ -1,10 +1,8 @@
 package BL
 
-import java.util.*
-
-class Suggestion(val booksPaln:BookPlan, val booksPerformance:PerformanceBook) {
+class Suggestion(val booksPaln:BookPlan, val booksPerformance:BookPerformance) {
     val bookName
-            get()=booksPaln.book.name
+            get()=booksPerformance.book.name
 
     fun suggestBookList(): Int {
 
@@ -33,7 +31,7 @@ class Suggestion(val booksPaln:BookPlan, val booksPerformance:PerformanceBook) {
         return booksPerformance.pageReadTo100Percent >= booksPaln.MaxPageReaded()
     }
 
-//    private fun sortBookByPriorityAndPageNeedToRead(needToRead: List<PerformanceBook>): List<PerformanceBook> {
+//    private fun sortBookByPriorityAndPageNeedToRead(needToRead: List<BookPerformance>): List<BookPerformance> {
 //        val bookWithHighPriorityAndHightPageToRead = needToRead
 //                .sortedWith(
 //                        compareBy(

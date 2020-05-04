@@ -1,6 +1,5 @@
 package DAL
 
-import BL.BookRead
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -9,19 +8,19 @@ import kotlinx.coroutines.withContext
 class BookRepository(private val dao: BookDAO) {
 
     @WorkerThread
-    suspend fun insert(book: Bookdb) {
+    suspend fun insert(book: Book_db) {
         withContext(Dispatchers.IO) {
             dao.insert(book)
         }
     }
     @WorkerThread
-    suspend fun delete(book: Bookdb) {
+    suspend fun delete(book: Book_db) {
         withContext(Dispatchers.IO) {
             dao.delete(book)
         }
     }
 //    @WorkerThread
-//    suspend fun update(book: Bookdb) {
+//    suspend fun update(book: Book_db) {
 //        withContext(Dispatchers.IO) {
 //            dao.update(book)
 //        }
@@ -44,10 +43,10 @@ class BookRepository(private val dao: BookDAO) {
         }
     }
 //    @WorkerThread
-//    suspend fun getAllBook(): List<Bookdb>? {
+//    suspend fun getAllBookWithSumRead(): List<Book_db>? {
 //        return withContext(Dispatchers.IO) {
 //            val y = async {
-//                dao.getAllBook()
+//                dao.getAllBookWithSumRead()
 //            }
 //            withContext(Dispatchers.Main){
 //                y.await()
@@ -56,7 +55,7 @@ class BookRepository(private val dao: BookDAO) {
 //    }
 
     @WorkerThread
-    suspend fun getAllBookWithRead(): List<BookReadsdb>? {
+    suspend fun getAllBookWithRead(): List<Book_Reads_db>? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllBookWithReads()
@@ -68,7 +67,7 @@ class BookRepository(private val dao: BookDAO) {
     }
 
     @WorkerThread
-    suspend fun getAllNewBook(): List<BookSumReaddb>? {
+    suspend fun getAllNewBook(): List<Book_SumRead_db>? {
         return withContext(Dispatchers.IO) {
             val y = async {
                 dao.getAllNewBook()

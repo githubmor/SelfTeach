@@ -1,6 +1,6 @@
 package BL
 
-class Tips(val performance: PerformanceBook){
+class Tips(val performance: BookPerformance){
 
 
 
@@ -33,7 +33,7 @@ class Tips(val performance: PerformanceBook){
 //
 //
 //    private fun avgAllPageCountWasReadPerEveryRead(): Int {
-//        val c =books.sumBy { it.dbDto.reads.count() }
+//        val c =bookPerformances.sumBy { it.dbDto.read_dbs.count() }
 //        return if (c>0) {
 //            allPageWasRead() / c
 //        } else 0
@@ -57,9 +57,9 @@ class Tips(val performance: PerformanceBook){
 //
 //    private fun pageShouldReadTillToday() = term.dayPast(now) * avgAllPagePerDayInTerm()
 //
-//    private fun allPageWasRead() = books.sumBy { it.pageWasReaded() }
+//    private fun allPageWasRead() = bookPerformances.sumBy { it.pageWasReaded() }
 //
-//    private fun allPageCount()= books.sumBy { it.pageCount }
+//    private fun allPageCount()= bookPerformances.sumBy { it.pageCount }
 //
 //    fun pagePerDayRemind(): Int {
 //        val i: Int = if (term.dayRemind(now) > 0) {

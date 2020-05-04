@@ -7,17 +7,17 @@ import androidx.room.Query
 
 @Dao
 interface ReadDAO {
-//    @Query("SELECT * FROM Readdb")
-//    fun getAllReads(): List<Readdb>?
+//    @Query("SELECT * FROM Read_db")
+//    fun getAllReads(): List<Read_db>?
 
     @Insert
-    fun insert(read: Readdb)
+    fun insert(read: Read_db)
 
     @Delete
-    fun delete(read: Readdb)
+    fun delete(read: Read_db)
 
-    @Query("SELECT Readdb.*,Bookdb.name FROM Readdb LEFT JOIN Bookdb ON Readdb.bookId = Bookdb.id")
-    fun getAllReadsWithBookName(): List<ReadBookNamedb>?
+    @Query("SELECT Read_db.*,Book_db.name FROM Read_db LEFT JOIN Book_db ON Read_db.bookId = Book_db.id")
+    fun getAllReadsWithBookName(): List<Read_BookName_db>?
 
 
 }

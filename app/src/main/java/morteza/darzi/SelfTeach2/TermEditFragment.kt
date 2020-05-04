@@ -151,7 +151,7 @@
 //    private fun intializeSpinner(v: View) {
 //        val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, termType.values().map { it.typeName })
 //        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        v.term_type.adapter = dataAdapter
+//        v.term_type.performanceAdapter = dataAdapter
 //
 //        v.term_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 //            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {

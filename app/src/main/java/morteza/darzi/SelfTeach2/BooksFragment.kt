@@ -5,7 +5,7 @@ import BL.BookService
 import BL.TermService
 //import DAL.TermRepository
 //import DAL.AppDatabase
-import DBAdapter.Book_first_Adapter
+import DBAdapter.Books_Adapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,7 +31,7 @@ class BooksFragment : BaseFragment() {
     var books : MutableList<Book> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
     lateinit var service : BookService
-    lateinit var adapter: Book_first_Adapter
+    lateinit var adapter: Books_Adapter
 
     lateinit var v: View
 
@@ -59,9 +59,17 @@ class BooksFragment : BaseFragment() {
         v.book_save.setOnClickListener {
             if (validateToSave()) {
                 launch {
-                    val b = Book(v.book_name.text.toString(),v.book_page_count.text.toString().toInt(),v.priority.rating.toInt())
+
+                    val b = Book()
+
+                    b.name = v.book_name.text.toString()
+                    b.pageCount = v.book_page_count.text.toString().toInt()
+                    b.priority = v.priority.rating.toInt()
+
                     service.insert(b)
+
                     adapter.addNewBook(b)
+
                     ShowBookListSwitcher()
                 }
             }
@@ -87,7 +95,7 @@ class BooksFragment : BaseFragment() {
 
         service = BookService(context!!)
 
-        books = service.getAllBook()!!.toMutableList()
+        books = service.getAllBookWithSumRead()!!.toMutableList()
 
         adapterIntialize()
     }
@@ -106,7 +114,7 @@ class BooksFragment : BaseFragment() {
     }
 
     private fun adapterIntialize() {
-        adapter = Book_first_Adapter(context!!, books)
+        adapter = Books_Adapter(context!!, books)
         v.list.layoutManager = LinearLayoutManager(context)
         v.list.adapter = adapter
     }
