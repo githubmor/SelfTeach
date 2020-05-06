@@ -15,7 +15,7 @@ import org.junit.Test
 class TermPerformanceTest{
 
     @Test
-    fun book_Create_IsOk() {
+    fun bookPerformances_Create_IsOk() {
 
         val bookPerformances = getBookList()
 
@@ -28,15 +28,33 @@ class TermPerformanceTest{
         assertEquals(61,bookP.pageReadTo100Percent)
     }
 
+    @Test
+    fun bookPerformances_term_Pas_IsOk() {
 
-//    private fun getReadList(bookId : Int,readCount:Int): List<ReadDataTable> {
-//        val re : MutableList<ReadDataTable> = mutableListOf()
-//        for (i in 1..readCount){
-//            re.add(ReadDataTable(i,bookId,i*2, PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK,i*2)}.persianShortDate))
-//        }
-//
-//        return re
-//    }
+        val bookPerformances = getBookList()
+
+        val term = getTermPased()
+
+        val bookP = TermPerformance(term, bookPerformances)
+
+        assertEquals(19.0F, bookP.performance)
+        assertEquals(2, bookP.avgPagePerDayRemind)
+        assertEquals(61, bookP.pageReadTo100Percent)
+    }
+
+    @Test
+    fun bookPerformances_term_NotBigin_IsOk() {
+
+        val bookPerformances = getBookList()
+
+        val term = getTermNotBigin()
+
+        val bookP = TermPerformance(term, bookPerformances)
+
+        assertEquals(19.0F, bookP.performance)
+        assertEquals(2, bookP.avgPagePerDayRemind)
+        assertEquals(61, bookP.pageReadTo100Percent)
+    }
 
     fun getBookList(): MutableList<Book> {
         val name = "Book"
@@ -51,8 +69,30 @@ class TermPerformanceTest{
     }
     private fun getTerm(): Term {
         val tname = TermType.NimsalAvl.name
-        val startDate = PersianCalendar().apply { add(PersianCalendar.MONTH, -2) }.persianShortDate
-        val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH, 2) }.persianShortDate
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }.persianShortDate
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 2) }.persianShortDate
+
+        val tdb = TermDataTable(1, tname, startDate, endDate)
+
+        val term = Term(tdb)
+        return term
+    }
+
+    private fun getTermPased(): Term {
+        val tname = TermType.NimsalAvl.name
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -8) }.persianShortDate
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }.persianShortDate
+
+        val tdb = TermDataTable(1, tname, startDate, endDate)
+
+        val term = Term(tdb)
+        return term
+    }
+
+    private fun getTermNotBigin(): Term {
+        val tname = TermType.NimsalAvl.name
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 2) }.persianShortDate
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 7) }.persianShortDate
 
         val tdb = TermDataTable(1, tname, startDate, endDate)
 

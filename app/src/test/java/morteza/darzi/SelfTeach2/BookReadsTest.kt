@@ -58,17 +58,40 @@ class BookReadsTest{
 
     }
 
-//    @Test
-//    fun book_readList_IsOk() {
-//
-//        val getBookDataTable = BookReads()
-//
-//        assertEquals("",getBookDataTable.name)
-//        assertEquals(0,getBookDataTable.pageCount)
-//        assertEquals(0,getBookDataTable.priority)
-//        assertEquals(0,getBookDataTable.readSum)
-//
-//    }
+    @Test
+    fun book_readAll_IsOk() {
+
+        val name = "Book 1"
+        val page = 100
+        val priority = 3
+        val db = Book(BookDataTable(1, name, page, priority))
+
+        val book = BookReads(db, getReadAllList(page))
+
+        assertEquals(name, book.name)
+        assertEquals(page, book.pageCount)
+        assertEquals(priority, book.priority)
+        assertEquals(page, book.readSum)
+        assertEquals(getReadList(page).count(), book.reads.count())
+    }
+
+    @Test
+    fun book_NotRead_IsOk() {
+
+        val name = "Book 1"
+        val page = 100
+        val priority = 3
+
+        val db = Book(BookDataTable(1, name, page, priority))
+
+        val book = BookReads(db, getNotReadList())
+
+        assertEquals(name, book.name)
+        assertEquals(page, book.pageCount)
+        assertEquals(priority, book.priority)
+        assertEquals(0, book.readSum)
+        assertEquals(0, book.reads.count())
+    }
 
     private fun getReadList(page_read: Int): List<Read> {
         val re: MutableList<Read> = mutableListOf()
@@ -79,5 +102,17 @@ class BookReadsTest{
         return re
     }
 
+    private fun getReadAllList(page_read: Int): List<Read> {
+        val re: MutableList<Read> = mutableListOf()
+
+        re.add(Read(ReadDataTable(1, 1, page_read, PersianCalendar().persianShortDate)))
+
+
+        return re
+    }
+
+    private fun getNotReadList(): List<Read> {
+        return mutableListOf()
+    }
 
 }

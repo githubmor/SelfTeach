@@ -30,6 +30,25 @@ class BookTest{
     }
 
     @Test
+    fun book_NotRead_IsOk() {
+
+        val name = "Book 1"
+        val page = 1000
+        val priority = 3
+        val readCount = 0
+
+        val db = BookDataTable(1, name, page, priority)
+
+        val book = Book(db, readCount)
+
+        assertEquals(name, book.name)
+        assertEquals(page, book.pageCount)
+        assertEquals(priority, book.priority)
+        assertEquals(readCount, book.readSum)
+        assertEquals(db, book.getBookDataTable())
+    }
+
+    @Test
     fun book_edit_IsOk() {
 
         val name = "Book 1"
@@ -55,7 +74,7 @@ class BookTest{
     }
 
     @Test
-    fun book_readList_IsOk() {
+    fun book_default_IsOk() {
 
         val book = Book()
 
@@ -64,15 +83,5 @@ class BookTest{
         assertEquals(0,book.priority)
         assertEquals(0,book.readSum)
     }
-
-//    private fun getReadList(page_read:Int): List<ReadDataTable> {
-//        val re : MutableList<ReadDataTable> = mutableListOf()
-//
-//        re.add(ReadDataTable(1,1,page_read,PersianCalendar().persianShortDate))
-//
-//
-//        return re
-//    }
-
 
 }

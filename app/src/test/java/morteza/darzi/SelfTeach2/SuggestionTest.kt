@@ -25,6 +25,30 @@ class SuggestionTest {
         assertEquals(2, ss.count())
     }
 
+    @Test
+    fun suggest_Avreg_IsBigger_PageRemind2() {
+
+        val books = getBook()
+
+        val term = getTerm(3)
+
+        val ss = Suggestion(term, books).getBookSuggestList(0)
+
+        assertEquals(2, ss.count())
+    }
+
+    @Test
+    fun suggest_Avreg_IsBigger_PageRemind3() {
+
+        val books = getBook()
+
+        val term = getTerm(3)
+
+        val ss = Suggestion(term, books).getBookSuggestList(-2)
+
+        assertEquals(2, ss.count())
+    }
+
 //    @Test
 //    fun suggest_PageRemind_IsBiger_Avg() {
 //

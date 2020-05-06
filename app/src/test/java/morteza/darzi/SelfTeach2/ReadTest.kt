@@ -37,14 +37,4 @@ class ReadTest{
 
     }
 
-//    private fun getReadList(page_read:Int): List<ReadDataTable> {
-//        val re : MutableList<ReadDataTable> = mutableListOf()
-//
-//        re.add(ReadDataTable(1,1,page_read,PersianCalendar().persianShortDate))
-//
-//
-//        return re
-//    }
-
-
 }

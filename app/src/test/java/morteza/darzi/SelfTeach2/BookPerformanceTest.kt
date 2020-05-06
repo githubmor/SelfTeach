@@ -16,7 +16,7 @@ import org.junit.Test
 class BookPerformanceTest{
 
     @Test
-    fun book_Create_IsOk() {
+    fun bookPerformance_IsOk() {
 
         val book = getBook()
 
@@ -27,6 +27,62 @@ class BookPerformanceTest{
         assertEquals(40,performanceBook.avgPagePerDayRemind)
         assertEquals(40,performanceBook.pageReadTo100Percent)
         assertEquals(33.0F,performanceBook.performance)
+    }
+
+    @Test
+    fun bookPerformance_term_pas_IsOk() {
+
+        val book = getBook()
+
+        val term = getTermPased()
+
+        val performanceBook = BookPerformance(term, book)
+
+        assertEquals(100, performanceBook.avgPagePerDayRemind)
+        assertEquals(100, performanceBook.pageReadTo100Percent)
+        assertEquals(10.0F, performanceBook.performance)
+    }
+
+    @Test
+    fun bookPerformance_term_not_bigin_IsOk() {
+
+        val book = getBook()
+
+        val term = getTermNotBigin()
+
+        val performanceBook = BookPerformance(term, book)
+
+        assertEquals(1000, performanceBook.avgPagePerDayRemind)
+        assertEquals(1000, performanceBook.pageReadTo100Percent)
+        assertEquals(10.0F, performanceBook.performance)
+    }
+
+    @Test
+    fun bookPerformance_book_read_allPage_IsOk() {
+
+        val book = getBookReadAll()
+
+        val term = getTerm()
+
+        val performanceBook = BookPerformance(term, book)
+
+        assertEquals(1000, performanceBook.avgPagePerDayRemind)
+        assertEquals(100, performanceBook.pageReadTo100Percent)
+        assertEquals(1000.0F, performanceBook.performance)
+    }
+
+    @Test
+    fun bookPerformance_book_NotRead_IsOk() {
+
+        val book = getBookNotRead()
+
+        val term = getTerm()
+
+        val performanceBook = BookPerformance(term, book)
+
+        assertEquals(1000, performanceBook.avgPagePerDayRemind)
+        assertEquals(100, performanceBook.pageReadTo100Percent)
+        assertEquals(1000.0F, performanceBook.performance)
     }
 
     private var count = 2
@@ -52,6 +108,40 @@ class BookPerformanceTest{
 
         return Book(db, readList.sumBy { it.pageReadCount })
     }
+
+    private fun getAllReadList(allPage: Int): List<ReadDataTable> {
+        val re: MutableList<ReadDataTable> = mutableListOf()
+        re.add(ReadDataTable(1, 1, allPage, PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -1) }.persianShortDate))
+
+        return re
+    }
+
+    fun getBookReadAll(): Book {
+        val name = "Book 1"
+        val page = 100
+        val priority = 3
+        val readList = getAllReadList(page)
+
+        val db = BookDataTable(1, name, page, priority)
+
+        return Book(db, readList.sumBy { it.pageReadCount })
+    }
+
+    private fun getNotReadList(): List<ReadDataTable> {
+        return mutableListOf()
+    }
+
+    fun getBookNotRead(): Book {
+        val name = "Book 1"
+        val page = 100
+        val priority = 3
+        val readList = getNotReadList()
+
+        val db = BookDataTable(1, name, page, priority)
+
+        return Book(db, readList.sumBy { it.pageReadCount })
+    }
+
     private fun getTerm(): Term {
         val tname = TermType.NimsalAvl.name
         val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }.persianShortDate
@@ -63,5 +153,25 @@ class BookPerformanceTest{
         return term
     }
 
+    private fun getTermPased(): Term {
+        val tname = TermType.NimsalAvl.name
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -8) }.persianShortDate
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }.persianShortDate
 
+        val tdb = TermDataTable(1, tname, startDate, endDate)
+
+        val term = Term(tdb)
+        return term
+    }
+
+    private fun getTermNotBigin(): Term {
+        val tname = TermType.NimsalAvl.name
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 2) }.persianShortDate
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 7) }.persianShortDate
+
+        val tdb = TermDataTable(1, tname, startDate, endDate)
+
+        val term = Term(tdb)
+        return term
+    }
 }
