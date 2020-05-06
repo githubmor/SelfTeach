@@ -1,12 +1,8 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
 import BL.Read
 import BL.ReadBook
-import DAL.Book_Reads_db
-import DAL.Book_db
-import DAL.Read_db
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import DAL.ReadDataTable
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -22,14 +18,14 @@ class ReadBookTest{
         val pageReadCount = 50
         val bookName = "dsfds"
 
-        val db = Read_db(1,1,pageReadCount,readDate)
+        val db = ReadDataTable(1, 1, pageReadCount, readDate)
 
         val book = ReadBook(db,bookName)
 
         assertEquals(readDate,book.readDate)
         assertEquals(pageReadCount,book.pageReadCount)
         assertEquals(bookName,book.bookName)
-        assertEquals(db,book.getDto())
+        assertEquals(db, book.getReadDataTable())
     }
 
 
@@ -44,10 +40,10 @@ class ReadBookTest{
 
     }
 
-//    private fun getReadList(page_read:Int): List<Read_db> {
-//        val re : MutableList<Read_db> = mutableListOf()
+//    private fun getReadList(page_read:Int): List<ReadDataTable> {
+//        val re : MutableList<ReadDataTable> = mutableListOf()
 //
-//        re.add(Read_db(1,1,page_read,PersianCalendar().persianShortDate))
+//        re.add(ReadDataTable(1,1,page_read,PersianCalendar().persianShortDate))
 //
 //
 //        return re

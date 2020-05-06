@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 class ReadsFragment : BaseDatePickerFragment() {
     override val selectableDateList: Array<PersianCalendar>
-        get() = term.getTermDaysList()
+        get() = term.getCalenderActiveDaysList()
     private lateinit var readDate: TextInputEditText
     override val title: String
         get() = "خوانده ها"
@@ -37,15 +37,15 @@ class ReadsFragment : BaseDatePickerFragment() {
     private val readSelectBookErrorMessage = "لطفا نام كتاب را وارد كنيد"
     private val readPageBiggerThanPageErrorMessage = "تعداد صفحات خوانده شده نباید بیشتر از تعداد صفحات کتاب باشد"
 
-    var books : List<Book> = listOf()
-    var reads : MutableList<ReadBook> = mutableListOf()
-    lateinit var term :Term
+    var books: List<Book> = listOf()
+    private var reads: MutableList<ReadBook> = mutableListOf()
+    lateinit var term: Term
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var readService : ReadService
-    lateinit var bookService : BookService
-    lateinit var termRepository : TermService
+    private lateinit var readService: ReadService
+    private lateinit var bookService: BookService
+    private lateinit var termRepository: TermService
 
-    lateinit var v : View
+    private lateinit var v: View
 
     private var selectedBook: Book? = null
 
@@ -105,14 +105,14 @@ class ReadsFragment : BaseDatePickerFragment() {
             if (validateToSave()) {
                 launch {
 
-                    val read = Read(selectedBook!!.getDto().id)
+                    val read = Read(selectedBook!!.getBookDataTable().id)
 
                     read.pageReadCount = v.read_page_count.text.toString().toInt()
                     read.readDate = v.read_date.text.toString()
 
                     readService.insert(read)
 
-                    adapter.addNewRead(ReadBook(read.getDto(),selectedBook!!.name))
+                    adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
                     arrangeForShowFirstViewSwitcher(true)
                 }
             }
@@ -130,12 +130,13 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun intializeSpinnerBookList() {
         launch {
-            if (!bookService.isBooksExist())
+            if (!bookService.anyBooksExist())
                 listener!!.failRead()
             books = bookService.getAllBookWithSumRead()!!
 
             val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
-                it.name + " - " +  it.pageCount + " صفحه" })
+                it.name + " - " + it.pageCount + " صفحه"
+            })
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             v.spinner.adapter = dataAdapter
         }
@@ -151,25 +152,25 @@ class ReadsFragment : BaseDatePickerFragment() {
         }
     }
 
-    private fun validateToSave():Boolean{
+    private fun validateToSave(): Boolean {
         return when {
-            selectedBook==null ->{
-                Toast.makeText(context!!, readSelectBookErrorMessage,Toast.LENGTH_SHORT).show()
+            selectedBook == null -> {
+                Toast.makeText(context!!, readSelectBookErrorMessage, Toast.LENGTH_SHORT).show()
                 return false
             }
             v.read_page_count.text.isNullOrEmpty() -> {
                 v.read_page_count_lay.error = readPageCountErrorMessage
                 return false
             }
-            selectedBook!=null-> {
+            selectedBook != null -> {
                 if (v.read_page_count.text.toString().toInt() > selectedBook!!.pageCount) {
                     v.read_page_count_lay.error = readPageBiggerThanPageErrorMessage
                     return false
-                }else
+                } else
                     true
             }
             v.read_date.text.isNullOrEmpty() -> {
-                v.read_date_lay.error =readDateErrorMessage
+                v.read_date_lay.error = readDateErrorMessage
                 return false
             }
             else -> true
@@ -181,22 +182,22 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.read_page_count_lay.isErrorEnabled = false
         v.read_date.setText("")
         v.read_date_lay.isErrorEnabled = false
-        if (v.switcher.displayedChild==0)
+        if (v.switcher.displayedChild == 0)
             v.switcher.showNext()
         v.fab.hide()
     }
 
 
-    private fun arrangeForShowFirstViewSwitcher( isListShow :Boolean) {
+    private fun arrangeForShowFirstViewSwitcher(isListShow: Boolean) {
         if (isListShow) {
             v.list.visibility = VISIBLE
             v.PLZDefineReads.visibility = GONE
-        }else{
+        } else {
             v.list.visibility = GONE
             v.PLZDefineReads.visibility = VISIBLE
         }
         v.fab.show()
-        if (v.switcher.displayedChild==1)
+        if (v.switcher.displayedChild == 1)
             v.switcher.showPrevious()
 
     }
@@ -207,7 +208,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -222,7 +223,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         val selectedDate = PersianCalendar().apply {
             setPersianDate(year, monthOfYear, dayOfMonth)
         }
-            readDate.setText(selectedDate.persianShortDate)
+        readDate.setText(selectedDate.persianShortDate)
     }
 
     interface OnFragmentInteractionListener {

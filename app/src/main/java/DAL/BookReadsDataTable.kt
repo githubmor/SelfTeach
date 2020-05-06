@@ -3,14 +3,14 @@ package DAL
 import androidx.room.Embedded
 import androidx.room.Relation
 
-class Book_Reads_db(
+class BookReadsDataTable(
         @Embedded
-        var book: Book_db,
+        var bookDataTable: BookDataTable,
 
         @Relation(
                 parentColumn = "id",
                 entityColumn = "bookId",
-                entity = Read_db::class)
-        var reads: List<Read_db> = listOf()
+                entity = ReadDataTable::class)
+        var readDataTableLists: List<ReadDataTable> = listOf()
 )
 

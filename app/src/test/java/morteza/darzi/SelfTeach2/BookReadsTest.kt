@@ -1,8 +1,10 @@
 package morteza.darzi.SelfTeach2
 
+import BL.Book
 import BL.BookReads
-import DAL.Book_db
-import DAL.Read_db
+import BL.Read
+import DAL.BookDataTable
+import DAL.ReadDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -20,7 +22,7 @@ class BookReadsTest{
         val priority = 3
         val readCount = 50
 
-        val db = Book_db(1,name,page,priority)
+        val db = Book(BookDataTable(1, name, page, priority))
 
         val book = BookReads(db,getReadList(readCount))
 
@@ -28,7 +30,7 @@ class BookReadsTest{
         assertEquals(page,book.pageCount)
         assertEquals(priority,book.priority)
         assertEquals(readCount,book.readSum)
-        assertEquals(getReadList(readCount).count(),book.read_dbs.count())
+        assertEquals(getReadList(readCount).count(), book.reads.count())
     }
 
     @Test
@@ -41,14 +43,14 @@ class BookReadsTest{
         val priority = 3
         val changePriority = 5
 
-        val db = Book_db(1,name,page,priority)
+        val db = Book(BookDataTable(1, name, page, priority))
 
         val book = BookReads(db,getReadList(10))
         book.name = changeName
         book.priority = changePriority
         book.pageCount = changePage
 
-        val editedDb = book.getDto()
+        val editedDb = book.getBookDataTable()
 
         assertEquals(changeName,editedDb.name)
         assertEquals(changePage,editedDb.pageCount)
@@ -59,19 +61,19 @@ class BookReadsTest{
 //    @Test
 //    fun book_readList_IsOk() {
 //
-//        val book = BookReads()
+//        val getBookDataTable = BookReads()
 //
-//        assertEquals("",book.name)
-//        assertEquals(0,book.pageCount)
-//        assertEquals(0,book.priority)
-//        assertEquals(0,book.readSum)
+//        assertEquals("",getBookDataTable.name)
+//        assertEquals(0,getBookDataTable.pageCount)
+//        assertEquals(0,getBookDataTable.priority)
+//        assertEquals(0,getBookDataTable.readSum)
 //
 //    }
 
-    private fun getReadList(page_read:Int): List<Read_db> {
-        val re : MutableList<Read_db> = mutableListOf()
+    private fun getReadList(page_read: Int): List<Read> {
+        val re: MutableList<Read> = mutableListOf()
 
-        re.add(Read_db(1,1,page_read,PersianCalendar().persianShortDate))
+        re.add(Read(ReadDataTable(1, 1, page_read, PersianCalendar().persianShortDate)))
 
 
         return re

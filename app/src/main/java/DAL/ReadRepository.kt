@@ -5,54 +5,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class ReadRepository(private val dao: ReadDAO) {
+class ReadRepository(private val database: ReadDatabase) {
 
     @WorkerThread
-    suspend fun insert(read: Read_db) {
+    suspend fun insert(read: ReadDataTable) {
         withContext(Dispatchers.IO) {
-            dao.insert(read)
+            database.insertRead(read)
         }
     }
     @WorkerThread
-    suspend fun delete(read: Read_db) {
+    suspend fun delete(read: ReadDataTable) {
         withContext(Dispatchers.IO) {
-            dao.delete(read)
+            database.deleteRead(read)
         }
     }
-//    @WorkerThread
-//    suspend fun update(term_old: Read_db) {
-//        withContext(Dispatchers.IO) {
-//            dao.update(term_old)
-//        }
-//    }
-//    @WorkerThread
-//    suspend fun isReadExist(): Int {
-//        return withContext(Dispatchers.IO) {
-//            val y = async {
-//                dao.ex()
-//            }
-//            withContext(Dispatchers.Main){
-//                y.await()
-//            }
-//        }
-//    }
-//    @WorkerThread
-//    suspend fun getAllReads(): List<Read_db>? {
-//        return withContext(Dispatchers.IO) {
-//            val y = async {
-//                dao.getAllReads()
-//            }
-//            withContext(Dispatchers.Main){
-//                y.await()
-//            }
-//        }
-//    }
 
     @WorkerThread
-    suspend fun getAllReadsWithBookName(): List<Read_BookName_db>? {
+    suspend fun getAllReadsWithBookName(): List<ReadBookNameDataTable>? {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.getAllReadsWithBookName()
+                database.getAllReadsWithBookName()
             }
             withContext(Dispatchers.Main){
                 y.await()

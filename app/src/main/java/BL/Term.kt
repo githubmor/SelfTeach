@@ -1,34 +1,34 @@
 package BL
 
-import DAL.Termdb
+import DAL.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
-import morteza.darzi.SelfTeach2.termType
+import morteza.darzi.SelfTeach2.TermType
 
-class Term(val db : Termdb) {
+class Term(val termDataTable: TermDataTable) {
 
     var endDate
-        get() = db.endDate
+        get() = termDataTable.endDate
         set(value) {
-            db.endDate = value
+            termDataTable.endDate = value
 
         }
 
     var startDate
-        get() = db.startDate
+        get() = termDataTable.startDate
         set(value) {
-            db.startDate = value
+            termDataTable.startDate = value
 
         }
     var type
-        get() = termType.valueOf(db.name).typeName
+        get() = TermType.valueOf(termDataTable.name).typeName
         set(value) {
-            db.name = value
+            termDataTable.name = value
 
         }
     private val now: String = PersianCalendar().persianShortDate
 
-    val termDateState get() = "( " + dayPast + "/" + dayCount + " )" + " روز"
+    val termDateState get() = "( $dayPast/$dayCount ) روز"
 
     val dayCount get() = daysDiffCalculate(startDate, endDate)
 
@@ -46,18 +46,18 @@ class Term(val db : Termdb) {
         }
 
 
-    private fun daysDiffCalculate(s: String, e: String): Int {
+    private fun daysDiffCalculate(startDate: String, endDate: String): Int {
 
-        val start = PersianDateParser(s).persianDate.timeInMillis
-        val end = PersianDateParser(e).persianDate.timeInMillis
+        val start = PersianDateParser(startDate).persianDate.timeInMillis
+        val end = PersianDateParser(endDate).persianDate.timeInMillis
 
         val re = end - start
 
-        return ((re/(1000*60*60*24))+1).toInt()
+        return ((re / (1000 * 60 * 60 * 24)) + 1).toInt()
     }
 
-    fun getTermDaysList(): Array<PersianCalendar> {
-        return Ultility.getTermabledays(startDate,endDate)
+    fun getCalenderActiveDaysList(): Array<PersianCalendar> {
+        return Ultility.arrayOfPersianCalendars(startDate, endDate)
     }
 
 }

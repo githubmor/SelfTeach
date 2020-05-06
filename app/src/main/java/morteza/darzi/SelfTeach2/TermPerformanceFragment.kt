@@ -24,16 +24,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TermPerformanceFragment : BaseFragment() {
-//    private lateinit var term: Term
-//    private lateinit var service: BookRepository
     override val title: String
         get() = "خود خوان"
 
     private lateinit var termPerformance: TermPerformance
-    private lateinit var performanceircle: DonutProgress
+    private lateinit var donutProgress: DonutProgress
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var fragmentView :View
+    private lateinit var fragmentView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -46,11 +44,11 @@ class TermPerformanceFragment : BaseFragment() {
     }
 
     private fun intializeBeforeSuspend() {
-        ShowLoadr(true)
-        performanceircle = fragmentView.performanceCircle
+        showLoader(true)
+        donutProgress = fragmentView.performanceCircle
     }
 
-    private fun ShowLoadr(isShow:Boolean) {
+    private fun showLoader(isShow: Boolean) {
         if (isShow) {
             fragmentView.indic_performance.visibility = VISIBLE
             fragmentView.today.visibility = GONE
@@ -63,7 +61,7 @@ class TermPerformanceFragment : BaseFragment() {
             fragmentView.per_day_lab.visibility = GONE
             fragmentView.safe_1.visibility = GONE
             fragmentView.safe_2.visibility = GONE
-        }else{
+        } else {
             fragmentView.indic_performance.visibility = GONE
             fragmentView.today.visibility = VISIBLE
             fragmentView.per_day.visibility = VISIBLE
@@ -84,52 +82,44 @@ class TermPerformanceFragment : BaseFragment() {
 
             delay(500)
 
-            CreatePerformance()
+            createPerformance()
 
             intializeAfterSusped()
         }
     }
 
-    private suspend fun CreatePerformance() {
+    private suspend fun createPerformance() {
         val bookService = BookService(context!!)
-        if (!bookService.isBooksExist()) {
+        if (!bookService.anyBooksExist()) {
             listener!!.failPerformance()
         }
 
         val term = TermService(context!!).getTerm()!!
         val books = bookService.getAllBookWithListRead()!!
 
-        termPerformance = TermPerformance(term,books)
+        termPerformance = TermPerformance(term, books)
 
-        var remindPage = termPerformance.pageReadTo100Percent
-
-        books.forEach { book ->
-            val suggestion =  Suggestion(BookPlan(book),BookPerformance(term,book).pageReadTo100Percent)
-            if(suggestion.HasSuggest(remindPage)){
-                suggest = suggest + suggestion
-                remindPage -= suggestion.suggestRead()
-            }
-        }
+        suggest = Suggestion(term, books).getBookSuggestList(termPerformance.pageReadTo100Percent)
 
     }
 
     private fun intializeAfterSusped() {
 
-        ShowLoadr(false)
+        showLoader(false)
 
-        LoadPerformanceDataToUI()
+        loadPerformanceDataToUI()
     }
 
-    private fun LoadPerformanceDataToUI() {
+    private fun loadPerformanceDataToUI() {
 
         animatePerformanceCircle(termPerformance.performance)
 
-        LoadPerformanceData()
+        loadPerformanceData()
 
-        LoadBookSuggestionData()
+        loadBookSuggestionData()
     }
 
-    private fun LoadPerformanceData() {
+    private fun loadPerformanceData() {
         fragmentView.today.text = termPerformance.pageReadTo100Percent.toString()
         fragmentView.per_day.text = termPerformance.avgPagePerDayRemind.toString()
 
@@ -137,24 +127,23 @@ class TermPerformanceFragment : BaseFragment() {
 
         fragmentView.progressBar.progress = termPerformance.term.dayPastPercent
     }
-    private lateinit var suggest : List<Suggestion>
 
-    private fun LoadBookSuggestionData() {
+    private lateinit var suggest: List<BookSuggestion>
+
+    private fun loadBookSuggestionData() {
 
         suggest.forEach {
-//            if (it.HasSuggest()) {
-                val te = TextView(context)
-                te.text = it.bookName + it.suggestRead() + " صفحه بخوان"
-                if (Build.VERSION.SDK_INT < 23) {
-                    te.setTextAppearance(context, R.style.creditCardText);
-                } else {
-                    te.setTextAppearance(R.style.creditCardText);
-                }
-                te.setTextColor(fragmentView.per_day_lab.textColors)
-                te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            val te = TextView(context)
+            te.text = it.name + it.readSuggest() + " صفحه بخوان"
+            if (Build.VERSION.SDK_INT < 23) {
+                te.setTextAppearance(context, R.style.creditCardText)
+            } else {
+                te.setTextAppearance(R.style.creditCardText)
+            }
+            te.setTextColor(fragmentView.per_day_lab.textColors)
+            te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-                fragmentView.read_list.addView(te)
-//            }
+            fragmentView.read_list.addView(te)
         }
     }
 
@@ -164,7 +153,7 @@ class TermPerformanceFragment : BaseFragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -183,34 +172,34 @@ class TermPerformanceFragment : BaseFragment() {
         val red = -0x40f600
         val green = Ultility.getColorToGreen(performance * 1.0 / 100)
 
-        val storkColorAnim = ObjectAnimator.ofObject(performanceircle,
+        val storkColorAnim = ObjectAnimator.ofObject(donutProgress,
                 "FinishedStrokeColor",
                 HsvEvaluator(),
                 red, green)
 
-        val vv = ValueAnimator.ofInt(0,performance.toInt()).apply {
+        val vv = ValueAnimator.ofInt(0, performance.toInt()).apply {
             addUpdateListener {
-                val valu = it.animatedValue as Int
-                performanceircle.progress = valu.toFloat()
+                val animateValue = it.animatedValue as Int
+                donutProgress.progress = animateValue.toFloat()
             }
         }
 
 
         val animatorSet = AnimatorSet()
-        animatorSet.playTogether(storkColorAnim,vv)
+        animatorSet.playTogether(storkColorAnim, vv)
 
         animatorSet.startDelay = 1000
-        animatorSet.duration = timecal(performance)
+        animatorSet.duration = timeCalculator(performance)
         animatorSet.interpolator = LinearInterpolator()
         animatorSet.start()
 
     }
 
-    private fun timecal(perf: Float): Long {
-        return if (perf < 20) {
+    private fun timeCalculator(performance: Float): Long {
+        return if (performance < 20) {
             500
         } else {
-            (perf * 2500 / 100).toLong()
+            (performance * 2500 / 100).toLong()
         }
     }
 

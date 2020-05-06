@@ -1,5 +1,5 @@
 package BL
 
-import DAL.Read_db
+import DAL.ReadDataTable
 
-class ReadBook(read_db:Read_db, val bookName:String):Read(read_db)
+class ReadBook(readDataTable: ReadDataTable, val bookName: String) : Read(readDataTable)

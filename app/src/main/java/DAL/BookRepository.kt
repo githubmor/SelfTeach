@@ -5,60 +5,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class BookRepository(private val dao: BookDAO) {
+class BookRepository(private val database: BookDatabase) {
 
     @WorkerThread
-    suspend fun insert(book: Book_db) {
+    suspend fun insert(bookDataTable: BookDataTable) {
         withContext(Dispatchers.IO) {
-            dao.insert(book)
+            database.insertBook(bookDataTable)
         }
     }
     @WorkerThread
-    suspend fun delete(book: Book_db) {
+    suspend fun delete(book: BookDataTable) {
         withContext(Dispatchers.IO) {
-            dao.delete(book)
+            database.deleteBook(book)
         }
     }
-//    @WorkerThread
-//    suspend fun update(book: Book_db) {
-//        withContext(Dispatchers.IO) {
-//            dao.update(book)
-//        }
-//    }
     @WorkerThread
     suspend fun deleteAll() {
         withContext(Dispatchers.IO) {
-            dao.deleteAll()
+            database.deleteAllBook()
         }
     }
     @WorkerThread
     suspend fun isBooksExist(): Boolean {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.existBook()
+                database.existBook()
             }
             withContext(Dispatchers.Main){
                 y.await()>0
             }
         }
     }
-//    @WorkerThread
-//    suspend fun getAllBookWithSumRead(): List<Book_db>? {
-//        return withContext(Dispatchers.IO) {
-//            val y = async {
-//                dao.getAllBookWithSumRead()
-//            }
-//            withContext(Dispatchers.Main){
-//                y.await()
-//            }
-//        }
-//    }
-
     @WorkerThread
-    suspend fun getAllBookWithRead(): List<Book_Reads_db>? {
+    suspend fun getAllBookWithListReads(): List<BookReadsDataTable>? {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.getAllBookWithReads()
+                database.getAllBookWithListReads()
             }
             withContext(Dispatchers.Main){
                 y.await()
@@ -67,10 +49,10 @@ class BookRepository(private val dao: BookDAO) {
     }
 
     @WorkerThread
-    suspend fun getAllNewBook(): List<Book_SumRead_db>? {
+    suspend fun getAllBookWithSumRead(): List<BookSumReadDataTable>? {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.getAllNewBook()
+                database.getAllBookWithSumRead()
             }
             withContext(Dispatchers.Main){
                 y.await()

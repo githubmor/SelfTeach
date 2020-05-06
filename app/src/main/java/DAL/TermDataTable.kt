@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class Book_db(
+data class TermDataTable(
         @PrimaryKey(autoGenerate = true)
         var id : Int,
         var name: String,
-        var pageCount: Int,
-        var priority: Int
+        var startDate: String,
+        var endDate : String
 )

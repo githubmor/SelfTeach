@@ -1,36 +1,35 @@
 package DAL
 
-import BL.Term
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class TermRepository(private val dao: TermDAO) {
+class TermRepository(private val database: TermDatabase) {
 
     @WorkerThread
-    suspend fun insert(term: Termdb) {
+    suspend fun insert(term: TermDataTable) {
         withContext(Dispatchers.IO) {
-            dao.insert(term)
+            database.insert(term)
         }
     }
     @WorkerThread
-    suspend fun delete(term: Termdb) {
+    suspend fun delete(term: TermDataTable) {
         withContext(Dispatchers.IO) {
-            dao.delete(term)
+            database.delete(term)
         }
     }
     @WorkerThread
-    suspend fun update(term: Termdb) {
+    suspend fun update(term: TermDataTable) {
         withContext(Dispatchers.IO) {
-            dao.update(term)
+            database.update(term)
         }
     }
     @WorkerThread
     suspend fun isTermexist(): Boolean {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.existTerm()
+                database.existTerm()
             }
             withContext(Dispatchers.Main){
                 y.await()>0
@@ -38,17 +37,17 @@ class TermRepository(private val dao: TermDAO) {
         }
     }
     @WorkerThread
-    suspend fun getTerm(): Termdb? {
+    suspend fun getTerm(): TermDataTable? {
         return withContext(Dispatchers.IO) {
             val y = async {
-                dao.getTerm()
+                database.getTerm()
             }
             withContext(Dispatchers.Main){
                 val t = y.await()
-                return@withContext if (t == null)
-                    null
+                if (t == null)
+                    return@withContext null
                 else
-                    t
+                    return@withContext t
             }
         }
     }

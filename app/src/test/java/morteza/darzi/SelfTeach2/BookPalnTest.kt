@@ -1,9 +1,11 @@
 package morteza.darzi.SelfTeach2
 
+import BL.Book
 import BL.BookPlan
 import BL.BookReads
-import DAL.Book_db
-import DAL.Read_db
+import BL.Read
+import DAL.BookDataTable
+import DAL.ReadDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,9 +18,9 @@ class BookPalnTest{
     @Test
     fun book_Create_IsOk() {
 
-        val plan = BookPlan(BookReads(Book_db(1,"asd",10,0),getReadList()))
+        val plan = BookPlan(BookReads(Book(BookDataTable(1, "asd", 100, 0)), getReadList()))
 
-        assertEquals(30,plan.MaxPageReaded())
+        assertEquals(20, plan.avregPageReaded())
     }
 
 //    @Test
@@ -31,14 +33,14 @@ class BookPalnTest{
 //        val priority = 3
 //        val changePriority = 5
 //
-//        val db = Book_db(1,name,page,priority)
+//        val termDataTable = BookDataTable(1,name,page,priority)
 //
-//        val book = Book(db,0)
-//        book.name = changeName
-//        book.priority = changePriority
-//        book.pageCount = changePage
+//        val getBookDataTable = Book(termDataTable,0)
+//        getBookDataTable.name = changeName
+//        getBookDataTable.priority = changePriority
+//        getBookDataTable.pageCount = changePage
 //
-//        val editedDb = book.getDto()
+//        val editedDb = getBookDataTable.getReadDataTable()
 //
 //        assertEquals(changeName,editedDb.name)
 //        assertEquals(changePage,editedDb.pageCount)
@@ -49,21 +51,21 @@ class BookPalnTest{
 //    @Test
 //    fun book_readList_IsOk() {
 //
-//        val book = Book()
+//        val getBookDataTable = Book()
 //
-//        assertEquals("",book.name)
-//        assertEquals(0,book.pageCount)
-//        assertEquals(0,book.priority)
-//        assertEquals(0,book.readSum)
+//        assertEquals("",getBookDataTable.name)
+//        assertEquals(0,getBookDataTable.pageCount)
+//        assertEquals(0,getBookDataTable.priority)
+//        assertEquals(0,getBookDataTable.readSum)
 //
 //    }
 
-    private fun getReadList(): List<Read_db> {
-        val re : MutableList<Read_db> = mutableListOf()
+    private fun getReadList(): List<Read> {
+        val re: MutableList<Read> = mutableListOf()
 
-        re.add(Read_db(1,1,20,PersianCalendar().persianShortDate))
-        re.add(Read_db(1,1,30,PersianCalendar().persianShortDate))
-        re.add(Read_db(1,1,10,PersianCalendar().persianShortDate))
+        re.add(Read(ReadDataTable(1, 1, 20, PersianCalendar().persianShortDate)))
+        re.add(Read(ReadDataTable(1, 1, 30, PersianCalendar().persianShortDate)))
+        re.add(Read(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate)))
 
 
         return re

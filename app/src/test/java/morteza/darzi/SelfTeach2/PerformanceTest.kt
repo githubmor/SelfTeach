@@ -18,7 +18,7 @@ class PerformanceTest{
         val pageRead = 50
         val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 450 //pageCount - pageRead
+        val pageRemind = 450 //pageCount - pageReadCount
         val dayRemind = 80 //daycount - pasDay
         val avgPageEveryday = 5 //pageCount.toFloat() / daycount.toFloat()
         val pageShouldBeReadTillToday = 100 //(pasDay * avgPageEveryday).toInt()
@@ -37,7 +37,7 @@ class PerformanceTest{
         val pageRead = 0 // هنوز شروع به خواندن نکرده
         val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 200 //pageCount - pageRead
+        val pageRemind = 200 //pageCount - pageReadCount
         val dayRemind = 70 //daycount - pasDay
         val avgPageEveryday = 2 //pageCount.toFloat() / daycount.toFloat()
         val pageShouldBeReadTillToday = 60 //(pasDay * avgPageEveryday).toInt()
@@ -55,7 +55,7 @@ class PerformanceTest{
         val pageRead = 1
         val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 32 //pageCount - pageRead
+        val pageRemind = 32 //pageCount - pageReadCount
         val dayRemind = 75 //daycount - pasDay
         val avgPageEveryday = 0.028 //pageCount.toFloat() / daycount.toFloat()
         val pageShouldBeReadTillToday = 0 //(pasDay * avgPageEveryday).toInt()
@@ -73,7 +73,7 @@ class PerformanceTest{
         val pageRead = 50
         val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 0 //pageCount - pageRead
+        val pageRemind = 0 //pageCount - pageReadCount
         val dayRemind = 80 // daycount - pasDay
         val avgPageEveryday = 0.5 // pageCount.toFloat() / daycount.toFloat()
         val pageShouldBeReadTillToday = 10 // (pasDay * avgPageEveryday).toInt()
@@ -91,7 +91,7 @@ class PerformanceTest{
         val pageRead = 50
         val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 450 //pageCount - pageRead
+        val pageRemind = 450 //pageCount - pageReadCount
         val dayRemind = 100 // daycount - pasDay
         val avgPageEveryday = 5 // pageCount.toFloat() / daycount.toFloat()
         val pageShouldBeReadTillToday = 0 // (pasDay * avgPageEveryday).toInt()
@@ -110,7 +110,7 @@ class PerformanceTest{
         val pageRead = 30
         val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
 
-        val pageRemind = 20 //pageCount - pageRead
+        val pageRemind = 20 //pageCount - pageReadCount
         val dayRemind = 0 // daycount - pasDay
         val avgPageEveryday = 0.5 // pageCount.toFloat() / daycount.toFloat()
         val pageShouldBeReadTillToday = 50 // (pasDay * avgPageEveryday).toInt()

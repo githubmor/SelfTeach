@@ -3,10 +3,8 @@ package morteza.darzi.SelfTeach2
 import BL.Book
 import BL.Term
 import BL.TermPerformance
-import DAL.Book_Reads_db
-import DAL.Book_db
-import DAL.Read_db
-import DAL.Termdb
+import DAL.BookDataTable
+import DAL.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -31,10 +29,10 @@ class TermPerformanceTest{
     }
 
 
-//    private fun getReadList(bookId : Int,readCount:Int): List<Read_db> {
-//        val re : MutableList<Read_db> = mutableListOf()
+//    private fun getReadList(bookId : Int,readCount:Int): List<ReadDataTable> {
+//        val re : MutableList<ReadDataTable> = mutableListOf()
 //        for (i in 1..readCount){
-//            re.add(Read_db(i,bookId,i*2, PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK,i*2)}.persianShortDate))
+//            re.add(ReadDataTable(i,bookId,i*2, PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK,i*2)}.persianShortDate))
 //        }
 //
 //        return re
@@ -46,17 +44,17 @@ class TermPerformanceTest{
         val re : MutableList<Book> = mutableListOf()
 
         for (i in 1..5) {
-            re.add(Book(Book_db(i, name + i, page * i, i),i))
+            re.add(Book(BookDataTable(i, name + i, page * i, i), i))
         }
 
         return re
     }
     private fun getTerm(): Term {
-        val tname = termType.nimsalAvl.name
+        val tname = TermType.NimsalAvl.name
         val startDate = PersianCalendar().apply { add(PersianCalendar.MONTH, -2) }.persianShortDate
         val endDate = PersianCalendar().apply { add(PersianCalendar.MONTH, 2) }.persianShortDate
 
-        val tdb = Termdb(1, tname, startDate, endDate)
+        val tdb = TermDataTable(1, tname, startDate, endDate)
 
         val term = Term(tdb)
         return term

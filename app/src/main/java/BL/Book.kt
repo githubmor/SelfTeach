@@ -1,35 +1,33 @@
 package BL
 
-import DAL.Book_db
+import DAL.BookDataTable
 
-open class Book (){
+open class Book(override var readSum: Int = 0) : IBook {
 
-    private var bookdb = Book_db(0,"",0,0)
-    var readSum  = 0
+    private var bookDataTable = BookDataTable(0, "", 0, 0)
 
-    constructor(dto : Book_db, readSum:Int):this(){
-        this.bookdb = dto
-        this.readSum = readSum
+    constructor(bookDataTable: BookDataTable, readSum: Int = 0) : this(readSum) {
+        this.bookDataTable = bookDataTable
     }
 
-    var name
-        get() = bookdb.name
+    override var name
+        get() = bookDataTable.name
         set(value) {
-            bookdb.name = value
+            bookDataTable.name = value
 
         }
-    var pageCount
-        get() = bookdb.pageCount
+    override var pageCount
+        get() = bookDataTable.pageCount
         set(value) {
-            bookdb.pageCount = value
+            bookDataTable.pageCount = value
 
         }
-    var priority
-        get() = bookdb.priority
+    override var priority
+        get() = bookDataTable.priority
         set(value) {
-            bookdb.priority = value
+            bookDataTable.priority = value
 
         }
 
-    fun getDto(): Book_db = bookdb
+    override fun getBookDataTable(): BookDataTable = bookDataTable
 }

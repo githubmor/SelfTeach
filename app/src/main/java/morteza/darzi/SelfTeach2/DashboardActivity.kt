@@ -19,12 +19,12 @@ import kotlinx.coroutines.launch
 
 
 class DashboardActivity : ScopedAppActivity()
-        ,BooksPerformanceFragment.OnFragmentInteractionListener,ReadsFragment.OnFragmentInteractionListener,
-        TermPerformanceFragment.OnFragmentInteractionListener,TermFragment.OnFragmentInteractionListener ,
-BooksFragment.OnFragmentInteractionListener{
+        , BooksPerformanceFragment.OnFragmentInteractionListener, ReadsFragment.OnFragmentInteractionListener,
+        TermPerformanceFragment.OnFragmentInteractionListener, TermFragment.OnFragmentInteractionListener,
+        BooksFragment.OnFragmentInteractionListener {
 
-    private lateinit var termService : TermService
-    private lateinit var bookService : BookService
+    private lateinit var termService: TermService
+    private lateinit var bookService: BookService
     private lateinit var bottomNavigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,8 +64,8 @@ BooksFragment.OnFragmentInteractionListener{
         launch {
             val frag: Fragment
 
-            val termExist = termService.isTermexist()
-            val bookExist = bookService.isBooksExist()
+            val termExist = termService.isTermExist()
+            val bookExist = bookService.anyBooksExist()
 
             showLoader(false)
 
@@ -73,8 +73,7 @@ BooksFragment.OnFragmentInteractionListener{
                 if (bookExist) {
                     hideToolbarAndNavigation(false)
                     TermPerformanceFragment()
-                }
-                else {
+                } else {
                     hideToolbarAndNavigation(true)
                     BooksFragment()
                 }
@@ -87,16 +86,16 @@ BooksFragment.OnFragmentInteractionListener{
         }
     }
 
-    private fun showLoader(isShowing:Boolean) = if (isShowing) {
+    private fun showLoader(isShowing: Boolean) = if (isShowing) {
         wainting_Loader_dashboard.visibility = View.VISIBLE
-    }else{
+    } else {
         wainting_Loader_dashboard.visibility = View.GONE
     }
 
-    private fun hideToolbarAndNavigation(hide:Boolean) = if (hide) {
+    private fun hideToolbarAndNavigation(hide: Boolean) = if (hide) {
         supportActionBar!!.hide()
         bottomNavigation.visibility = View.GONE
-    }else{
+    } else {
         supportActionBar!!.show()
         bottomNavigation.visibility = View.VISIBLE
     }
@@ -146,7 +145,7 @@ BooksFragment.OnFragmentInteractionListener{
             R.id.Reseting -> {
                 launch {
                     val term = termService.getTerm()
-                    if (term!=null)
+                    if (term != null)
                         termService.delete(term)
 
                     val books = bookService.getAllBookWithSumRead()
@@ -170,22 +169,27 @@ BooksFragment.OnFragmentInteractionListener{
         return super.onOptionsItemSelected(item)
 
     }
+
     override fun failOpenBooks() {
         intializeSuspend()
-        Toast.makeText(applicationContext,"در نمايش كتاب هاي ايرادي به وجود آمده",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "در نمايش كتاب هاي ايرادي به وجود آمده", Toast.LENGTH_LONG).show()
     }
+
     override fun failPerformance() {
         intializeSuspend()
-        Toast.makeText(applicationContext,"در نمايش پيشرفت درسي ايرادي به وجود آمده",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "در نمايش پيشرفت درسي ايرادي به وجود آمده", Toast.LENGTH_LONG).show()
     }
+
     override fun onSaveTermComplete() {
         intializeSuspend()
     }
+
     override fun completeBooksFirst() {
         intializeSuspend()
     }
+
     override fun failRead() {
         intializeSuspend()
-        Toast.makeText(applicationContext,"در نمايش ليست خوانده شده ها ايرادي به وجود آمده",Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "در نمايش ليست خوانده شده ها ايرادي به وجود آمده", Toast.LENGTH_LONG).show()
     }
 }

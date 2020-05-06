@@ -9,14 +9,14 @@ import com.google.android.material.textfield.TextInputLayout
 
 abstract class BaseFragment : ScopedAppFragment() {
 
-    abstract val title : String
+    abstract val title: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity).supportActionBar!!.title = title
     }
 
-    fun errorTextChangeListner(v: TextInputLayout, errorMes : String) {
+    fun errorTextChangeListner(v: TextInputLayout, errorMes: String) {
         v.editText!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 

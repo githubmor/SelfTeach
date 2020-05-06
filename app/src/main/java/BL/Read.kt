@@ -1,29 +1,29 @@
 package BL
 
-import DAL.Read_db
+import DAL.ReadDataTable
 
 
- open class Read(bookId:Int) {
+open class Read(bookId: Int) {
 
-    private var dbDto: Read_db = Read_db(0,bookId,0,"")
+    private var readDataTable: ReadDataTable = ReadDataTable(0, bookId, 0, "")
 
-    constructor(dbDto : Read_db) :this(dbDto.bookId){
-        this.dbDto=dbDto
+    constructor(readDataTable: ReadDataTable) : this(readDataTable.bookId) {
+        this.readDataTable = readDataTable
     }
+
     var pageReadCount
-        get() = dbDto.pageRead
+        get() = readDataTable.pageReadCount
         set(value) {
-            dbDto.pageRead = value
+            readDataTable.pageReadCount = value
 
         }
     var readDate
-        get() = dbDto.readDate
+        get() = readDataTable.readDate
         set(value) {
-            dbDto.readDate = value
+            readDataTable.readDate = value
 
         }
 
-    fun getDto(): Read_db {
-        return dbDto
-    }
+    fun getReadDataTable() = readDataTable
+
 }

@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
-abstract class ScopedAppFragment: Fragment(), CoroutineScope by MainScope() {
+abstract class ScopedAppFragment : Fragment(), CoroutineScope by MainScope() {
     override fun onDestroy() {
         super.onDestroy()
         cancel() // CoroutineScope.cancel

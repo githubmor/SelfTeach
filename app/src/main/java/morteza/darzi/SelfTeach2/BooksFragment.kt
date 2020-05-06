@@ -24,58 +24,58 @@ import kotlinx.coroutines.launch
 class BooksFragment : BaseFragment() {
 
     private val bookNameErrorMessage = "لطفا نام كتاب را وارد كنيد"
-    private val bookPageCountErrorMessage ="لطفا تعداد صفحات كتاب را وارد كنيد"
+    private val bookPageCountErrorMessage = "لطفا تعداد صفحات كتاب را وارد كنيد"
     override val title: String
         get() = "كتاب ها"
 
-    var books : MutableList<Book> = mutableListOf()
+    private var books: MutableList<Book> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var service : BookService
-    lateinit var adapter: Books_Adapter
+    private lateinit var service: BookService
+    private lateinit var adapter: Books_Adapter
 
-    lateinit var v: View
+    private lateinit var fragmentView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        v = inflater.inflate(R.layout.fragment_books_first, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_books_first, container, false)
 
         intializeBeforeSuspend()
         intializeSuspend()
 
-        return v
+        return fragmentView
     }
 
     private fun intializeBeforeSuspend() {
 
-        ShowLoader(true)
+        showLoader(true)
 
-        v.fab.setOnClickListener {
+        fragmentView.fab.setOnClickListener {
             showAddNewBookSwitcher()
         }
-        v.complete.setOnClickListener {
+        fragmentView.complete.setOnClickListener {
             listener!!.completeBooksFirst()
         }
 
-        v.book_save.setOnClickListener {
+        fragmentView.book_save.setOnClickListener {
             if (validateToSave()) {
                 launch {
 
-                    val b = Book()
+                    val book = Book()
 
-                    b.name = v.book_name.text.toString()
-                    b.pageCount = v.book_page_count.text.toString().toInt()
-                    b.priority = v.priority.rating.toInt()
+                    book.name = fragmentView.book_name.text.toString()
+                    book.pageCount = fragmentView.book_page_count.text.toString().toInt()
+                    book.priority = fragmentView.priority.rating.toInt()
 
-                    service.insert(b)
+                    service.insert(book)
 
-                    adapter.addNewBook(b)
+                    adapter.addNewBook(book)
 
-                    ShowBookListSwitcher()
+                    showBookListSwitcher()
                 }
             }
         }
-        errorTextChangeListner(v.book_name_lay, bookNameErrorMessage)
-        errorTextChangeListner(v.book_page_count_lay,bookPageCountErrorMessage)
+        errorTextChangeListner(fragmentView.book_name_lay, bookNameErrorMessage)
+        errorTextChangeListner(fragmentView.book_page_count_lay, bookPageCountErrorMessage)
     }
 
     private fun intializeSuspend() {
@@ -84,14 +84,14 @@ class BooksFragment : BaseFragment() {
 
             checkHasTerm()
 
-            GetBookList()
+            getBookList()
 
             intializeAfterSuspend()
 
         }
     }
 
-    private suspend fun GetBookList() {
+    private suspend fun getBookList() {
 
         service = BookService(context!!)
 
@@ -102,83 +102,83 @@ class BooksFragment : BaseFragment() {
 
     private suspend fun checkHasTerm() {
 
-        if (!TermService(context!!).isTermexist()) {
+        if (!TermService(context!!).isTermExist()) {
             listener!!.failOpenBooks()
         }
     }
 
     private fun intializeAfterSuspend() {
 
-        ShowLoader(false)
-        ShowBookListSwitcher()
+        showLoader(false)
+        showBookListSwitcher()
     }
 
     private fun adapterIntialize() {
         adapter = Books_Adapter(context!!, books)
-        v.list.layoutManager = LinearLayoutManager(context)
-        v.list.adapter = adapter
+        fragmentView.list.layoutManager = LinearLayoutManager(context)
+        fragmentView.list.adapter = adapter
     }
 
-    private fun ShowLoader(isShow:Boolean) {
+    private fun showLoader(isShow: Boolean) {
         if (isShow) {
-            v.switcher.visibility = GONE
-            v.indic_book_first.visibility = VISIBLE
-            v.PLZDefineBooks.visibility = GONE
-            v.fab.hide()
-        }else{
-            v.switcher.visibility = VISIBLE
-            v.indic_book_first.visibility = GONE
-            v.PLZDefineBooks.visibility = VISIBLE
-            v.fab.show()
+            fragmentView.switcher.visibility = GONE
+            fragmentView.indic_book_first.visibility = VISIBLE
+            fragmentView.PLZDefineBooks.visibility = GONE
+            fragmentView.fab.hide()
+        } else {
+            fragmentView.switcher.visibility = VISIBLE
+            fragmentView.indic_book_first.visibility = GONE
+            fragmentView.PLZDefineBooks.visibility = VISIBLE
+            fragmentView.fab.show()
         }
     }
 
-    private fun ShowBookListSwitcher() {
+    private fun showBookListSwitcher() {
 
         isShowListOfBooks(books.size > 0)
 
-        v.fab.show()
+        fragmentView.fab.show()
 
-        if (v.switcher.displayedChild==1)
-            v.switcher.showPrevious()
+        if (fragmentView.switcher.displayedChild == 1)
+            fragmentView.switcher.showPrevious()
     }
 
-    private fun isShowListOfBooks(isShow:Boolean) {
-        if (isShow){
-            v.PLZDefineBooks.visibility = GONE
-            v.list.visibility = VISIBLE
-            v.complete.visibility = VISIBLE
-        }else{
-            v.PLZDefineBooks.visibility = VISIBLE
-            v.list.visibility = GONE
-            v.complete.visibility = GONE
+    private fun isShowListOfBooks(isShow: Boolean) {
+        if (isShow) {
+            fragmentView.PLZDefineBooks.visibility = GONE
+            fragmentView.list.visibility = VISIBLE
+            fragmentView.complete.visibility = VISIBLE
+        } else {
+            fragmentView.PLZDefineBooks.visibility = VISIBLE
+            fragmentView.list.visibility = GONE
+            fragmentView.complete.visibility = GONE
         }
 
     }
 
     private fun showAddNewBookSwitcher() {
-        v.book_name.setText("")
-        v.book_name_lay.isErrorEnabled = false
-        v.book_page_count.setText("")
-        v.book_page_count_lay.isErrorEnabled = false
+        fragmentView.book_name.setText("")
+        fragmentView.book_name_lay.isErrorEnabled = false
+        fragmentView.book_page_count.setText("")
+        fragmentView.book_page_count_lay.isErrorEnabled = false
 
-        if (v.switcher.displayedChild==0)
-            v.switcher.showNext()
+        if (fragmentView.switcher.displayedChild == 0)
+            fragmentView.switcher.showNext()
 
-        v.fab.hide()
+        fragmentView.fab.hide()
 
-        v.complete.visibility = GONE
-        v.PLZDefineBooks.visibility = GONE
+        fragmentView.complete.visibility = GONE
+        fragmentView.PLZDefineBooks.visibility = GONE
     }
 
-    private fun validateToSave():Boolean {
+    private fun validateToSave(): Boolean {
         return when {
-            v.book_name.text.isNullOrEmpty() -> {
-                v.book_name_lay.error = bookNameErrorMessage
+            fragmentView.book_name.text.isNullOrEmpty() -> {
+                fragmentView.book_name_lay.error = bookNameErrorMessage
                 false
             }
-            v.book_page_count.text.isNullOrEmpty() -> {
-                v.book_page_count_lay.error = bookPageCountErrorMessage
+            fragmentView.book_page_count.text.isNullOrEmpty() -> {
+                fragmentView.book_page_count_lay.error = bookPageCountErrorMessage
                 false
             }
             else -> true
@@ -190,7 +190,7 @@ class BooksFragment : BaseFragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

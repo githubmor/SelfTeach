@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Book_db::class,Read_db::class,Termdb::class], version = 1)
+@Database(entities = [BookDataTable::class, ReadDataTable::class, TermDataTable::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun bookDao(): BookDAO
-    abstract fun readDao(): ReadDAO
-    abstract fun termDao(): TermDAO
+    abstract fun bookDatabase(): BookDatabase
+    abstract fun readDatabase(): ReadDatabase
+    abstract fun termDatabase(): TermDatabase
     companion object {
 
         // For Singleton instantiation

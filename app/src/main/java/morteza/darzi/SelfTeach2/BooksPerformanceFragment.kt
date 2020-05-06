@@ -1,9 +1,11 @@
 package morteza.darzi.SelfTeach2
 
-import BL.*
 //import DAL.AppDatabase
 //import DAL.BookRepository
 //import DAL.TermRepository
+import BL.BookPerformance
+import BL.BookService
+import BL.TermService
 import DBAdapter.Book_Performance_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -23,12 +25,12 @@ class BooksPerformanceFragment : BaseFragment() {
     override val title: String
         get() = "كتاب ها"
 
-    var bookPerformances : MutableList<BookPerformance> = mutableListOf()
+    private var bookPerformances: MutableList<BookPerformance> = mutableListOf()
     private var listener: OnFragmentInteractionListener? = null
-    lateinit var bookService : BookService
-    lateinit var performanceAdapter: Book_Performance_Adapter
+    private lateinit var bookService: BookService
+    private lateinit var performanceAdapter: Book_Performance_Adapter
 
-    lateinit var v: View
+    private lateinit var v: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,7 +45,7 @@ class BooksPerformanceFragment : BaseFragment() {
     }
 
     private fun intializeBeforeSuspend() {
-        ShowLoader(true)
+        showLoader(true)
     }
 
     private fun intializeSuspend() {
@@ -51,7 +53,7 @@ class BooksPerformanceFragment : BaseFragment() {
             delay(500)
             val termService = TermService(context!!)
 
-            if (!termService.isTermexist()) {
+            if (!termService.isTermExist()) {
                 listener!!.failOpenBooks()
             }
             val term = termService.getTerm()!!
@@ -60,7 +62,7 @@ class BooksPerformanceFragment : BaseFragment() {
 
             if (list != null) {
                 for (book in list) {
-                    bookPerformances.add(BookPerformance(term,book))
+                    bookPerformances.add(BookPerformance(term, book))
                 }
             }
             intializeAfterSuspend()
@@ -69,21 +71,21 @@ class BooksPerformanceFragment : BaseFragment() {
     }
 
     private fun intializeAfterSuspend() {
-        performanceAdapter = Book_Performance_Adapter(context!!,bookPerformances)
+        performanceAdapter = Book_Performance_Adapter(context!!, bookPerformances)
         v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         v.list.adapter = performanceAdapter
 
-        ShowLoader(false)
+        showLoader(false)
     }
 
 
-    private fun ShowLoader(isShowder:Boolean){
-        if (isShowder){
+    private fun showLoader(isShowder: Boolean) {
+        if (isShowder) {
             v.indic_book_list.visibility = VISIBLE
             v.list.visibility = GONE
-        }else{
+        } else {
             v.indic_book_list.visibility = GONE
-            v.list.visibility= VISIBLE
+            v.list.visibility = VISIBLE
         }
     }
 
@@ -93,7 +95,7 @@ class BooksPerformanceFragment : BaseFragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

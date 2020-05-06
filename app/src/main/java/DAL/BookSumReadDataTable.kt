@@ -2,8 +2,8 @@ package DAL
 
 import androidx.room.Embedded
 
-data class Book_SumRead_db (
+data class BookSumReadDataTable(
         @Embedded
-        val book: Book_db,
+        val bookDataTable: BookDataTable,
         var readSum: Int
 )

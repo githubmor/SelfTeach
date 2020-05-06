@@ -18,7 +18,7 @@ abstract class BaseDatePickerFragment : BaseFragment(), DatePickerDialog.OnDateS
                 persianCalendar.persianMonth,
                 persianCalendar.persianDay
         )
-        if (selectableDateList!=null)
+        if (selectableDateList != null)
             datePickerDialog.highlightedDays = selectableDateList
 
         datePickerDialog.show(activity!!.fragmentManager, tag)

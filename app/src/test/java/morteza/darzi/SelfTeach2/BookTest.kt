@@ -1,7 +1,7 @@
 package morteza.darzi.SelfTeach2
 
 import BL.Book
-import DAL.Book_db
+import DAL.BookDataTable
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -18,7 +18,7 @@ class BookTest{
         val priority = 3
         val readCount = 50
 
-        val db = Book_db(1,name,page,priority)
+        val db = BookDataTable(1, name, page, priority)
 
         val book = Book(db,readCount)
 
@@ -26,7 +26,7 @@ class BookTest{
         assertEquals(page,book.pageCount)
         assertEquals(priority,book.priority)
         assertEquals(readCount,book.readSum)
-        assertEquals(db,book.getDto())
+        assertEquals(db, book.getBookDataTable())
     }
 
     @Test
@@ -39,19 +39,19 @@ class BookTest{
         val priority = 3
         val changePriority = 5
 
-        val db = Book_db(1,name,page,priority)
+        val db = BookDataTable(1, name, page, priority)
 
-        val book = Book(db,0)
+        val book = Book(db)
         book.name = changeName
         book.priority = changePriority
         book.pageCount = changePage
 
-        val editedDb = book.getDto()
+        val editedDb = book.getBookDataTable()
 
         assertEquals(changeName,editedDb.name)
         assertEquals(changePage,editedDb.pageCount)
         assertEquals(changePriority,editedDb.priority)
-        assertEquals(db,book.getDto())
+        assertEquals(db, book.getBookDataTable())
     }
 
     @Test
@@ -65,10 +65,10 @@ class BookTest{
         assertEquals(0,book.readSum)
     }
 
-//    private fun getReadList(page_read:Int): List<Read_db> {
-//        val re : MutableList<Read_db> = mutableListOf()
+//    private fun getReadList(page_read:Int): List<ReadDataTable> {
+//        val re : MutableList<ReadDataTable> = mutableListOf()
 //
-//        re.add(Read_db(1,1,page_read,PersianCalendar().persianShortDate))
+//        re.add(ReadDataTable(1,1,page_read,PersianCalendar().persianShortDate))
 //
 //
 //        return re

@@ -7,17 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
  * Activity based Exception handler ...
  */
 class MyExceptionHandler(private val context: AppCompatActivity) : Thread.UncaughtExceptionHandler {
-    private val rootHandler: Thread.UncaughtExceptionHandler
+    private val rootHandler: Thread.UncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
 
     init {
         // we should store the current exception handler -- to invoke it for all not handled exceptions ...
-        rootHandler = Thread.getDefaultUncaughtExceptionHandler()
         // we replace the exception handler now with us -- we will properly dispatch the exceptions ...
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        if (ex is RuntimeException ) {
+        if (ex is RuntimeException) {
             // note we can't just open in Android an dialog etc. we have to use Intents here
             // http://stackoverflow.com/questions/13416879/show-a-dialog-in-thread-setdefaultuncaughtexceptionhandler
 
@@ -39,6 +38,6 @@ class MyExceptionHandler(private val context: AppCompatActivity) : Thread.Uncaug
 
     companion object {
 
-        val EXTRA_MY_EXCEPTION_HANDLER = "EXTRA_MY_EXCEPTION_HANDLER"
+        const val EXTRA_MY_EXCEPTION_HANDLER = "EXTRA_MY_EXCEPTION_HANDLER"
     }
 }

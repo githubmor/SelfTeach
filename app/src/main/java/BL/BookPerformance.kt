@@ -1,3 +1,4 @@
 package BL
 
-class BookPerformance (val term:Term, val book : Book): Performance(term.dayCount,term.dayPast,book.pageCount,book.readSum)
+class BookPerformance(val term: Term, val book: IBook) : IBook by book,
+        Performance(term.dayCount, term.dayPast, book.pageCount, book.readSum)
