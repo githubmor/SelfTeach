@@ -23,9 +23,9 @@ class TermPerformanceTest{
 
         val bookP = TermPerformance(term,bookPerformances)
 
-        assertEquals(19.0F,bookP.performance)
-        assertEquals(2,bookP.avgPagePerDayRemind)
-        assertEquals(61,bookP.pageReadTo100Percent)
+        assertEquals(16.0F, bookP.performance)
+        assertEquals(68, bookP.avgPagePerDayRemind)
+        assertEquals(75, bookP.pageReadTo100Percent)
     }
 
     @Test
@@ -37,9 +37,9 @@ class TermPerformanceTest{
 
         val bookP = TermPerformance(term, bookPerformances)
 
-        assertEquals(19.0F, bookP.performance)
-        assertEquals(2, bookP.avgPagePerDayRemind)
-        assertEquals(61, bookP.pageReadTo100Percent)
+        assertEquals(10.0F, bookP.performance)
+        assertEquals(135, bookP.avgPagePerDayRemind)
+        assertEquals(135, bookP.pageReadTo100Percent)
     }
 
     @Test
@@ -51,9 +51,9 @@ class TermPerformanceTest{
 
         val bookP = TermPerformance(term, bookPerformances)
 
-        assertEquals(19.0F, bookP.performance)
-        assertEquals(2, bookP.avgPagePerDayRemind)
-        assertEquals(61, bookP.pageReadTo100Percent)
+        assertEquals(100F, bookP.performance)
+        assertEquals(0, bookP.avgPagePerDayRemind)
+        assertEquals(0, bookP.pageReadTo100Percent)
     }
 
     fun getBookList(): MutableList<Book> {

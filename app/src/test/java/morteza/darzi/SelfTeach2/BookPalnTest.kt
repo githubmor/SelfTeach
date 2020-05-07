@@ -31,13 +31,7 @@ class BookPalnTest{
         assertEquals(0, plan.avregPageReaded())
     }
 
-    @Test
-    fun bookPlan_ReadAll_NotReturnAvg_IsOk() {
 
-        val plan = BookPlan(BookReads(Book(BookDataTable(1, "asd", 100, 0)), getAllReadList(100)))
-
-        assertEquals(0, plan.avregPageReaded())
-    }
 
     private fun getReadList(): List<Read> {
         val re: MutableList<Read> = mutableListOf()

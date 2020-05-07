@@ -42,7 +42,7 @@ class DashboardActivity : ScopedAppActivity()
 
     private fun intializeNotRelatedToSuspend() {
 
-        MyExceptionHandler(this)//comment this line if use debugger
+        MyExceptionHandler(this)//comment this line if Release
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

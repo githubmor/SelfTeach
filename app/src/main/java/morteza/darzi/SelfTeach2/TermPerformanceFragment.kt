@@ -123,7 +123,7 @@ class TermPerformanceFragment : BaseFragment() {
         fragmentView.today.text = termPerformance.pageReadTo100Percent.toString()
         fragmentView.per_day.text = termPerformance.avgPagePerDayRemind.toString()
 
-        fragmentView.day_remind.text = termPerformance.term.termDateState
+        fragmentView.day_remind.text = "( " + termPerformance.term.dayPast + "/" + termPerformance.term.dayCount + " ) روز"
 
         fragmentView.progressBar.progress = termPerformance.term.dayPastPercent
     }

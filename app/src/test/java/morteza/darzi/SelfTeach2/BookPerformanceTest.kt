@@ -38,9 +38,9 @@ class BookPerformanceTest{
 
         val performanceBook = BookPerformance(term, book)
 
-        assertEquals(100, performanceBook.avgPagePerDayRemind)
-        assertEquals(100, performanceBook.pageReadTo100Percent)
-        assertEquals(10.0F, performanceBook.performance)
+        assertEquals(80, performanceBook.avgPagePerDayRemind)
+        assertEquals(80, performanceBook.pageReadTo100Percent)
+        assertEquals(20.0F, performanceBook.performance)
     }
 
     @Test
@@ -52,9 +52,9 @@ class BookPerformanceTest{
 
         val performanceBook = BookPerformance(term, book)
 
-        assertEquals(1000, performanceBook.avgPagePerDayRemind)
-        assertEquals(1000, performanceBook.pageReadTo100Percent)
-        assertEquals(10.0F, performanceBook.performance)
+        assertEquals(0, performanceBook.avgPagePerDayRemind)
+        assertEquals(0, performanceBook.pageReadTo100Percent)
+        assertEquals(100F, performanceBook.performance)
     }
 
     @Test
@@ -66,9 +66,9 @@ class BookPerformanceTest{
 
         val performanceBook = BookPerformance(term, book)
 
-        assertEquals(1000, performanceBook.avgPagePerDayRemind)
-        assertEquals(100, performanceBook.pageReadTo100Percent)
-        assertEquals(1000.0F, performanceBook.performance)
+        assertEquals(0, performanceBook.avgPagePerDayRemind)
+        assertEquals(0, performanceBook.pageReadTo100Percent)
+        assertEquals(100F, performanceBook.performance)
     }
 
     @Test
@@ -80,9 +80,9 @@ class BookPerformanceTest{
 
         val performanceBook = BookPerformance(term, book)
 
-        assertEquals(1000, performanceBook.avgPagePerDayRemind)
-        assertEquals(100, performanceBook.pageReadTo100Percent)
-        assertEquals(1000.0F, performanceBook.performance)
+        assertEquals(50, performanceBook.avgPagePerDayRemind)
+        assertEquals(60, performanceBook.pageReadTo100Percent)
+        assertEquals(0F, performanceBook.performance)
     }
 
     private var count = 2

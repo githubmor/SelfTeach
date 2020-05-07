@@ -24,7 +24,6 @@ class MyExceptionHandler(private val context: AppCompatActivity) : Thread.Uncaug
             registerActivity.putExtra(EXTRA_MY_EXCEPTION_HANDLER, ex.message)
             //registerActivity.putExtra("ad",ex.message)
             registerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            registerActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
 
             context.startActivity(registerActivity)
             // make sure we die, otherwise the app will hang ...

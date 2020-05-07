@@ -64,6 +64,7 @@ class PerformanceTest{
         assertEquals(0,performanceBook.pageReadTo100Percent)
         assertEquals(100F,performanceBook.performance)
     }
+
     @Test
     fun performance_pageRemind_zero() {
 
@@ -82,6 +83,45 @@ class PerformanceTest{
         assertEquals(0,performanceBook.pageReadTo100Percent)
         assertEquals(100F,performanceBook.performance)
     }
+
+    @Test
+    fun performance_dayRemind_Negetive_NotReadAll() {
+
+        val daycount = 100
+        val pasDay = 110
+        val pageCount = 100
+        val pageRead = 50
+        val performanceBook = Performance(daycount, pasDay, pageCount, pageRead)
+
+        val pageRemind = 0 //pageCount - pageReadCount
+        val dayRemind = -10 // daycount - pasDay
+        val avgPageEveryday = 0.5 // pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 55 // (pasDay * avgPageEveryday).toInt()
+
+        assertEquals(50, performanceBook.avgPagePerDayRemind) //چون بايد همه رو بخونه ديگه ترم تموم شده رفت
+        assertEquals(50, performanceBook.pageReadTo100Percent)
+        assertEquals(50F, performanceBook.performance)
+    }
+
+    @Test
+    fun performance_dayRemind_Negetive_ReadAll() {
+
+        val daycount = 100
+        val pasDay = 110
+        val pageCount = 50
+        val pageRead = 50
+        val performanceBook = Performance(daycount, pasDay, pageCount, pageRead)
+
+        val pageRemind = 0 //pageCount - pageReadCount
+        val dayRemind = -10 // daycount - pasDay
+        val avgPageEveryday = 0.5 // pageCount.toFloat() / daycount.toFloat()
+        val pageShouldBeReadTillToday = 55 // (pasDay * avgPageEveryday).toInt()
+
+        assertEquals(0, performanceBook.avgPagePerDayRemind)
+        assertEquals(0, performanceBook.pageReadTo100Percent)
+        assertEquals(100F, performanceBook.performance)
+    }
+
     @Test
     fun performance_pasDay_zero() {
 
@@ -100,6 +140,25 @@ class PerformanceTest{
         assertEquals(0,performanceBook.pageReadTo100Percent)
         assertEquals(100F,performanceBook.performance)
     }
+
+//    @Test
+//    fun performance_pasDay_Negetive() { //when term not start yet
+//
+//        val daycount = 100
+//        val pasDay = -2
+//        val pageCount = 500
+//        val pageRead = 50
+//        val performanceBook = Performance(daycount,pasDay,pageCount,pageRead)
+//
+//        val pageRemind = 450 //pageCount - pageReadCount
+//        val dayRemind = 98 // daycount - pasDay !!!!!!!!!!!
+//        val avgPageEveryday = 5 // pageCount.toFloat() / daycount.toFloat()
+//        val pageShouldBeReadTillToday = -10 // (pasDay * avgPageEveryday).toInt() !!!!!!!!!
+//
+//        assertEquals(0,performanceBook.avgPagePerDayRemind)
+//        assertEquals(0,performanceBook.pageReadTo100Percent)
+//        assertEquals(100F,performanceBook.performance)
+//    }
 
     @Test
     fun performance_dayRemind_zero() {

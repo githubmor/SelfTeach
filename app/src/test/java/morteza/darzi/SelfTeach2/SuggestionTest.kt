@@ -49,6 +49,18 @@ class SuggestionTest {
         assertEquals(2, ss.count())
     }
 
+    @Test
+    fun suggest_Book_NotStarToRead() {
+
+        val books = getBookNoRead()
+
+        val term = getTerm(3)
+
+        val ss = Suggestion(term, books).getBookSuggestList(10)
+
+        assertEquals(2, ss.count())
+    }
+
 //    @Test
 //    fun suggest_PageRemind_IsBiger_Avg() {
 //
@@ -97,6 +109,26 @@ class SuggestionTest {
         re.add(Read(ReadDataTable(1, 1, 5, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 6, PersianCalendar().persianShortDate)))
+
+        return re
+    }
+
+    private fun getEmptyReadList(): List<Read> {
+
+        return mutableListOf()
+    }
+
+    fun getBookNoRead(): MutableList<BookReads> {
+        val re = mutableListOf<BookReads>()
+
+        val name = "Book 1"
+        val page = 200
+        val priority = 3
+
+        val db = Book(BookDataTable(1, name, page, priority))
+        re.add(BookReads(db, getEmptyReadList()))
+        re.add(BookReads(db, getEmptyReadList()))
+        re.add(BookReads(db, getEmptyReadList()))
 
         return re
     }

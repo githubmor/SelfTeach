@@ -3,7 +3,6 @@ package morteza.darzi.SelfTeach2
 import BL.Term
 import DAL.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -13,15 +12,49 @@ import org.junit.Test
 class TermTest{
 
     @Test
-    fun CreatTermWithStartAndEndDate() {
+    fun Creat_Term_IsOk() {
 
         val name = TermType.NimsalAvl
-        val startDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-1)}
-        val endDate =  PersianCalendar().apply { add(PersianCalendar.MONTH,2)}
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -10) }
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 15) }
 
-        val dayCount = daysDiffCalculate(startDate.persianShortDate,endDate.persianShortDate)
-        val pas = daysDiffCalculate(startDate.persianShortDate,PersianCalendar().persianShortDate)
-        val remi = dayCount-pas
+        val db = TermDataTable(1, name.name, startDate.persianShortDate, endDate.persianShortDate)
+
+        val term = Term(db)
+
+        assertEquals(name.typeName, term.type)
+        assertEquals(startDate.persianShortDate, term.startDate)
+        assertEquals(endDate.persianShortDate, term.endDate)
+        assertEquals(25, term.dayCount)
+        assertEquals(10, term.dayPast)
+        assertEquals(26, term.getCalenderActiveDaysList().size)
+    }
+
+    @Test
+    fun Creat_Term_NotStart() {
+
+        val name = TermType.NimsalAvl
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 10) }
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 15) }
+
+        val db = TermDataTable(1, name.name, startDate.persianShortDate, endDate.persianShortDate)
+
+        val term = Term(db)
+
+        assertEquals(name.typeName, term.type)
+        assertEquals(startDate.persianShortDate, term.startDate)
+        assertEquals(endDate.persianShortDate, term.endDate)
+        assertEquals(5, term.dayCount)
+        assertEquals(0, term.dayPast)
+        assertEquals(6, term.getCalenderActiveDaysList().size)
+    }
+
+    @Test
+    fun Creat_Term_Ended() {
+
+        val name = TermType.NimsalAvl
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -10) }
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -5) }
 
         val db = TermDataTable(1, name.name, startDate.persianShortDate, endDate.persianShortDate)
 
@@ -30,22 +63,35 @@ class TermTest{
         assertEquals(name.typeName,term.type)
         assertEquals(startDate.persianShortDate,term.startDate)
         assertEquals(endDate.persianShortDate,term.endDate)
-        assertEquals(dayCount,term.dayCount)
-        assertEquals(pas,term.dayPast)
-        assertEquals(remi,term.dayRemind)
-        assertEquals(dayCount, term.getCalenderActiveDaysList().size)
-        assertEquals("( "+pas+"/"+dayCount+" ) روز",term.termDateState)
+        assertEquals(5, term.dayCount)
+        assertEquals(5, term.dayPast)
+        assertEquals(6, term.getCalenderActiveDaysList().size)
     }
 
-    private fun daysDiffCalculate(s: String, e: String): Int {
+    @Test(expected = ArithmeticException::class)
+    fun Creat_Term_Exception_Date_is_Reverse() {
 
-        val start = PersianDateParser(s).persianDate.timeInMillis
-        val end = PersianDateParser(e).persianDate.timeInMillis
+        val name = TermType.NimsalAvl
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 10) }
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 5) }
 
-        val re = end - start
+        val db = TermDataTable(1, name.name, startDate.persianShortDate, endDate.persianShortDate)
 
-        return ((re/(1000*60*60*24))+1).toInt()
+        val term = Term(db)
+
     }
+
+    @Test(expected = ArithmeticException::class)
+    fun Creat_Term_Exception_Date_is_equal() {
+
+        val name = TermType.NimsalAvl
+
+        val db = TermDataTable(1, name.name, "1399/01/02", "1399/01/02")
+
+        val term = Term(db)
+
+    }
+
 
     @Test
     fun term_Edit_IsOk() {
@@ -60,12 +106,8 @@ class TermTest{
         val term = Term(db)
 
         val cname = TermType.TermTabestan.name
-        val cstartDate = PersianCalendar().apply {  add(PersianCalendar.MONTH,-2)}
-        val cendDate = PersianCalendar().apply { add(PersianCalendar.MONTH,3)}
-
-        val dayCount = daysDiffCalculate(cstartDate.persianShortDate,cendDate.persianShortDate)
-        val pas = daysDiffCalculate(cstartDate.persianShortDate,PersianCalendar().persianShortDate)
-        val remi = dayCount-pas
+        val cstartDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }
+        val cendDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 3) }
 
         term.type = cname
         term.startDate = cstartDate.persianShortDate
@@ -76,11 +118,9 @@ class TermTest{
         assertEquals(cname,changedDb.name)
         assertEquals(cstartDate.persianShortDate,term.startDate)
         assertEquals(cendDate.persianShortDate,term.endDate)
-        assertEquals(dayCount,term.dayCount) // ممكنه 91 روز هم بشه در شش ماهه دوم
-        assertEquals(pas,term.dayPast)
-        assertEquals(remi,term.dayRemind)
-        assertEquals(dayCount, term.getCalenderActiveDaysList().size)
-        assertEquals("( "+pas+"/"+dayCount+" ) روز",term.termDateState)
+        assertEquals(5, term.dayCount)
+        assertEquals(2, term.dayPast)
+        assertEquals(6, term.getCalenderActiveDaysList().size)
     }
 
 }
