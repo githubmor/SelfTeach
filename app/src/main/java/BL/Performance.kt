@@ -1,38 +1,40 @@
 package BL
 
-open class Performance(private val dayCount: Int, private val pasDay: Int, private val pageCount: Int, pageReaded: Int) {
+open class Performance(dayCount: Int, pasDay: Int, pageCount: Int, pageReaded: Int) {
 
     private val pageRemind = pageCount - pageReaded
     private val dayRemind = dayCount - pasDay
     private val avgPageEveryday = pageCount.toFloat() / dayCount.toFloat()
     private val shouldReadTillToday = if (pasDay > 0) (pasDay * avgPageEveryday).toInt() else pageRemind
 
-    fun termVaziat(): Int {
-        return 0 // 0 ... number ... daycount
-    }
-
     val avgPagePerDayRemind =
-                if (dayRemind > 0)
-                    Math.round(pageRemind.toFloat() / dayRemind.toFloat())
-                else
-                    pageRemind
+            when (dayRemind) {
+                dayCount -> 0 //not start term
+                0 -> pageRemind //end term
+                else -> Math.round(pageRemind.toFloat() / dayRemind.toFloat())
+            }
 
     val pageReadTo100Percent =
-            if (pageReaded < shouldReadTillToday)
-                shouldReadTillToday - pageReaded
-            else
-                0
+            when {
+                dayRemind == dayCount -> 0
+                dayRemind == 0 -> pageRemind
+                pageReaded < shouldReadTillToday -> shouldReadTillToday - pageReaded
+                else -> 0
+            }
 
+    val pageReadPercent: Float = (pageReaded * 100) / pageCount.toFloat()
 
     val performance =
-            if (pageReaded < shouldReadTillToday) {
-                if (shouldReadTillToday > 0) {
-                    ((pageReaded * 100) / shouldReadTillToday).toFloat()
+            when {
+                dayRemind == dayCount -> pageReadPercent
+                dayRemind == 0 -> pageReadPercent
+                pageReaded < shouldReadTillToday -> if (shouldReadTillToday > 0) {
+                    (pageReaded * 100) / shouldReadTillToday.toFloat()
                 } else {
                     0F
                 }
-            } else
-                100F
-    val pageReadPercent = (pageReaded * 100) / pageCount.toFloat()
+                else -> 100F
+            }
+
 
 }

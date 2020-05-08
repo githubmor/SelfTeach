@@ -53,7 +53,7 @@ class PerformanceTest{
 
         val performanceBook = Performance(100, 0, 500, 0)
 
-        assertEquals(5, performanceBook.avgPagePerDayRemind)
+        assertEquals(0, performanceBook.avgPagePerDayRemind)
         assertEquals(0, performanceBook.pageReadTo100Percent)
         assertEquals(0F, performanceBook.performance)
     }
@@ -63,7 +63,7 @@ class PerformanceTest{
 
         val performanceBook = Performance(100, 0, 500, 100)
 
-        assertEquals(4, performanceBook.avgPagePerDayRemind)
+        assertEquals(0, performanceBook.avgPagePerDayRemind)
         assertEquals(0, performanceBook.pageReadTo100Percent)
         assertEquals(20F, performanceBook.performance)//نسبت خواندن به خواندن كل
     }
@@ -92,8 +92,8 @@ class PerformanceTest{
 
         val performanceBook = Performance(100, 100, 500, 100)
 
-        assertEquals(430, performanceBook.avgPagePerDayRemind)
-        assertEquals(430, performanceBook.pageReadTo100Percent)
+        assertEquals(400, performanceBook.avgPagePerDayRemind)
+        assertEquals(400, performanceBook.pageReadTo100Percent)
         assertEquals(20F, performanceBook.performance)
     }
 

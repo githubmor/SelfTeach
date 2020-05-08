@@ -68,6 +68,25 @@ class TermTest{
         assertEquals(6, term.getCalenderActiveDaysList().size)
     }
 
+    @Test
+    fun Creat_Term_NotStar_Today() {
+
+        val name = TermType.NimsalAvl
+        val startDate = PersianCalendar()
+        val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 5) }
+
+        val db = TermDataTable(1, name.name, startDate.persianShortDate, endDate.persianShortDate)
+
+        val term = Term(db)
+
+        assertEquals(name.typeName, term.type)
+        assertEquals(startDate.persianShortDate, term.startDate)
+        assertEquals(endDate.persianShortDate, term.endDate)
+        assertEquals(5, term.dayCount)
+        assertEquals(0, term.dayPast)
+        assertEquals(6, term.getCalenderActiveDaysList().size)
+    }
+
     @Test(expected = ArithmeticException::class)
     fun Creat_Term_Exception_Date_is_Reverse() {
 
@@ -77,7 +96,7 @@ class TermTest{
 
         val db = TermDataTable(1, name.name, startDate.persianShortDate, endDate.persianShortDate)
 
-        val term = Term(db)
+        Term(db)
 
     }
 
@@ -88,7 +107,7 @@ class TermTest{
 
         val db = TermDataTable(1, name.name, "1399/01/02", "1399/01/02")
 
-        val term = Term(db)
+        Term(db)
 
     }
 

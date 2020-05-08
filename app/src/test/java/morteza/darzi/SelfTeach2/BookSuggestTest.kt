@@ -93,23 +93,23 @@ class BookSuggestTest {
         return re
     }
 
-    fun getBook(isBigger: Boolean): BookReads {
+    private fun getBook(isBigger: Boolean): BookReads {
         val name = "Book 1"
         val page = 200
         val priority = 3
 
         val db = Book(BookDataTable(1, name, page, priority))
-        if (isBigger)
-            return BookReads(db, getReadListWithAvragBigger())
-        else
-            return BookReads(db, getReadListWithAvragLower())
+        return when {
+            isBigger -> BookReads(db, getReadListWithAvragBigger())
+            else -> BookReads(db, getReadListWithAvragLower())
+        }
 
     }
 
     private fun getTerm(dayPas: Int): Term {
         val daycount = 10
         val tname = TermType.NimsalAvl.name
-        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -dayPas + 1) }.persianShortDate
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -dayPas) }.persianShortDate
         val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, daycount - dayPas) }.persianShortDate
 
         val tdb = TermDataTable(1, tname, startDate, endDate)

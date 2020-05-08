@@ -16,6 +16,6 @@ class BookSuggestion(private val paln: BookPlan, private val to100PercentBook: I
 
     fun hasSuggest(remindPage: Int): Boolean {
 
-        return to100PercentBook <= remindPage * 2
+        return to100PercentBook > 0 && to100PercentBook <= remindPage * 2
     }
 }

@@ -99,7 +99,7 @@ class TermPerformanceFragment : BaseFragment() {
 
         termPerformance = TermPerformance(term, books)
 
-        suggest = Suggestion(term, books).getBookSuggestList(termPerformance.pageReadTo100Percent)
+        suggest = Suggestion(term, books).getBookSuggestList(termPerformance)
 
     }
 
@@ -128,13 +128,16 @@ class TermPerformanceFragment : BaseFragment() {
         fragmentView.progressBar.progress = termPerformance.term.dayPastPercent
     }
 
-    private lateinit var suggest: List<BookSuggestion>
+    private lateinit var suggest: List<ReadSuggestion>
 
     private fun loadBookSuggestionData() {
 
         suggest.forEach {
             val te = TextView(context)
-            te.text = it.name + it.readSuggest() + " صفحه بخوان"
+            when {
+                it.isFoghBarname -> te.text = "فوق برنامه : " + it.name + it.readSuggest + " صفحه بخوان"
+                else -> te.text = it.name + it.readSuggest + " صفحه بخوان"
+            }
             if (Build.VERSION.SDK_INT < 23) {
                 te.setTextAppearance(context, R.style.creditCardText)
             } else {

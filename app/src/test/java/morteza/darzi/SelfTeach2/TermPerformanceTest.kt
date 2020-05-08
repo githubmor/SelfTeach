@@ -23,9 +23,9 @@ class TermPerformanceTest{
 
         val bookP = TermPerformance(term,bookPerformances)
 
-        assertEquals(16.0F, bookP.performance)
-        assertEquals(68, bookP.avgPagePerDayRemind)
-        assertEquals(75, bookP.pageReadTo100Percent)
+        assertEquals(50F, bookP.performance)
+        assertEquals(10, bookP.avgPagePerDayRemind)
+        assertEquals(10, bookP.pageReadTo100Percent)
     }
 
     @Test
@@ -37,9 +37,9 @@ class TermPerformanceTest{
 
         val bookP = TermPerformance(term, bookPerformances)
 
-        assertEquals(10.0F, bookP.performance)
-        assertEquals(135, bookP.avgPagePerDayRemind)
-        assertEquals(135, bookP.pageReadTo100Percent)
+        assertEquals(33.333332F, bookP.performance)
+        assertEquals(20, bookP.avgPagePerDayRemind)
+        assertEquals(20, bookP.pageReadTo100Percent)
     }
 
     @Test
@@ -51,7 +51,7 @@ class TermPerformanceTest{
 
         val bookP = TermPerformance(term, bookPerformances)
 
-        assertEquals(100F, bookP.performance)
+        assertEquals(33.333332F, bookP.performance)
         assertEquals(0, bookP.avgPagePerDayRemind)
         assertEquals(0, bookP.pageReadTo100Percent)
     }
@@ -61,15 +61,14 @@ class TermPerformanceTest{
         val page = 10
         val re : MutableList<Book> = mutableListOf()
 
-        for (i in 1..5) {
-            re.add(Book(BookDataTable(i, name + i, page * i, i), i))
-        }
-
+        re.add(Book(BookDataTable(1, name, page, 1), 5))
+        re.add(Book(BookDataTable(1, name, page, 1), 3))
+        re.add(Book(BookDataTable(1, name, page, 1), 2))
         return re
     }
     private fun getTerm(): Term {
         val tname = TermType.NimsalAvl.name
-        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }.persianShortDate
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -4) }.persianShortDate
         val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 2) }.persianShortDate
 
         val tdb = TermDataTable(1, tname, startDate, endDate)

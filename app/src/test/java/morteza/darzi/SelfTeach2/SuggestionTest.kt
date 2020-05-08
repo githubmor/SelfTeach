@@ -18,48 +18,40 @@ class SuggestionTest {
 
         val books = getBook()
 
-        val term = getTerm(3)
+        val term = getTerm(4)
+        val p = TermPerformance(term, books)
 
-        val ss = Suggestion(term, books).getBookSuggestList(50)
+        val ss = Suggestion(term, books).getBookSuggestList(p)
 
-        assertEquals(2, ss.count())
+        assertEquals(3, ss.count())
     }
 
-    @Test
-    fun suggest_Avreg_IsBigger_PageRemind2() {
 
-        val books = getBook()
-
-        val term = getTerm(3)
-
-        val ss = Suggestion(term, books).getBookSuggestList(0)
-
-        assertEquals(2, ss.count())
-    }
-
-    @Test
-    fun suggest_Avreg_IsBigger_PageRemind3() {
-
-        val books = getBook()
-
-        val term = getTerm(3)
-
-        val ss = Suggestion(term, books).getBookSuggestList(-2)
-
-        assertEquals(2, ss.count())
-    }
-
-    @Test
-    fun suggest_Book_NotStarToRead() {
-
-        val books = getBookNoRead()
-
-        val term = getTerm(3)
-
-        val ss = Suggestion(term, books).getBookSuggestList(10)
-
-        assertEquals(2, ss.count())
-    }
+//    @Test
+//    fun suggest_Avreg_IsBigger_PageRemind3() {
+//
+//        val books = getBook()
+//
+//        val term = getTerm(3)
+//        val p = TermPerformance(term,books)
+//
+//        val ss = Suggestion(term, books).getBookSuggestList(p)
+//
+//        assertEquals(2, ss.count())
+//    }
+//
+//    @Test
+//    fun suggest_Book_NotStarToRead() {
+//
+//        val books = getBookNoRead()
+//
+//        val term = getTerm(3)
+//        val p = TermPerformance(term,books)
+//
+//        val ss = Suggestion(term, books).getBookSuggestList(p)
+//
+//        assertEquals(2, ss.count())
+//    }
 
 //    @Test
 //    fun suggest_PageRemind_IsBiger_Avg() {
@@ -89,25 +81,22 @@ class SuggestionTest {
 //    }
 
 
-    private fun getReadListWithAvragBigger(): List<Read> {
+    private fun get50ReadPageWithAvrag12(): List<Read> {
         val re: MutableList<Read> = mutableListOf()
 
         re.add(Read(ReadDataTable(1, 1, 8, PersianCalendar().persianShortDate)))
-        re.add(Read(ReadDataTable(1, 1, 15, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 17, PersianCalendar().persianShortDate)))
         return re
     }
 
-    private fun getReadListWithAvragLower(): List<Read> {
+    private fun get50ReadWithAvrag7(): List<Read> {
         val re: MutableList<Read> = mutableListOf()
 
         re.add(Read(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 8, PersianCalendar().persianShortDate)))
-        re.add(Read(ReadDataTable(1, 1, 7, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 4, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 5, PersianCalendar().persianShortDate)))
-        re.add(Read(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate)))
         re.add(Read(ReadDataTable(1, 1, 6, PersianCalendar().persianShortDate)))
 
         return re
@@ -141,17 +130,17 @@ class SuggestionTest {
         val priority = 3
 
         val db = Book(BookDataTable(1, name, page, priority))
-        re.add(BookReads(db, getReadListWithAvragBigger()))
-        re.add(BookReads(db, getReadListWithAvragLower()))
-        re.add(BookReads(db, getReadListWithAvragLower()))
+        re.add(BookReads(db, get50ReadPageWithAvrag12()))
+        re.add(BookReads(db, get50ReadWithAvrag7()))
+        re.add(BookReads(db, get50ReadWithAvrag7()))
 
         return re
     }
 
     private fun getTerm(dayPas: Int): Term {
-        val daycount = 10
+        val daycount = 5
         val tname = TermType.NimsalAvl.name
-        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -dayPas + 1) }.persianShortDate
+        val startDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -dayPas) }.persianShortDate
         val endDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, daycount - dayPas) }.persianShortDate
 
         val tdb = TermDataTable(1, tname, startDate, endDate)

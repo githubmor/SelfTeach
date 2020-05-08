@@ -25,8 +25,8 @@ class BookPerformanceTest{
         val performanceBook = BookPerformance(term,book)
 
         assertEquals(40,performanceBook.avgPagePerDayRemind)
-        assertEquals(40,performanceBook.pageReadTo100Percent)
-        assertEquals(33.0F,performanceBook.performance)
+        assertEquals(30, performanceBook.pageReadTo100Percent)
+        assertEquals(40F, performanceBook.performance)
     }
 
     @Test
@@ -40,7 +40,7 @@ class BookPerformanceTest{
 
         assertEquals(80, performanceBook.avgPagePerDayRemind)
         assertEquals(80, performanceBook.pageReadTo100Percent)
-        assertEquals(20.0F, performanceBook.performance)
+        assertEquals(20F, performanceBook.performance)
     }
 
     @Test
@@ -54,7 +54,7 @@ class BookPerformanceTest{
 
         assertEquals(0, performanceBook.avgPagePerDayRemind)
         assertEquals(0, performanceBook.pageReadTo100Percent)
-        assertEquals(100F, performanceBook.performance)
+        assertEquals(20F, performanceBook.performance)
     }
 
     @Test
@@ -81,19 +81,15 @@ class BookPerformanceTest{
         val performanceBook = BookPerformance(term, book)
 
         assertEquals(50, performanceBook.avgPagePerDayRemind)
-        assertEquals(60, performanceBook.pageReadTo100Percent)
+        assertEquals(50, performanceBook.pageReadTo100Percent)
         assertEquals(0F, performanceBook.performance)
     }
 
-    private var count = 2
-    private var avgPPR = 0
     private fun getReadList(): List<ReadDataTable> {
         val re: MutableList<ReadDataTable> = mutableListOf()
-        for (i in 1..count){
-            val p = 10
-            re.add(ReadDataTable(i, 1, p, PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, i * 2) }.persianShortDate))
-            avgPPR += p
-        }
+
+        re.add(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate))
+        re.add(ReadDataTable(1, 1, 10, PersianCalendar().persianShortDate))
 
         return re
     }
