@@ -95,7 +95,8 @@ class BooksFragment : BaseFragment() {
 
         service = BookService(context!!)
 
-        books = service.getAllBookWithSumRead()!!.toMutableList()
+        if (service.anyBooksExist())
+            books = service.getAllBookWithSumRead().toMutableList()
 
         adapterIntialize()
     }

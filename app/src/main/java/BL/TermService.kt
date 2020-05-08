@@ -23,6 +23,7 @@ class TermService(context: Context) {
     }
 
     suspend fun getTerm(): Term? {
-        return Term(repository.getTerm()!!)
+        val o = repository.getTerm()
+        return if (o != null) Term(o) else null
     }
 }

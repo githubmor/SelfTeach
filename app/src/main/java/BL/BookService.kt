@@ -22,8 +22,9 @@ class BookService(context: Context) {
         return repository.isBooksExist()
     }
 
-    suspend fun getAllBookWithSumRead(): List<Book>? {
-        return repository.getAllBookWithSumRead()!!.map { Book(it.bookDataTable, it.readSum) }
+    suspend fun getAllBookWithSumRead(): List<Book> {
+        val o = repository.getAllBookWithSumRead()
+        return if (o != null) repository.getAllBookWithSumRead()!!.map { Book(it.bookDataTable, it.readSum) } else listOf()
     }
 
     suspend fun getAllBookWithListRead(): List<BookReads>? {
