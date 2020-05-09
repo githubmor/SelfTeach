@@ -50,14 +50,18 @@ class BookRepository(private val database: BookDatabase) {
 
     @WorkerThread
     suspend fun getAllBookWithSumRead(): List<BookSumReadDataTable>? {
-        return withContext(Dispatchers.IO) {
-            val y = async {
-                database.getAllBookWithSumRead()
-            }
-            withContext(Dispatchers.Main){
-                y.await()
-
-            }
-        }
+        val h = getAllBookWithListReads()
+        return if (h != null) h.map { BookSumReadDataTable(it.bookDataTable, it.readDataTableLists.sumBy { it.pageReadCount }) }
+        else
+            null
+//        return withContext(Dispatchers.IO) {
+//            val y = async {
+//                database.getAllBookWithSumRead()
+//            }
+//            withContext(Dispatchers.Main){
+//                y.await()
+//
+//            }
+//        }
     }
 }
