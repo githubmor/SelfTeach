@@ -71,6 +71,25 @@ class ReadsFragment : BaseDatePickerFragment() {
 
             reads = readService.getAllReadsWithBookName()!!.toMutableList()
 
+            val adapter = intializeReadList()
+
+            v.read_save.setOnClickListener {
+                if (validateToSave()) {
+                    launch {
+
+                        val read = Read(selectedBook!!.getBookDataTable().id)
+
+                        read.pageReadCount = v.read_page_count.text.toString().toInt()
+                        read.readDate = v.read_date.text.toString()
+
+                        readService.insert(read)
+
+                        adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
+                        arrangeForShowFirstViewSwitcher(true)
+                    }
+                }
+            }
+
             if (reads.size <= 0) {
                 arrangeForShowFirstViewSwitcher(false)
             } else {
@@ -99,24 +118,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
 
 
-        val adapter = intializeReadList()
 
-        v.read_save.setOnClickListener {
-            if (validateToSave()) {
-                launch {
-
-                    val read = Read(selectedBook!!.getBookDataTable().id)
-
-                    read.pageReadCount = v.read_page_count.text.toString().toInt()
-                    read.readDate = v.read_date.text.toString()
-
-                    readService.insert(read)
-
-                    adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
-                    arrangeForShowFirstViewSwitcher(true)
-                }
-            }
-        }
 
         readDate = v.read_date
     }
@@ -132,7 +134,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         launch {
             if (!bookService.anyBooksExist())
                 listener!!.failRead()
-            books = bookService.getAllBookWithSumRead()!!
+            books = bookService.getAllBookWithSumRead()
 
             val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
                 it.name + " - " + it.pageCount + " صفحه"

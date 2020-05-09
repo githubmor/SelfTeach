@@ -14,7 +14,7 @@ interface BookDatabase {
     fun getAllBookWithSumRead(): List<BookSumReadDataTable>
 
     @Insert
-    fun insertBook(bookDataTable: BookDataTable)
+    fun insertBook(bookDataTable: BookDataTable): Long
 
     @Query("DELETE FROM bookdatatable")
     fun deleteAllBook()

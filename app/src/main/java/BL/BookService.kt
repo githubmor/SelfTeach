@@ -7,7 +7,8 @@ import android.content.Context
 class BookService(context: Context) {
     private var repository: BookRepository = BookRepository(AppDatabase.getInstance(context).bookDatabase())
     suspend fun insert(book: Book) {
-        repository.insert(book.getBookDataTable())
+        val id = repository.insert(book.getBookDataTable())
+        book.getBookDataTable().id = id.toInt()
     }
 
     suspend fun delete(book: Book) {

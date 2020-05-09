@@ -8,9 +8,15 @@ import kotlinx.coroutines.withContext
 class BookRepository(private val database: BookDatabase) {
 
     @WorkerThread
-    suspend fun insert(bookDataTable: BookDataTable) {
-        withContext(Dispatchers.IO) {
-            database.insertBook(bookDataTable)
+    suspend fun insert(bookDataTable: BookDataTable): Long {
+        return withContext(Dispatchers.IO) {
+            val y = async {
+                database.insertBook(bookDataTable)
+            }
+            withContext(Dispatchers.Main) {
+                y.await()
+            }
+
         }
     }
     @WorkerThread

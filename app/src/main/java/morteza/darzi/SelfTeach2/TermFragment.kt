@@ -63,6 +63,7 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun intializeBeforeSuspend() {
         showViewSwitcher(false)
+        intializeSpinner()
     }
 
     private fun showViewSwitcher(isShow: Boolean) = if (isShow) {
@@ -103,8 +104,8 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun loadTermInView() {
         fragmentView.term_type.setSelection(TermType.values().single { it.typeName == term!!.type }.ordinal)
-        fragmentView.term_start_date.setText(term?.startDate)
-        fragmentView.term_end_date.setText(term?.endDate)
+        fragmentView.term_start_date.setText(term!!.startDate)
+        fragmentView.term_end_date.setText(term!!.endDate)
     }
 
     private fun intializeNotRelatedToSuspend() {
@@ -126,7 +127,7 @@ class TermFragment : BaseDatePickerFragment() {
             showDatapicker(endTag)
         }
 
-        intializeSpinner()
+
 
         errorTextChangeListner(fragmentView.term_start_date_lay, startDateError)
         errorTextChangeListner(fragmentView.term_end_date_lay, endDateError)
@@ -145,10 +146,14 @@ class TermFragment : BaseDatePickerFragment() {
 
         fragmentView.term_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
+                if (term == null) {
+                    mnbmb
+                    selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
 
-                fragmentView.term_start_date.setText(Ultility.getStartDate(selectedTermType))
-                fragmentView.term_end_date.setText(Ultility.getEndDate(selectedTermType))
+                    fragmentView.term_start_date.setText(Ultility.getStartDate(selectedTermType))
+                    fragmentView.term_end_date.setText(Ultility.getEndDate(selectedTermType))
+                }
+
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {
