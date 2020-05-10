@@ -3,9 +3,9 @@ package morteza.darzi.SelfTeach2
 //import DAL.AppDatabase
 //import DAL.BookRepository
 //import DAL.TermRepository
-import BL.BookPerformance
-import BL.BookService
-import BL.TermService
+import core.BookPerformance
+import core.services.BookService
+import core.services.TermService
 import DBAdapter.Book_Performance_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -56,14 +56,10 @@ class BooksPerformanceFragment : BaseFragment() {
             if (!termService.isTermExist()) {
                 listener!!.failOpenBooks()
             }
-            val term = termService.getTerm()!!
+            val term = termService.getTerm()
 
-            val list = bookService.getAllBookWithSumRead()
-
-            if (list != null) {
-                for (book in list) {
-                    bookPerformances.add(BookPerformance(term, book))
-                }
+            for (book in bookService.getAllBookWithSumRead()) {
+                bookPerformances.add(BookPerformance(term, book))
             }
             intializeAfterSuspend()
 

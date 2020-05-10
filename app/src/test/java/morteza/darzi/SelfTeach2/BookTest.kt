@@ -1,7 +1,7 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
-import DAL.BookDataTable
+import core.Book
+import data.BookDataTable
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

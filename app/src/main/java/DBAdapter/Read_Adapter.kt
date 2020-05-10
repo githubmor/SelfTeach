@@ -1,7 +1,7 @@
 package DBAdapter
 
-import BL.ReadBook
-import BL.ReadService
+import core.ReadBook
+import core.services.ReadService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -46,11 +46,14 @@ class Read_Adapter
 
             holder.delRead.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch{
-                    readService.delete(r)
+                    val saved = readService.delete(r)
                     withContext(Dispatchers.Main){
-                        Toast.makeText(context, "حذف شد", Toast.LENGTH_SHORT).show()
-                        reads.remove(r)
-                        notifyItemRemoved(i)
+                        if (saved) {
+                            Toast.makeText(context, "حذف شد", Toast.LENGTH_SHORT).show()
+                            reads.remove(r)
+                            notifyItemRemoved(i)
+                        }else
+                            throw IllegalArgumentException("حذف خواندن دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
                     }
 
                 }

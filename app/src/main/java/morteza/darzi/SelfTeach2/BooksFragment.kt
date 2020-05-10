@@ -1,8 +1,8 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
-import BL.BookService
-import BL.TermService
+import core.Book
+import core.services.BookService
+import core.services.TermService
 //import DAL.TermRepository
 //import DAL.AppDatabase
 import DBAdapter.Books_Adapter
@@ -66,8 +66,9 @@ class BooksFragment : BaseFragment() {
                     book.pageCount = fragmentView.book_page_count.text.toString().toInt()
                     book.priority = fragmentView.priority.rating.toInt()
 
-                    service.insert(book)
-
+                    val saved = service.insert(book)
+                    if (!saved)
+                        throw IllegalArgumentException("ایجاد کتاب دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
                     adapter.addNewBook(book)
 
                     showBookListSwitcher()

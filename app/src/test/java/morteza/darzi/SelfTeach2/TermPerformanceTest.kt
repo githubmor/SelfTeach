@@ -1,10 +1,10 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
-import BL.Term
-import BL.TermPerformance
-import DAL.BookDataTable
-import DAL.TermDataTable
+import core.Book
+import core.Term
+import core.TermPerformance
+import data.BookDataTable
+import data.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test

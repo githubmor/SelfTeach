@@ -46,12 +46,13 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1'
     kapt "androidx.room:room-compiler:$room_version"
     implementation 'android.arch.navigation:navigation-fragment:1.0.0'
+    implementation 'com.github.aakira:compound-icon-textview:1.2.1@aar'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'androidx.arch.core:core-testing:2.0.1'
-
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
+//    testImplementation 'androidx.arch.core:core-testing:2.0.1'
+//
+//    androidTestImplementation 'androidx.test:rules:1.1.1'
+//    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
 }

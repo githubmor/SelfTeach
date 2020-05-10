@@ -1,9 +1,9 @@
 package morteza.darzi.SelfTeach2
 
-import BL.*
-import DAL.BookDataTable
-import DAL.ReadDataTable
-import DAL.TermDataTable
+import core.*
+import data.BookDataTable
+import data.ReadDataTable
+import data.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,7 +1,7 @@
 package DBAdapter
 
-import BL.Book
-import BL.BookService
+import core.Book
+import core.services.BookService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -40,11 +40,14 @@ class Books_Adapter(private val context: Context, private val books: MutableList
         holder.pageCount.text = b.pageCount.toString()
         holder.delBook.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch{
-                bookService.delete(b)
+                val saved =bookService.delete(b)
                 withContext(Dispatchers.Main){
-                    Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
-                    books.remove(b)
-                    notifyItemRemoved(i)
+                    if (saved) {
+                        Toast.makeText(context, "کتاب " + b.name + " حذف شد", Toast.LENGTH_SHORT).show()
+                        books.remove(b)
+                        notifyItemRemoved(i)
+                    }else
+                        throw IllegalArgumentException("حذف کتاب دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
                 }
 
             }

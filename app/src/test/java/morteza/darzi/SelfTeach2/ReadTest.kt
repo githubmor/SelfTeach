@@ -1,7 +1,7 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Read
-import DAL.ReadDataTable
+import core.Read
+import data.ReadDataTable
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

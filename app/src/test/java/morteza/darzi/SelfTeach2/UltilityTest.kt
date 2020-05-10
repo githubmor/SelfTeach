@@ -1,6 +1,6 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Ultility
+import core.Ultility
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -3,8 +3,8 @@ package morteza.darzi.SelfTeach2
 //import DAL.BookRepository
 //import DAL.TermRepository
 //import DAL.AppDatabase
-import BL.BookService
-import BL.TermService
+import core.services.BookService
+import core.services.TermService
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -42,7 +42,7 @@ class DashboardActivity : ScopedAppActivity()
 
     private fun intializeNotRelatedToSuspend() {
 
-//        MyExceptionHandler(this)//comment this line if Use Debuger
+        MyExceptionHandler(this)//comment this line if Use Debuger
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -145,12 +145,17 @@ class DashboardActivity : ScopedAppActivity()
             R.id.Reseting -> {
                 launch {
                     val term = termService.getTerm()
-                    if (term != null)
-                        termService.delete(term)
+                    if (term.isSaved) {
+                        val saved = termService.delete(term)
+                        if (!saved)
+                            throw IllegalArgumentException("حذف ترم دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
+                    }
 
                     val books = bookService.getAllBookWithSumRead()
                     if (!books.isNullOrEmpty()) {
-                        bookService.deleteAll()
+                        val saved =bookService.deleteAll()
+                        if (!saved)
+                            throw IllegalArgumentException("حذف کتاب ها دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
                     }
 
                     intializeSuspend()

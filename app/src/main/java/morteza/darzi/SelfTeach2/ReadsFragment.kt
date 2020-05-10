@@ -1,7 +1,7 @@
 package morteza.darzi.SelfTeach2
 
 
-import BL.*
+import core.*
 //import DAL.*
 import DBAdapter.Read_Adapter
 import android.content.Context
@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import core.services.BookService
+import core.services.ReadService
+import core.services.TermService
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
@@ -67,9 +70,9 @@ class ReadsFragment : BaseDatePickerFragment() {
 
             intializeSpinnerBookList()
 
-            term = termRepository.getTerm()!!
+            term = termRepository.getTerm()
 
-            reads = readService.getAllReadsWithBookName()!!.toMutableList()
+            reads = readService.getAllReadsWithBookName().toMutableList()
 
             val adapter = intializeReadList()
 
@@ -82,7 +85,9 @@ class ReadsFragment : BaseDatePickerFragment() {
                         read.pageReadCount = v.read_page_count.text.toString().toInt()
                         read.readDate = v.read_date.text.toString()
 
-                        readService.insert(read)
+                        val saved = readService.insert(read)
+                        if (!saved)
+                            throw IllegalArgumentException("ایجاد خواندن دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
 
                         adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
                         arrangeForShowFirstViewSwitcher(true)

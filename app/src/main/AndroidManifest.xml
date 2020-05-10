@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--<meta-data-->
-            <!--android:type="AA_DB_NAME"-->
+            <!--android:name="AA_DB_NAME"-->
         <!--android:value="/sdcard/SelfTeach/SelfTeach.termDataTable" />-->
         <!--<meta-data-->
-            <!--android:type="AA_DB_VERSION"-->
+            <!--android:name="AA_DB_VERSION"-->
             <!--android:value="3" />-->
 
 

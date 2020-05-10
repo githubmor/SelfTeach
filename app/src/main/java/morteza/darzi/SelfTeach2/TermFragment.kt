@@ -1,9 +1,9 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Term
-import BL.TermService
-import BL.Ultility
-import DAL.TermDataTable
+import core.Term
+import core.services.TermService
+import core.Ultility
+import data.TermDataTable
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,7 +36,7 @@ class TermFragment : BaseDatePickerFragment() {
 
 
     private var listener: OnFragmentInteractionListener? = null
-    private var term: Term? = null
+    private lateinit var term: Term
     private val startTag = "start"
     private val endTag = "end"
     private lateinit var termRepository: TermService
@@ -85,14 +85,14 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeAfterSuspend() {
-        if (term != null) {
+        if (term.isSaved) {
+            isTermEdit = true
             showEditTermView()
         }
         showViewSwitcher(true)
     }
 
     private fun showEditTermView() {
-        isTermEdit = true
         showTermView()
         loadTermInView()
     }
@@ -103,9 +103,9 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun loadTermInView() {
-        fragmentView.term_type.setSelection(TermType.values().single { it.typeName == term!!.type }.ordinal)
-        fragmentView.term_start_date.setText(term!!.startDate)
-        fragmentView.term_end_date.setText(term!!.endDate)
+        fragmentView.term_type.setSelection(TermType.values().single { it.typeName == term.name }.ordinal)
+        fragmentView.term_start_date.setText(term.startDate)
+        fragmentView.term_end_date.setText(term.endDate)
     }
 
     private fun intializeNotRelatedToSuspend() {
@@ -146,10 +146,8 @@ class TermFragment : BaseDatePickerFragment() {
 
         fragmentView.term_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                if (term == null) {
-                    mnbmb
-                    selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
-
+                selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
+                if (!isTermEdit) {
                     fragmentView.term_start_date.setText(Ultility.getStartDate(selectedTermType))
                     fragmentView.term_end_date.setText(Ultility.getEndDate(selectedTermType))
                 }
@@ -178,32 +176,37 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun getTermAndSave() {
         launch {
+            getTermFromViewData()
             if (isTermEdit) {
 
-                getTermFromViewData()
+                val saved = termRepository.update(term)
 
-                termRepository.update(term!!)
+                if (!saved)
+                    throw IllegalArgumentException("به روز رسانی ترم دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, selectedTermType.typeName + " به روز شد", Toast.LENGTH_SHORT).show()
                     listener!!.onSaveTermComplete()
                 }
             } else {
-                term = Term(TermDataTable(0, selectedTermType.name, fragmentView.term_start_date.text.toString(), fragmentView.term_end_date.text.toString()))
 
-                termRepository.insert(term!!)
+                val saved = termRepository.insert(term)
+
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, selectedTermType.typeName + " ذخیره شد", Toast.LENGTH_SHORT).show()
-                    listener!!.onSaveTermComplete()
+                    if (saved) {
+                        Toast.makeText(context, selectedTermType.typeName + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                        listener!!.onSaveTermComplete()
+                    }else
+                        throw IllegalArgumentException("ذخیره سازی ترم دچار مشکل شده . لطفا به سازنده با ایمیل pc2man@gmail.com اطلاع دهید")
                 }
             }
         }
     }
 
     private fun getTermFromViewData() {
-        term!!.type = selectedTermType.name
-        term!!.startDate = fragmentView.term_start_date.text.toString()
-        term!!.endDate = fragmentView.term_end_date.text.toString()
+        term.name = selectedTermType.name
+        term.startDate = fragmentView.term_start_date.text.toString()
+        term.endDate = fragmentView.term_end_date.text.toString()
     }
 
     override fun onAttach(context: Context) {

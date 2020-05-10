@@ -1,11 +1,11 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Book
-import BL.BookPlan
-import BL.BookReads
-import BL.Read
-import DAL.BookDataTable
-import DAL.ReadDataTable
+import core.Book
+import core.BookPlan
+import core.BookReads
+import core.Read
+import data.BookDataTable
+import data.ReadDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test

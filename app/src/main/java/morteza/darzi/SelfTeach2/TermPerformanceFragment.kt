@@ -1,7 +1,7 @@
 ﻿package morteza.darzi.SelfTeach2
 
 
-import BL.*
+import core.*
 //import DAL.AppDatabase
 //import DAL.BookRepository
 //import DAL.TermRepository
@@ -19,6 +19,8 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import com.github.lzyzsd.circleprogress.DonutProgress
+import core.services.BookService
+import core.services.TermService
 import kotlinx.android.synthetic.main.fragment_performance.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -94,8 +96,8 @@ class TermPerformanceFragment : BaseFragment() {
             listener!!.failPerformance()
         }
 
-        val term = TermService(context!!).getTerm()!!
-        val books = bookService.getAllBookWithListRead()!!
+        val term = TermService(context!!).getTerm()
+        val books = bookService.getAllBookWithListRead()
 
         termPerformance = TermPerformance(term, books)
 

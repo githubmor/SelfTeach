@@ -1,6 +1,6 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Performance
+import core.Performance
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

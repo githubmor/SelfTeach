@@ -38,7 +38,19 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/today_lab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/performanceCircle" />
-
+    <!--<com.github.aakira.compoundicontextview.CompoundIconTextView-->
+        <!--android:id="@+id/compoundIconTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:drawablePadding="4dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="Hello World!"-->
+        <!--android:textColor="#3F51B5"-->
+        <!--android:textSize="16sp"-->
+        <!--app:cit_drawableLeft="@drawable/info_black_24dp"-->
+        <!--app:cit_iconColor="#000"-->
+        <!--app:cit_iconHeight="16dp"-->
+        <!--app:cit_iconWidth="16dp" />-->
     <TextView
         android:id="@+id/today"
         android:layout_width="wrap_content"

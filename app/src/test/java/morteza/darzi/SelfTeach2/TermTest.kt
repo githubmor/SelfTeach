@@ -1,7 +1,7 @@
 package morteza.darzi.SelfTeach2
 
-import BL.Term
-import DAL.TermDataTable
+import core.Term
+import data.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -22,7 +22,7 @@ class TermTest{
 
         val term = Term(db)
 
-        assertEquals(name.typeName, term.type)
+        assertEquals(name.typeName, term.name)
         assertEquals(startDate.persianShortDate, term.startDate)
         assertEquals(endDate.persianShortDate, term.endDate)
         assertEquals(25, term.dayCount)
@@ -41,7 +41,7 @@ class TermTest{
 
         val term = Term(db)
 
-        assertEquals(name.typeName, term.type)
+        assertEquals(name.typeName, term.name)
         assertEquals(startDate.persianShortDate, term.startDate)
         assertEquals(endDate.persianShortDate, term.endDate)
         assertEquals(5, term.dayCount)
@@ -60,7 +60,7 @@ class TermTest{
 
         val term = Term(db)
 
-        assertEquals(name.typeName,term.type)
+        assertEquals(name.typeName,term.name)
         assertEquals(startDate.persianShortDate,term.startDate)
         assertEquals(endDate.persianShortDate,term.endDate)
         assertEquals(5, term.dayCount)
@@ -79,7 +79,7 @@ class TermTest{
 
         val term = Term(db)
 
-        assertEquals(name.typeName, term.type)
+        assertEquals(name.typeName, term.name)
         assertEquals(startDate.persianShortDate, term.startDate)
         assertEquals(endDate.persianShortDate, term.endDate)
         assertEquals(5, term.dayCount)
@@ -128,11 +128,11 @@ class TermTest{
         val cstartDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, -2) }
         val cendDate = PersianCalendar().apply { add(PersianCalendar.DAY_OF_WEEK, 3) }
 
-        term.type = cname
+        term.name = cname
         term.startDate = cstartDate.persianShortDate
         term.endDate = cendDate.persianShortDate
 
-        val changedDb = term.termDataTable
+        val changedDb = term.getTermDataTable()
 
         assertEquals(cname,changedDb.name)
         assertEquals(cstartDate.persianShortDate,term.startDate)

@@ -1,6 +1,6 @@
 package DBAdapter
 
-import BL.BookPerformance
+import core.BookPerformance
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
