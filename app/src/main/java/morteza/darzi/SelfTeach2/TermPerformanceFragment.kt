@@ -121,8 +121,8 @@ class TermPerformanceFragment : BaseFragment() {
 
         loadPerformanceDataToUI()
 
-        fragmentView.per_day.setOnClickListener { showSummery(AvregPerDaySummery(termPerformance)) }
-        fragmentView.today.setOnClickListener { showSummery(TodaySummery(termPerformance)) }
+//        fragmentView.per_day.setOnClickListener { showSummery(AvregPerDaySummery(termPerformance)) }
+//        fragmentView.today.setOnClickListener { showSummery(TodaySummery(termPerformance)) }
     }
 
     private fun loadPerformanceDataToUI() {

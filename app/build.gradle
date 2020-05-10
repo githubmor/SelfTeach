@@ -13,8 +13,8 @@ android {
         applicationId "morteza.darzi.SelfTeach2"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 2
-        versionName '2.0'
+        versionCode 3
+        versionName '3.4'
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,11 +49,11 @@ dependencies {
     implementation 'com.github.aakira:compound-icon-textview:1.2.1@aar'
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.aakira:compound-icon-textview:1.2.1@aar'
-//    testImplementation 'androidx.arch.core:core-testing:2.0.1'
-//
-//    androidTestImplementation 'androidx.test:rules:1.1.1'
-//    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-//    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
+    //    testImplementation 'androidx.arch.core:core-testing:2.0.1'
+    //
+    //    androidTestImplementation 'androidx.test:rules:1.1.1'
+    //    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    //    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    //    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
 }
