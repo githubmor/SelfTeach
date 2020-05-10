@@ -1,7 +1,6 @@
 package morteza.darzi.SelfTeach2
 
 
-import core.*
 //import DAL.*
 import DBAdapter.Read_Adapter
 import android.content.Context
@@ -18,13 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import core.Book
+import core.Read
+import core.ReadBook
+import core.Term
 import core.services.BookService
 import core.services.ReadService
 import core.services.TermService
 import kotlinx.android.synthetic.main.fragment_reads.view.*
 import kotlinx.android.synthetic.main.include_read_add.view.*
 import kotlinx.android.synthetic.main.include_read_list.view.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -63,47 +65,9 @@ class ReadsFragment : BaseDatePickerFragment() {
         return v
     }
 
-    private fun intializeSuspend() {
-        launch {
-
-            delay(500)
-
-            intializeSpinnerBookList()
-
-            term = termRepository.getTerm()
-
-            reads = readService.getAllReadsWithBookName().toMutableList()
-
-            val adapter = intializeReadList()
-
-            v.read_save.setOnClickListener {
-                if (validateToSave()) {
-                    launch {
-
-                        val read = Read(selectedBook!!.getBookDataTable().id)
-
-                        read.pageReadCount = v.read_page_count.text.toString().toInt()
-                        read.readDate = v.read_date.text.toString()
-
-                        val saved = readService.insert(read)
-                        if (!saved)
-                            throw IllegalArgumentException("ایجاد خواندن دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
-
-                        adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
-                        arrangeForShowFirstViewSwitcher(true)
-                    }
-                }
-            }
-
-            if (reads.size <= 0) {
-                arrangeForShowFirstViewSwitcher(false)
-            } else {
-                arrangeForShowFirstViewSwitcher(true)
-            }
-        }
-    }
-
     private fun intializeNotRelatedSuspend() {
+
+        ShowLoader(true)
         readService = ReadService(context!!)
         bookService = BookService(context!!)
         termRepository = TermService(context!!)
@@ -122,11 +86,30 @@ class ReadsFragment : BaseDatePickerFragment() {
         errorTextChangeListner(v.read_page_count_lay, readPageCountErrorMessage)
         errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
 
-
-
-
         readDate = v.read_date
     }
+
+    private fun intializeSuspend() {
+        launch {
+
+
+            intializeSpinnerBookList()
+
+            term = termRepository.getTerm()
+
+            reads = readService.getAllReadsWithBookName().toMutableList()
+
+
+
+            if (reads.size <= 0) {
+                arrangeForShowFirstViewSwitcher(false)
+            } else {
+                arrangeForShowFirstViewSwitcher(true)
+            }
+        }
+    }
+
+
 
     private fun intializeReadList(): Read_Adapter {
         v.list.layoutManager = LinearLayoutManager(context)
@@ -194,8 +177,22 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.fab.hide()
     }
 
+    private fun ShowLoader(isShow: Boolean) {
+        if (isShow) {
+            v.indic_read_first.show()
+            v.switcher.visibility = GONE
+            v.fab.visibility = GONE
+        } else {
+            v.indic_read_first.hide()
+            v.switcher.visibility = VISIBLE
+            v.fab.visibility = VISIBLE
+        }
+    }
+
+
 
     private fun arrangeForShowFirstViewSwitcher(isListShow: Boolean) {
+        ShowLoader(false)
         if (isListShow) {
             v.list.visibility = VISIBLE
             v.PLZDefineReads.visibility = GONE
@@ -206,6 +203,27 @@ class ReadsFragment : BaseDatePickerFragment() {
         v.fab.show()
         if (v.switcher.displayedChild == 1)
             v.switcher.showPrevious()
+        val adapter = intializeReadList()
+
+        v.read_save.setOnClickListener {
+            if (validateToSave()) {
+                launch {
+
+                    val read = Read(selectedBook!!.getBookDataTable().id)
+
+                    read.pageReadCount = v.read_page_count.text.toString().toInt()
+                    read.readDate = v.read_date.text.toString()
+
+                    val saved = readService.insert(read)
+                    if (!saved)
+                        throw IllegalArgumentException("ایجاد خواندن دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
+
+                    adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
+                    arrangeForShowFirstViewSwitcher(true)
+                    hideKeyboard()
+                }
+            }
+        }
 
     }
 

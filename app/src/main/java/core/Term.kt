@@ -1,8 +1,8 @@
 package core
 
-import data.TermDataTable
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
+import data.TermDataTable
 import morteza.darzi.SelfTeach2.TermType
 
 class Term() {
@@ -50,7 +50,8 @@ var startDate
             termDataTable.name = value
 
         }
-    val isSaved =  termDataTable.id>0
+
+    fun isSaved() = termDataTable.id > 0
     fun getTermDataTable(): TermDataTable = termDataTable
     private val now: String = PersianCalendar().persianShortDate
 

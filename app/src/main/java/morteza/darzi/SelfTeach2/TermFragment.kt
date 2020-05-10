@@ -1,9 +1,5 @@
 package morteza.darzi.SelfTeach2
 
-import core.Term
-import core.services.TermService
-import core.Ultility
-import data.TermDataTable
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import core.Term
+import core.Ultility
+import core.services.TermService
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_term_first.view.*
 import kotlinx.android.synthetic.main.include_term_add.*
@@ -63,7 +62,7 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun intializeBeforeSuspend() {
         showViewSwitcher(false)
-        intializeSpinner()
+
     }
 
     private fun showViewSwitcher(isShow: Boolean) = if (isShow) {
@@ -85,10 +84,11 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeAfterSuspend() {
-        if (term.isSaved) {
+        if (term.isSaved()) {
             isTermEdit = true
             showEditTermView()
         }
+        intializeSpinner()
         showViewSwitcher(true)
     }
 

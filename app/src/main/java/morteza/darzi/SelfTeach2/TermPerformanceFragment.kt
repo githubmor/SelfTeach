@@ -1,10 +1,6 @@
 ﻿package morteza.darzi.SelfTeach2
 
 
-import core.*
-//import DAL.AppDatabase
-//import DAL.BookRepository
-//import DAL.TermRepository
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -18,7 +14,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.github.lzyzsd.circleprogress.DonutProgress
+import core.*
 import core.services.BookService
 import core.services.TermService
 import kotlinx.android.synthetic.main.fragment_performance.view.*
@@ -105,11 +103,26 @@ class TermPerformanceFragment : BaseFragment() {
 
     }
 
+    fun showSummery(summery: ISummery) {
+        val builder: AlertDialog.Builder? = activity?.let {
+            AlertDialog.Builder(it)
+        }
+
+        builder?.setMessage(summery.getSummery())?.setTitle(summery.title)
+
+        val dialog: AlertDialog? = builder?.create()
+
+        dialog?.show()
+    }
+
     private fun intializeAfterSusped() {
 
         showLoader(false)
 
         loadPerformanceDataToUI()
+
+        fragmentView.per_day.setOnClickListener { showSummery(AvregPerDaySummery(termPerformance)) }
+        fragmentView.today.setOnClickListener { showSummery(TodaySummery(termPerformance)) }
     }
 
     private fun loadPerformanceDataToUI() {

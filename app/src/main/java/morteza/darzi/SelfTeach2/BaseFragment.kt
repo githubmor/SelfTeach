@@ -39,4 +39,5 @@ abstract class BaseFragment : ScopedAppFragment() {
             }
         })
     }
+
 }

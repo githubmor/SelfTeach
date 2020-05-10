@@ -33,13 +33,13 @@ repositories {
 dependencies {
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
     implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
-    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0-beta02'
+    implementation 'androidx.appcompat:appcompat:1.2.0-beta01'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
     implementation 'com.github.navasmdc:MaterialDesign:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
@@ -48,6 +48,7 @@ dependencies {
     implementation 'android.arch.navigation:navigation-fragment:1.0.0'
     implementation 'com.github.aakira:compound-icon-textview:1.2.1@aar'
     testImplementation 'junit:junit:4.12'
+    implementation 'com.github.aakira:compound-icon-textview:1.2.1@aar'
 //    testImplementation 'androidx.arch.core:core-testing:2.0.1'
 //
 //    androidTestImplementation 'androidx.test:rules:1.1.1'

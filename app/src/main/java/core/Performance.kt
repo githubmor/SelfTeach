@@ -1,11 +1,11 @@
 package core
 
-open class Performance(dayCount: Int, pasDay: Int, pageCount: Int, pageReaded: Int) {
+open class Performance(dayCount: Int, val pasDay: Int, pageCount: Int, val pageReaded: Int) {
 
-    private val pageRemind = pageCount - pageReaded
-    private val dayRemind = dayCount - pasDay
-    private val avgPageEveryday = pageCount.toFloat() / dayCount.toFloat()
-    private val shouldReadTillToday = if (pasDay > 0) (pasDay * avgPageEveryday).toInt() else pageRemind
+    val pageRemind = pageCount - pageReaded
+    val dayRemind = dayCount - pasDay
+    val avgPageEveryday = pageCount.toFloat() / dayCount.toFloat()
+    val shouldReadTillToday = if (pasDay > 0) (pasDay * avgPageEveryday).toInt() else pageRemind
 
     val avgPagePerDayRemind =
             when (dayRemind) {

@@ -3,8 +3,6 @@ package morteza.darzi.SelfTeach2
 //import DAL.BookRepository
 //import DAL.TermRepository
 //import DAL.AppDatabase
-import core.services.BookService
-import core.services.TermService
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +12,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import core.services.BookService
+import core.services.TermService
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.launch
 
@@ -145,7 +145,7 @@ class DashboardActivity : ScopedAppActivity()
             R.id.Reseting -> {
                 launch {
                     val term = termService.getTerm()
-                    if (term.isSaved) {
+                    if (term.isSaved()) {
                         val saved = termService.delete(term)
                         if (!saved)
                             throw IllegalArgumentException("حذف ترم دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
@@ -190,11 +190,15 @@ class DashboardActivity : ScopedAppActivity()
     }
 
     override fun completeBooksFirst() {
+        hideKeyboard()
         intializeSuspend()
+
     }
 
     override fun failRead() {
         intializeSuspend()
         Toast.makeText(applicationContext, "در نمايش ليست خوانده شده ها ايرادي به وجود آمده", Toast.LENGTH_LONG).show()
     }
+
+
 }
