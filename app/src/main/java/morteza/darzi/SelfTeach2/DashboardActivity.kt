@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import core.services.BookService
 import core.services.TermService
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.launch
+import morteza.darzi.SelfTeach2.databinding.ActivityDashboardBinding
 
 
 class DashboardActivity : ScopedAppActivity()
@@ -26,12 +26,13 @@ class DashboardActivity : ScopedAppActivity()
     private lateinit var termService: TermService
     private lateinit var bookService: BookService
     private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var activityDashboardBinding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
-
+        activityDashboardBinding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(activityDashboardBinding.root)
         intializeNotRelatedToSuspend()
 
         intializeBeforeSuspend()
@@ -42,7 +43,7 @@ class DashboardActivity : ScopedAppActivity()
 
     private fun intializeNotRelatedToSuspend() {
 
-        MyExceptionHandler(this)//comment this line if Use Debuger
+        //MyExceptionHandler(this)//comment this line if Use Debuger
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -87,9 +88,9 @@ class DashboardActivity : ScopedAppActivity()
     }
 
     private fun showLoader(isShowing: Boolean) = if (isShowing) {
-        wainting_Loader_dashboard.visibility = View.VISIBLE
+        activityDashboardBinding.waintingLoaderDashboard.visibility = View.VISIBLE
     } else {
-        wainting_Loader_dashboard.visibility = View.GONE
+        activityDashboardBinding.waintingLoaderDashboard.visibility = View.GONE
     }
 
     private fun hideToolbarAndNavigation(hide: Boolean) = if (hide) {

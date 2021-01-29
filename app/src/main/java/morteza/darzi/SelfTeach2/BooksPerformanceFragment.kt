@@ -3,9 +3,6 @@ package morteza.darzi.SelfTeach2
 //import DAL.AppDatabase
 //import DAL.BookRepository
 //import DAL.TermRepository
-import core.BookPerformance
-import core.services.BookService
-import core.services.TermService
 import DBAdapter.Book_Performance_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -14,10 +11,12 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_book_list.view.*
-import kotlinx.android.synthetic.main.include_book_list.view.list
+import core.BookPerformance
+import core.services.BookService
+import core.services.TermService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import morteza.darzi.SelfTeach2.databinding.FragmentBookListBinding
 
 
 class BooksPerformanceFragment : BaseFragment() {
@@ -30,18 +29,20 @@ class BooksPerformanceFragment : BaseFragment() {
     private lateinit var bookService: BookService
     private lateinit var performanceAdapter: Book_Performance_Adapter
 
-    private lateinit var v: View
+    private var _binding: FragmentBookListBinding? = null
+    private val fragmentBookListBinding get() = _binding!!
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        v = inflater.inflate(R.layout.fragment_book_list, container, false)
+        _binding = FragmentBookListBinding.inflate(inflater, container, false)
 
-        bookService = BookService(context!!)
+        bookService = BookService(requireContext())
 
         intializeBeforeSuspend()
         intializeSuspend()
 
-        return v
+        return fragmentBookListBinding.root
     }
 
     private fun intializeBeforeSuspend() {
@@ -51,7 +52,7 @@ class BooksPerformanceFragment : BaseFragment() {
     private fun intializeSuspend() {
         launch {
             delay(500)
-            val termService = TermService(context!!)
+            val termService = TermService(requireContext())
 
             if (!termService.isTermExist()) {
                 listener!!.failOpenBooks()
@@ -67,9 +68,9 @@ class BooksPerformanceFragment : BaseFragment() {
     }
 
     private fun intializeAfterSuspend() {
-        performanceAdapter = Book_Performance_Adapter(context!!, bookPerformances)
-        v.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        v.list.adapter = performanceAdapter
+        performanceAdapter = Book_Performance_Adapter(requireContext(), bookPerformances)
+        fragmentBookListBinding.list.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        fragmentBookListBinding.list.adapter = performanceAdapter
 
         showLoader(false)
     }
@@ -77,11 +78,11 @@ class BooksPerformanceFragment : BaseFragment() {
 
     private fun showLoader(isShowder: Boolean) {
         if (isShowder) {
-            v.indic_book_list.visibility = VISIBLE
-            v.list.visibility = GONE
+            fragmentBookListBinding.indicBookList.visibility = VISIBLE
+            fragmentBookListBinding.list.visibility = GONE
         } else {
-            v.indic_book_list.visibility = GONE
-            v.list.visibility = VISIBLE
+            fragmentBookListBinding.indicBookList.visibility = GONE
+            fragmentBookListBinding.list.visibility = VISIBLE
         }
     }
 
@@ -93,6 +94,11 @@ class BooksPerformanceFragment : BaseFragment() {
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onDetach() {

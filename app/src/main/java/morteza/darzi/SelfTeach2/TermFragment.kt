@@ -13,15 +13,11 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import core.Term
 import core.Ultility
 import core.services.TermService
-import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_term_first.view.*
-import kotlinx.android.synthetic.main.include_term_add.*
-import kotlinx.android.synthetic.main.include_term_add.view.*
-import kotlinx.android.synthetic.main.include_term_empty.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import morteza.darzi.SelfTeach2.databinding.FragmentTermFirstBinding
 
 
 class TermFragment : BaseDatePickerFragment() {
@@ -44,20 +40,24 @@ class TermFragment : BaseDatePickerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        termRepository = TermService(context!!)
+        termRepository = TermService(requireContext())
     }
 
-    private lateinit var fragmentView: View
+    private var _binding: FragmentTermFirstBinding? = null
+    private val fragmentView get() = _binding!!
+    private val includeTermAddBinding get() = fragmentView.includeTermAddInc
+    private val includeTermEmptyBinding get() = fragmentView.includeTermEmptyInc
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_term_first, container, false)
+        _binding = FragmentTermFirstBinding.inflate(inflater, container, false)
 
         intializeBeforeSuspend()
         intializeSuspend()
         intializeNotRelatedToSuspend()
 
-        return fragmentView
+        return fragmentView.root
     }
 
     private fun intializeBeforeSuspend() {
@@ -67,10 +67,10 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun showViewSwitcher(isShow: Boolean) = if (isShow) {
         fragmentView.switcher.visibility = View.VISIBLE
-        fragmentView.indicator_term_first.visibility = View.GONE
+        fragmentView.indicatorTermFirst.visibility = View.GONE
     } else {
         fragmentView.switcher.visibility = View.GONE
-        fragmentView.indicator_term_first.visibility = View.VISIBLE
+        fragmentView.indicatorTermFirst.visibility = View.VISIBLE
     }
 
     private fun intializeSuspend() {
@@ -103,36 +103,36 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun loadTermInView() {
-        fragmentView.term_type.setSelection(TermType.values().single { it.typeName == term.name }.ordinal)
-        fragmentView.term_start_date.setText(term.startDate)
-        fragmentView.term_end_date.setText(term.endDate)
+        includeTermAddBinding.termType.setSelection(TermType.values().single { it.typeName == term.name }.ordinal)
+        includeTermAddBinding.termStartDate.setText(term.startDate)
+        includeTermAddBinding.termEndDate.setText(term.endDate)
     }
 
     private fun intializeNotRelatedToSuspend() {
-        fragmentView.add_new_term.setOnClickListener {
+        includeTermEmptyBinding.addNewTerm.setOnClickListener {
             showTermView()
         }
 
-        fragmentView.term_start_date.setOnClickListener {
+        includeTermAddBinding.termStartDate.setOnClickListener {
             showDatapicker(startTag)
         }
-        fragmentView.term_start_date_lay.setOnClickListener {
+        includeTermAddBinding.termStartDateLay.setOnClickListener {
             showDatapicker(startTag)
         }
 
-        fragmentView.term_end_date.setOnClickListener {
+        includeTermAddBinding.termEndDate.setOnClickListener {
             showDatapicker(endTag)
         }
-        fragmentView.term_end_date_lay.setOnClickListener {
+        includeTermAddBinding.termEndDateLay.setOnClickListener {
             showDatapicker(endTag)
         }
 
 
 
-        errorTextChangeListner(fragmentView.term_start_date_lay, startDateError)
-        errorTextChangeListner(fragmentView.term_end_date_lay, endDateError)
+        errorTextChangeListner(includeTermAddBinding.termStartDateLay, startDateError)
+        errorTextChangeListner(includeTermAddBinding.termEndDateLay, endDateError)
 
-        fragmentView.term_save.setOnClickListener {
+        includeTermAddBinding.termSave.setOnClickListener {
             if (validateToSave()) {
                 getTermAndSave()
             }
@@ -140,16 +140,16 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeSpinner() {
-        val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, TermType.values().map { it.typeName })
+        val dataAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, TermType.values().map { it.typeName })
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        fragmentView.term_type.adapter = dataAdapter
+        includeTermAddBinding.termType.adapter = dataAdapter
 
-        fragmentView.term_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        includeTermAddBinding.termType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
                 if (!isTermEdit) {
-                    fragmentView.term_start_date.setText(Ultility.getStartDate(selectedTermType))
-                    fragmentView.term_end_date.setText(Ultility.getEndDate(selectedTermType))
+                    includeTermAddBinding.termStartDate.setText(Ultility.getStartDate(selectedTermType))
+                    includeTermAddBinding.termEndDate.setText(Ultility.getEndDate(selectedTermType))
                 }
 
             }
@@ -162,16 +162,22 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun validateToSave(): Boolean {
         return when {
-            fragmentView.term_start_date.text.isNullOrEmpty() -> {
-                fragmentView.term_start_date_lay.error = startDateError
+            includeTermAddBinding.termStartDate.text.isNullOrEmpty() -> {
+                includeTermAddBinding.termStartDateLay.error = startDateError
                 false
             }
-            fragmentView.term_end_date.text.isNullOrEmpty() -> {
-                fragmentView.term_end_date_lay.error = endDateError
+            includeTermAddBinding.termEndDate.text.isNullOrEmpty() -> {
+                includeTermAddBinding.termEndDateLay.error = endDateError
                 false
             }
+            isDateValidate(includeTermAddBinding.termStartDate.text.toString(), includeTermAddBinding.termEndDate.text.toString()) -> true
             else -> true
         }
+    }
+
+    private fun isDateValidate(text: String, text1: String): Boolean {
+        //TODO باید چک شود تاریخ پایان بعد از تاریخ شروع باشد
+        return text == text1
     }
 
     private fun getTermAndSave() {
@@ -205,8 +211,8 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun getTermFromViewData() {
         term.name = selectedTermType.name
-        term.startDate = fragmentView.term_start_date.text.toString()
-        term.endDate = fragmentView.term_end_date.text.toString()
+        term.startDate = includeTermAddBinding.termStartDate.text.toString()
+        term.endDate = includeTermAddBinding.termEndDate.text.toString()
     }
 
     override fun onAttach(context: Context) {
@@ -219,8 +225,8 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     override fun onDestroyView() {
+        _binding = null
         super.onDestroyView()
-        this.clearFindViewByIdCache()
     }
 
     override val selectableDateList: Array<PersianCalendar>?
@@ -230,18 +236,18 @@ class TermFragment : BaseDatePickerFragment() {
             return Ultility.arrayOfPersianCalendars(start, end)
         }
 
-    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    override fun onDateSet(pp: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
-        val tag = view!!.tag
+        val tag = pp!!.tag
         val d = PersianCalendar()
         d.setPersianDate(year, monthOfYear, dayOfMonth)
 
         if (tag == startTag) {
-            term_start_date.setText(d.persianShortDate)
-            term_start_date_lay.isErrorEnabled = false
+            includeTermAddBinding.termStartDate.setText(d.persianShortDate)
+            includeTermAddBinding.termStartDateLay.isErrorEnabled = false
         } else if (tag == endTag) {
-            term_end_date.setText(d.persianShortDate)
-            term_end_date_lay.isErrorEnabled = false
+            includeTermAddBinding.termEndDate.setText(d.persianShortDate)
+            includeTermAddBinding.termEndDateLay.isErrorEnabled = false
         }
     }
 

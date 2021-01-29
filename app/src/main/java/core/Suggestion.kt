@@ -17,7 +17,7 @@ class Suggestion(val term: Term, private val books: List<BookReads>) {
             }
         }
         if (remindPage > 0) {
-            val o = suggest.minBy { it.readSuggest }
+            val o = suggest.minByOrNull { it.readSuggest }
             if (o != null)
                 o.readSuggest = remindPage + o.readSuggest
             else

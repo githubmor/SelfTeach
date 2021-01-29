@@ -1,9 +1,9 @@
 package core.services
 
-import data.AppDatabase
-import data.TermRepository
 import android.content.Context
 import core.Term
+import data.AppDatabase
+import data.TermRepository
 
 class TermService(context: Context) {
     private var repository = TermRepository(AppDatabase.getInstance(context).termDatabase())

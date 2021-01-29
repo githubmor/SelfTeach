@@ -1,14 +1,15 @@
 package DBAdapter
 
-import core.Book
-import core.services.BookService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_book_first.view.*
+import core.Book
+import core.services.BookService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,9 +23,9 @@ class Books_Adapter(private val context: Context, private val books: MutableList
     private lateinit var bookService: BookService
 
     class BookListViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal val bookName = v.book_name_lab
-        internal val pageCount = v.book_page_count_lab
-        internal val delBook = v.del_book
+        internal val bookName = v.findViewById<TextView>(R.id.book_name_lab)
+        internal val pageCount = v.findViewById<TextView>(R.id.book_page_count_lab)
+        internal val delBook = v.findViewById<AppCompatImageButton>(R.id.del_book)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Books_Adapter.BookListViewHolder {

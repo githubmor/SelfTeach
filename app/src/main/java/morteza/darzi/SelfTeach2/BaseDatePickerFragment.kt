@@ -21,6 +21,6 @@ abstract class BaseDatePickerFragment : BaseFragment(), DatePickerDialog.OnDateS
         if (selectableDateList != null)
             datePickerDialog.selectableDays = selectableDateList
 
-        datePickerDialog.show(activity!!.fragmentManager, tag)
+        datePickerDialog.show(requireActivity().fragmentManager, tag)
     }
 }

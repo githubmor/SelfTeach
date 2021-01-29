@@ -1,8 +1,5 @@
 package morteza.darzi.SelfTeach2
 
-import core.Book
-import core.services.BookService
-import core.services.TermService
 //import DAL.TermRepository
 //import DAL.AppDatabase
 import DBAdapter.Books_Adapter
@@ -14,11 +11,12 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_books_first.view.*
-import kotlinx.android.synthetic.main.include_book_add.view.*
-import kotlinx.android.synthetic.main.include_book_list.view.*
+import core.Book
+import core.services.BookService
+import core.services.TermService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import morteza.darzi.SelfTeach2.databinding.FragmentBooksFirstBinding
 
 
 class BooksFragment : BaseFragment() {
@@ -33,38 +31,40 @@ class BooksFragment : BaseFragment() {
     private lateinit var service: BookService
     private lateinit var adapter: Books_Adapter
 
-    private lateinit var fragmentView: View
+    private var _binding: FragmentBooksFirstBinding? = null
+    private val fragmentBooksFirstBinding get() = _binding!!
+    private val includeBookAddBinding get() = fragmentBooksFirstBinding.includeBookAddInc
+    private val includeBookListBinding get() = fragmentBooksFirstBinding.includeBookListInc
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_books_first, container, false)
-
+        _binding = FragmentBooksFirstBinding.inflate(inflater, container, false)
         intializeBeforeSuspend()
         intializeSuspend()
 
-        return fragmentView
+        return fragmentBooksFirstBinding.root
     }
 
     private fun intializeBeforeSuspend() {
 
         showLoader(true)
 
-        fragmentView.fab.setOnClickListener {
+        fragmentBooksFirstBinding.fab.setOnClickListener {
             showAddNewBookSwitcher()
         }
-        fragmentView.complete.setOnClickListener {
+        includeBookListBinding.complete.setOnClickListener {
             listener!!.completeBooksFirst()
         }
 
-        fragmentView.book_save.setOnClickListener {
+        includeBookAddBinding.bookSave.setOnClickListener {
             if (validateToSave()) {
                 launch {
 
                     val book = Book()
 
-                    book.name = fragmentView.book_name.text.toString()
-                    book.pageCount = fragmentView.book_page_count.text.toString().toInt()
-                    book.priority = fragmentView.priority.rating.toInt()
+                    book.name = includeBookAddBinding.bookName.text.toString()
+                    book.pageCount = includeBookAddBinding.bookPageCount.text.toString().toInt()
+                    book.priority = includeBookAddBinding.priority.rating.toInt()
 
                     val saved = service.insert(book)
                     if (!saved)
@@ -75,8 +75,8 @@ class BooksFragment : BaseFragment() {
                 }
             }
         }
-        errorTextChangeListner(fragmentView.book_name_lay, bookNameErrorMessage)
-        errorTextChangeListner(fragmentView.book_page_count_lay, bookPageCountErrorMessage)
+        errorTextChangeListner(includeBookAddBinding.bookNameLay, bookNameErrorMessage)
+        errorTextChangeListner(includeBookAddBinding.bookPageCountLay, bookPageCountErrorMessage)
     }
 
     private fun intializeSuspend() {
@@ -94,7 +94,7 @@ class BooksFragment : BaseFragment() {
 
     private suspend fun getBookList() {
 
-        service = BookService(context!!)
+        service = BookService(requireContext())
 
         if (service.anyBooksExist())
             books = service.getAllBookWithSumRead().toMutableList()
@@ -104,7 +104,7 @@ class BooksFragment : BaseFragment() {
 
     private suspend fun checkHasTerm() {
 
-        if (!TermService(context!!).isTermExist()) {
+        if (!TermService(requireContext()).isTermExist()) {
             listener!!.failOpenBooks()
         }
     }
@@ -116,71 +116,58 @@ class BooksFragment : BaseFragment() {
     }
 
     private fun adapterIntialize() {
-        adapter = Books_Adapter(context!!, books)
-        fragmentView.list.layoutManager = LinearLayoutManager(context)
-        fragmentView.list.adapter = adapter
+        adapter = Books_Adapter(requireContext(), books)
+        includeBookListBinding.list.layoutManager = LinearLayoutManager(context)
+        includeBookListBinding.list.adapter = adapter
     }
 
-    private fun showLoader(isShow: Boolean) {
-        if (isShow) {
-            fragmentView.switcher.visibility = GONE
-            fragmentView.indic_book_first.visibility = VISIBLE
-            fragmentView.PLZDefineBooks.visibility = GONE
-            fragmentView.fab.hide()
-        } else {
-            fragmentView.switcher.visibility = VISIBLE
-            fragmentView.indic_book_first.visibility = GONE
-            fragmentView.PLZDefineBooks.visibility = VISIBLE
-            fragmentView.fab.show()
-        }
+    private fun showLoader(isShowLoader: Boolean) {
+        fragmentBooksFirstBinding.switcher.visibility = if (isShowLoader) GONE else VISIBLE
+        fragmentBooksFirstBinding.indicBookFirst.visibility = if (isShowLoader) VISIBLE else GONE
+        fragmentBooksFirstBinding.PLZDefineBooks.visibility = if (isShowLoader) GONE else VISIBLE
+        if (isShowLoader) fragmentBooksFirstBinding.fab.hide() else fragmentBooksFirstBinding.fab.show()
     }
 
     private fun showBookListSwitcher() {
 
         isShowListOfBooks(books.size > 0)
 
-        fragmentView.fab.show()
+        fragmentBooksFirstBinding.fab.show()
 
-        if (fragmentView.switcher.displayedChild == 1)
-            fragmentView.switcher.showPrevious()
+        if (fragmentBooksFirstBinding.switcher.displayedChild == 1)
+            fragmentBooksFirstBinding.switcher.showPrevious()
     }
 
     private fun isShowListOfBooks(isShow: Boolean) {
-        if (isShow) {
-            fragmentView.PLZDefineBooks.visibility = GONE
-            fragmentView.list.visibility = VISIBLE
-            fragmentView.complete.visibility = VISIBLE
-        } else {
-            fragmentView.PLZDefineBooks.visibility = VISIBLE
-            fragmentView.list.visibility = GONE
-            fragmentView.complete.visibility = GONE
-        }
 
+        fragmentBooksFirstBinding.PLZDefineBooks.visibility = if (isShow) GONE else VISIBLE
+        includeBookListBinding.list.visibility = if (isShow) VISIBLE else GONE
+        includeBookListBinding.complete.visibility = if (isShow) VISIBLE else GONE
     }
 
     private fun showAddNewBookSwitcher() {
-        fragmentView.book_name.setText("")
-        fragmentView.book_name_lay.isErrorEnabled = false
-        fragmentView.book_page_count.setText("")
-        fragmentView.book_page_count_lay.isErrorEnabled = false
+        includeBookAddBinding.bookName.setText("")
+        includeBookAddBinding.bookNameLay.isErrorEnabled = false
+        includeBookAddBinding.bookPageCount.setText("")
+        includeBookAddBinding.bookPageCountLay.isErrorEnabled = false
 
-        if (fragmentView.switcher.displayedChild == 0)
-            fragmentView.switcher.showNext()
+        if (fragmentBooksFirstBinding.switcher.displayedChild == 0)
+            fragmentBooksFirstBinding.switcher.showNext()
 
-        fragmentView.fab.hide()
+        fragmentBooksFirstBinding.fab.hide()
 
-        fragmentView.complete.visibility = GONE
-        fragmentView.PLZDefineBooks.visibility = GONE
+        includeBookListBinding.complete.visibility = GONE
+        fragmentBooksFirstBinding.PLZDefineBooks.visibility = GONE
     }
 
     private fun validateToSave(): Boolean {
         return when {
-            fragmentView.book_name.text.isNullOrEmpty() -> {
-                fragmentView.book_name_lay.error = bookNameErrorMessage
+            includeBookAddBinding.bookName.text.isNullOrEmpty() -> {
+                includeBookAddBinding.bookNameLay.error = bookNameErrorMessage
                 false
             }
-            fragmentView.book_page_count.text.isNullOrEmpty() -> {
-                fragmentView.book_page_count_lay.error = bookPageCountErrorMessage
+            includeBookAddBinding.bookPageCount.text.isNullOrEmpty() -> {
+                includeBookAddBinding.bookPageCountLay.error = bookPageCountErrorMessage
                 false
             }
             else -> true
@@ -194,6 +181,11 @@ class BooksFragment : BaseFragment() {
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onDetach() {

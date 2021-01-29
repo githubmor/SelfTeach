@@ -8,12 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".BooksPerformanceFragment">
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/indic_read_first"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <ViewSwitcher
         android:id="@+id/switcher"
         android:inAnimation="@android:anim/slide_in_left"
@@ -31,12 +25,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/include_read_list" />
+        <include
+            android:id="@+id/include_read_list_inc"
+            layout="@layout/include_read_list" />
 
-        <include layout="@layout/include_read_add" />
+        <include
+            android:id="@+id/include_read_add_inc"
+            layout="@layout/include_read_add" />
 
 
     </ViewSwitcher>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/indic_read_first"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

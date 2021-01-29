@@ -24,10 +24,8 @@ import core.Term
 import core.services.BookService
 import core.services.ReadService
 import core.services.TermService
-import kotlinx.android.synthetic.main.fragment_reads.view.*
-import kotlinx.android.synthetic.main.include_read_add.view.*
-import kotlinx.android.synthetic.main.include_read_list.view.*
 import kotlinx.coroutines.launch
+import morteza.darzi.SelfTeach2.databinding.FragmentReadsBinding
 
 
 class ReadsFragment : BaseDatePickerFragment() {
@@ -50,43 +48,46 @@ class ReadsFragment : BaseDatePickerFragment() {
     private lateinit var bookService: BookService
     private lateinit var termRepository: TermService
 
-    private lateinit var v: View
+    private var _binding: FragmentReadsBinding? = null
+    private val fragmentReadsBinding get() = _binding!!
+    private val includeReadAddBinding get() = fragmentReadsBinding.includeReadAddInc
+    private val includeReadListBinding get() = fragmentReadsBinding.includeReadListInc
 
     private var selectedBook: Book? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        v = inflater.inflate(R.layout.fragment_reads, container, false)
+        _binding = FragmentReadsBinding.inflate(inflater, container, false)
 
         intializeNotRelatedSuspend()
 
         intializeSuspend()
 
-        return v
+        return fragmentReadsBinding.root
     }
 
     private fun intializeNotRelatedSuspend() {
 
         ShowLoader(true)
-        readService = ReadService(context!!)
-        bookService = BookService(context!!)
-        termRepository = TermService(context!!)
+        readService = ReadService(requireContext())
+        bookService = BookService(requireContext())
+        termRepository = TermService(requireContext())
 
-        v.fab.setOnClickListener {
+        fragmentReadsBinding.fab.setOnClickListener {
             arrangeToShowSecondViewSwitcher()
         }
 
-        v.read_date_lay.setOnClickListener {
+        includeReadAddBinding.readDateLay.setOnClickListener {
             showDatapicker("")
         }
-        v.read_date.setOnClickListener {
+        includeReadAddBinding.readDate.setOnClickListener {
             showDatapicker("")
         }
 
-        errorTextChangeListner(v.read_page_count_lay, readPageCountErrorMessage)
-        errorTextChangeListner(v.read_date_lay, readDateErrorMessage)
+        errorTextChangeListner(includeReadAddBinding.readPageCountLay, readPageCountErrorMessage)
+        errorTextChangeListner(includeReadAddBinding.readDateLay, readDateErrorMessage)
 
-        readDate = v.read_date
+        readDate = includeReadAddBinding.readDate
     }
 
     private fun intializeSuspend() {
@@ -112,9 +113,9 @@ class ReadsFragment : BaseDatePickerFragment() {
 
 
     private fun intializeReadList(): Read_Adapter {
-        v.list.layoutManager = LinearLayoutManager(context)
-        val adapter = Read_Adapter(context!!, reads)
-        v.list.adapter = adapter
+        includeReadListBinding.list.layoutManager = LinearLayoutManager(context)
+        val adapter = Read_Adapter(requireContext(), reads)
+        includeReadListBinding.list.adapter = adapter
         return adapter
     }
 
@@ -124,14 +125,14 @@ class ReadsFragment : BaseDatePickerFragment() {
                 listener!!.failRead()
             books = bookService.getAllBookWithSumRead()
 
-            val dataAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item, books.map {
+            val dataAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, books.map {
                 it.name + " - " + it.pageCount + " صفحه"
             })
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            v.spinner.adapter = dataAdapter
+            includeReadAddBinding.spinner.adapter = dataAdapter
         }
 
-        v.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        includeReadAddBinding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 selectedBook = books.single { it.name == adapterView.getItemAtPosition(i).toString().substringBefore(" - ") }
             }
@@ -145,22 +146,22 @@ class ReadsFragment : BaseDatePickerFragment() {
     private fun validateToSave(): Boolean {
         return when {
             selectedBook == null -> {
-                Toast.makeText(context!!, readSelectBookErrorMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), readSelectBookErrorMessage, Toast.LENGTH_SHORT).show()
                 return false
             }
-            v.read_page_count.text.isNullOrEmpty() -> {
-                v.read_page_count_lay.error = readPageCountErrorMessage
+            includeReadAddBinding.readPageCount.text.isNullOrEmpty() -> {
+                includeReadAddBinding.readPageCountLay.error = readPageCountErrorMessage
                 return false
             }
             selectedBook != null -> {
-                if (v.read_page_count.text.toString().toInt() > selectedBook!!.pageCount) {
-                    v.read_page_count_lay.error = readPageBiggerThanPageErrorMessage
+                if (includeReadAddBinding.readPageCount.text.toString().toInt() > selectedBook!!.pageCount) {
+                    includeReadAddBinding.readPageCountLay.error = readPageBiggerThanPageErrorMessage
                     return false
                 } else
                     true
             }
-            v.read_date.text.isNullOrEmpty() -> {
-                v.read_date_lay.error = readDateErrorMessage
+            includeReadAddBinding.readDate.text.isNullOrEmpty() -> {
+                includeReadAddBinding.readDateLay.error = readDateErrorMessage
                 return false
             }
             else -> true
@@ -168,51 +169,42 @@ class ReadsFragment : BaseDatePickerFragment() {
     }
 
     private fun arrangeToShowSecondViewSwitcher() {
-        v.read_page_count.setText("")
-        v.read_page_count_lay.isErrorEnabled = false
-        v.read_date.setText("")
-        v.read_date_lay.isErrorEnabled = false
-        if (v.switcher.displayedChild == 0)
-            v.switcher.showNext()
-        v.fab.hide()
+        includeReadAddBinding.readPageCount.setText("")
+        includeReadAddBinding.readPageCountLay.isErrorEnabled = false
+        includeReadAddBinding.readDate.setText("")
+        includeReadAddBinding.readDateLay.isErrorEnabled = false
+        if (fragmentReadsBinding.switcher.displayedChild == 0)
+            fragmentReadsBinding.switcher.showNext()
+        fragmentReadsBinding.fab.hide()
     }
 
     private fun ShowLoader(isShow: Boolean) {
-        if (isShow) {
-            v.indic_read_first.show()
-            v.switcher.visibility = GONE
-            v.fab.visibility = GONE
-        } else {
-            v.indic_read_first.hide()
-            v.switcher.visibility = VISIBLE
-            v.fab.visibility = VISIBLE
-        }
+        if (isShow) fragmentReadsBinding.indicReadFirst.show() else fragmentReadsBinding.indicReadFirst.hide()
+        fragmentReadsBinding.switcher.visibility = if (isShow) GONE else VISIBLE
+        fragmentReadsBinding.fab.visibility = if (isShow) GONE else VISIBLE
+
     }
 
 
 
     private fun arrangeForShowFirstViewSwitcher(isListShow: Boolean) {
         ShowLoader(false)
-        if (isListShow) {
-            v.list.visibility = VISIBLE
-            v.PLZDefineReads.visibility = GONE
-        } else {
-            v.list.visibility = GONE
-            v.PLZDefineReads.visibility = VISIBLE
-        }
-        v.fab.show()
-        if (v.switcher.displayedChild == 1)
-            v.switcher.showPrevious()
+        includeReadListBinding.list.visibility = if (isListShow) VISIBLE else GONE
+        includeReadListBinding.PLZDefineReads.visibility = if (isListShow) GONE else VISIBLE
+
+        fragmentReadsBinding.fab.show()
+        if (fragmentReadsBinding.switcher.displayedChild == 1)
+            fragmentReadsBinding.switcher.showPrevious()
         val adapter = intializeReadList()
 
-        v.read_save.setOnClickListener {
+        includeReadAddBinding.readSave.setOnClickListener {
             if (validateToSave()) {
                 launch {
 
                     val read = Read(selectedBook!!.getBookDataTable().id)
 
-                    read.pageReadCount = v.read_page_count.text.toString().toInt()
-                    read.readDate = v.read_date.text.toString()
+                    read.pageReadCount = includeReadAddBinding.readPageCount.text.toString().toInt()
+                    read.readDate = includeReadAddBinding.readDate.text.toString()
 
                     val saved = readService.insert(read)
                     if (!saved)

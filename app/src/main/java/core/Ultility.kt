@@ -31,7 +31,7 @@ class Ultility {
             val year = PersianCalendar().persianYear
             return when (type) {
                 TermType.NimsalAvl -> PersianCalendar().apply { setPersianDate(year, 9, 30) }.persianShortDate
-                TermType.NimsalDovom -> PersianCalendar().apply { setPersianDate(year, 2, 31) }.persianShortDate
+                TermType.NimsalDovom -> PersianCalendar().apply { setPersianDate(year + 1, 2, 31) }.persianShortDate
                 TermType.TermTabestan -> PersianCalendar().apply { setPersianDate(year, 5, 31) }.persianShortDate
                 TermType.TermManual -> ""
             }

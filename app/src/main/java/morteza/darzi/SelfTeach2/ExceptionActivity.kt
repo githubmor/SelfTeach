@@ -1,18 +1,21 @@
 package morteza.darzi.SelfTeach2
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import android.content.Intent
-
-
+import morteza.darzi.SelfTeach2.databinding.ActivityExceptionBinding
 
 
 class ExceptionActivity : AppCompatActivity() {
 
+    private lateinit var activityExceptionBinding: ActivityExceptionBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_exception)
+
+        activityExceptionBinding = ActivityExceptionBinding.inflate(layoutInflater)
+        setContentView(activityExceptionBinding.root)
 
         val mes = findViewById<TextView>(R.id.message)
         val p = intent.getStringExtra(MyExceptionHandler.EXTRA_MY_EXCEPTION_HANDLER)

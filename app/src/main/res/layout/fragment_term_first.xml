@@ -10,7 +10,11 @@
         android:id="@+id/indicator_term_first"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ViewSwitcher
         android:id="@+id/switcher"
@@ -29,10 +33,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/include_term_empty" />
+        <include
+            android:id="@+id/include_term_empty_inc"
+            layout="@layout/include_term_empty" />
 
-    <include
-        layout="@layout/include_term_add" />
+        <include
+            android:id="@+id/include_term_add_inc"
+            layout="@layout/include_term_add" />
 
     </ViewSwitcher>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,9 +19,9 @@ import com.github.lzyzsd.circleprogress.DonutProgress
 import core.*
 import core.services.BookService
 import core.services.TermService
-import kotlinx.android.synthetic.main.fragment_performance.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import morteza.darzi.SelfTeach2.databinding.FragmentPerformanceBinding
 
 class TermPerformanceFragment : BaseFragment() {
     override val title: String
@@ -31,16 +31,17 @@ class TermPerformanceFragment : BaseFragment() {
     private lateinit var donutProgress: DonutProgress
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var fragmentView: View
+    private var _binding: FragmentPerformanceBinding? = null
+    private val fragmentView get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        fragmentView = inflater.inflate(R.layout.fragment_performance, container, false)
+        _binding = FragmentPerformanceBinding.inflate(inflater, container, false)
 
         intializeBeforeSuspend()
         intializeSuspend()
 
-        return fragmentView
+        return fragmentView.root
     }
 
     private fun intializeBeforeSuspend() {
@@ -49,31 +50,18 @@ class TermPerformanceFragment : BaseFragment() {
     }
 
     private fun showLoader(isShow: Boolean) {
-        if (isShow) {
-            fragmentView.indic_performance.visibility = VISIBLE
-            fragmentView.today.visibility = GONE
-            fragmentView.per_day.visibility = GONE
-            fragmentView.day_remind.visibility = GONE
-            fragmentView.progressBar.visibility = GONE
-            fragmentView.read_list.visibility = GONE
-            fragmentView.performanceCircle.visibility = GONE
-            fragmentView.today_lab.visibility = GONE
-            fragmentView.per_day_lab.visibility = GONE
-            fragmentView.safe_1.visibility = GONE
-            fragmentView.safe_2.visibility = GONE
-        } else {
-            fragmentView.indic_performance.visibility = GONE
-            fragmentView.today.visibility = VISIBLE
-            fragmentView.per_day.visibility = VISIBLE
-            fragmentView.day_remind.visibility = VISIBLE
-            fragmentView.progressBar.visibility = VISIBLE
-            fragmentView.read_list.visibility = VISIBLE
-            fragmentView.performanceCircle.visibility = VISIBLE
-            fragmentView.today_lab.visibility = VISIBLE
-            fragmentView.per_day_lab.visibility = VISIBLE
-            fragmentView.safe_1.visibility = VISIBLE
-            fragmentView.safe_2.visibility = VISIBLE
-        }
+        fragmentView.indicPerformance.visibility = if (isShow) VISIBLE else GONE
+        fragmentView.today.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.perDay.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.dayRemind.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.progressBar.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.readList.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.performanceCircle.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.todayLab.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.perDayLab.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.safe1.visibility = if (isShow) GONE else VISIBLE
+        fragmentView.safe2.visibility = if (isShow) GONE else VISIBLE
+
     }
 
     private fun intializeSuspend() {
@@ -89,12 +77,12 @@ class TermPerformanceFragment : BaseFragment() {
     }
 
     private suspend fun createPerformance() {
-        val bookService = BookService(context!!)
+        val bookService = BookService(requireContext())
         if (!bookService.anyBooksExist()) {
             listener!!.failPerformance()
         }
 
-        val term = TermService(context!!).getTerm()
+        val term = TermService(requireContext()).getTerm()
         val books = bookService.getAllBookWithListRead()
 
         termPerformance = TermPerformance(term, books)
@@ -136,9 +124,9 @@ class TermPerformanceFragment : BaseFragment() {
 
     private fun loadPerformanceData() {
         fragmentView.today.text = termPerformance.pageReadTo100Percent.toString()
-        fragmentView.per_day.text = termPerformance.avgPagePerDayRemind.toString()
+        fragmentView.perDay.text = termPerformance.avgPagePerDayRemind.toString()
 
-        fragmentView.day_remind.text = "( " + termPerformance.term.dayPast + "/" + termPerformance.term.dayCount + " ) روز"
+        fragmentView.dayRemind.text = "( " + termPerformance.term.dayPast + "/" + termPerformance.term.dayCount + " ) روز"
 
         fragmentView.progressBar.progress = termPerformance.term.dayPastPercent
     }
@@ -158,10 +146,10 @@ class TermPerformanceFragment : BaseFragment() {
             } else {
                 te.setTextAppearance(R.style.creditCardText)
             }
-            te.setTextColor(fragmentView.per_day_lab.textColors)
+            te.setTextColor(fragmentView.perDayLab.textColors)
             te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            fragmentView.read_list.addView(te)
+            fragmentView.readList.addView(te)
         }
     }
 
