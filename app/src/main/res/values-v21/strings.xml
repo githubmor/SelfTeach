@@ -3,4 +3,5 @@
     <string name="sample_duration">22 روز گذشته</string>
     <string name="PLZDefineTerm">لطفا بازه ترم را انتخاب کنید</string>
     <string name="importance">اهميت</string>
+    <string name="app_version">SelfTeach Version 2.6</string>
 </resources>
