@@ -14,6 +14,8 @@
     <string name="Booking">کتاب های ترم</string>
     <string name="Reseting">تنظیم مجدد</string>
     <string name="PLZDefineBooks">لطفا کتاب های این ترم را معرفی کنید</string>
+    <string name="sample_date">1400/01/01</string>
+    <string name="sample_duration">22 روز گذشته</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

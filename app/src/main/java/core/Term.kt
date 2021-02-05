@@ -1,7 +1,8 @@
 package core
 
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
+//import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+//import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianDateParser
+import com.sardari.daterangepicker.utils.PersianCalendar
 import data.TermDataTable
 import morteza.darzi.SelfTeach2.TermType
 
@@ -79,8 +80,14 @@ var startDate
 
     private fun daysDiffCalculate(startDate: String, endDate: String): Int {
 
-        val start = (PersianDateParser(startDate).persianDate.timeInMillis / (24 * 60 * 60 * 1000)).toInt()
-        val end = (PersianDateParser(endDate).persianDate.timeInMillis / (24 * 60 * 60 * 1000)).toInt()
+        val startCalendar = PersianCalendar()
+        startCalendar.parse(startDate)
+
+        val endCalendar = PersianCalendar()
+        endCalendar.parse(endDate)
+
+        val start = (startCalendar.timeInMillis / (24 * 60 * 60 * 1000)).toInt()
+        val end = (endCalendar.timeInMillis / (24 * 60 * 60 * 1000)).toInt()
 
         return end - start
     }

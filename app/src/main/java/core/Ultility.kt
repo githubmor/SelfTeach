@@ -1,7 +1,8 @@
 package core
 
 import android.graphics.Color
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+//import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.sardari.daterangepicker.utils.PersianCalendar
 import morteza.darzi.SelfTeach2.TermType
 
 class Ultility {
@@ -39,8 +40,9 @@ class Ultility {
 
         fun arrayOfPersianCalendars(startDate: String, endDate: String): Array<PersianCalendar> {
             val re = mutableListOf<PersianCalendar>()
-            val start = PersianCalendar().apply { parse(startDate) }.timeInMillis
-            val end = PersianCalendar().apply { parse(endDate) }.timeInMillis
+            //2 month kamtar for bug
+            val start = PersianCalendar().apply { parse(startDate) }.apply { addPersianDate(PersianCalendar.MONTH, -2) }.timeInMillis
+            val end = PersianCalendar().apply { parse(endDate) }.apply { addPersianDate(PersianCalendar.MONTH, -2) }.timeInMillis
 
             for (b in start..end step (1000 * 60 * 60 * 24)) {
                 re.add(PersianCalendar(b))

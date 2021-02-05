@@ -150,11 +150,23 @@ public final class TermDatabase_Impl implements TermDatabase {
         final int _tmpId;
         _tmpId = _cursor.getInt(_cursorIndexOfId);
         final String _tmpName;
-        _tmpName = _cursor.getString(_cursorIndexOfName);
+        if (_cursor.isNull(_cursorIndexOfName)) {
+          _tmpName = null;
+        } else {
+          _tmpName = _cursor.getString(_cursorIndexOfName);
+        }
         final String _tmpStartDate;
-        _tmpStartDate = _cursor.getString(_cursorIndexOfStartDate);
+        if (_cursor.isNull(_cursorIndexOfStartDate)) {
+          _tmpStartDate = null;
+        } else {
+          _tmpStartDate = _cursor.getString(_cursorIndexOfStartDate);
+        }
         final String _tmpEndDate;
-        _tmpEndDate = _cursor.getString(_cursorIndexOfEndDate);
+        if (_cursor.isNull(_cursorIndexOfEndDate)) {
+          _tmpEndDate = null;
+        } else {
+          _tmpEndDate = _cursor.getString(_cursorIndexOfEndDate);
+        }
         _result = new TermDataTable(_tmpId,_tmpName,_tmpStartDate,_tmpEndDate);
       } else {
         _result = null;

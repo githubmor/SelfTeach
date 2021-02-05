@@ -108,7 +108,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:donut_finished_stroke_width="8dp"
-        app:donut_text_color="@color/mdtp_white"
+        app:donut_text_color="@color/design_default_color_background"
         app:donut_text_size="24sp"
         app:donut_unfinished_color="#fff"
         app:donut_unfinished_stroke_width="8dp"

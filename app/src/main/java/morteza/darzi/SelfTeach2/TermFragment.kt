@@ -1,5 +1,7 @@
 package morteza.darzi.SelfTeach2
 
+//import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
+//import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.sardari.daterangepicker.utils.PersianCalendar
 import core.Term
 import core.Ultility
 import core.services.TermService
@@ -109,6 +110,7 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeNotRelatedToSuspend() {
+
         includeTermEmptyBinding.addNewTerm.setOnClickListener {
             showTermView()
         }
@@ -231,25 +233,60 @@ class TermFragment : BaseDatePickerFragment() {
 
     override val selectableDateList: Array<PersianCalendar>?
         get() {
-            val start = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, -4) }.persianShortDate
-            val end = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, 4) }.persianShortDate
+            //2 month kamtar for bug
+            val start = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, -8) }.persianShortDate
+            val end = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, 12) }.persianShortDate
             return Ultility.arrayOfPersianCalendars(start, end)
         }
 
-    override fun onDateSet(pp: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-
-        val tag = pp!!.tag
-        val d = PersianCalendar()
-        d.setPersianDate(year, monthOfYear, dayOfMonth)
-
-        if (tag == startTag) {
-            includeTermAddBinding.termStartDate.setText(d.persianShortDate)
-            includeTermAddBinding.termStartDateLay.isErrorEnabled = false
-        } else if (tag == endTag) {
-            includeTermAddBinding.termEndDate.setText(d.persianShortDate)
-            includeTermAddBinding.termEndDateLay.isErrorEnabled = false
-        }
+    override fun onRangeDateSelected(startDate: PersianCalendar, endDate: PersianCalendar) {
+        TODO("Not yet implemented")
     }
+
+    override fun onSingleDateSelected(date: PersianCalendar?) {
+        TODO("Not yet implemented")
+    }
+//    override fun onDateSet(datapicker: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+//
+//        val tag = datapicker!!.tag
+//        val selectedDate = PersianCalendar()
+//        selectedDate.setPersianDate(year, monthOfYear, dayOfMonth)
+//
+//        if (tag == startTag) {
+//            if (!includeTermAddBinding.termEndDate.text.isNullOrEmpty()) {
+//                val end = PersianCalendar()
+//                end.parse(includeTermAddBinding.termEndDate.text.toString())
+//                end.addPersianDate(Calendar.MONTH,-2)//this is for bug
+//                if (selectedDate.timeInMillis >= end.timeInMillis) {
+//                    includeTermAddBinding.termStartDate.setText("")
+//                    includeTermAddBinding.termStartDateLay.error = "تاریخ شروع ترم باید قبل از تاریخ پایان باشد"
+//                }else{
+//                    includeTermAddBinding.termStartDate.setText(selectedDate.persianShortDate)
+//                    includeTermAddBinding.termStartDateLay.isErrorEnabled = false
+//                }
+//            }else {
+//                includeTermAddBinding.termStartDate.setText(selectedDate.persianShortDate)
+//                includeTermAddBinding.termStartDateLay.isErrorEnabled = false
+//            }
+//
+//        } else if (tag == endTag) {
+//            if (!includeTermAddBinding.termStartDate.text.isNullOrEmpty()) {
+//                val start = PersianCalendar()
+//                start.parse(includeTermAddBinding.termStartDate.text.toString())
+//                start.addPersianDate(Calendar.MONTH,-2)//this is for bug
+//                if (selectedDate.timeInMillis <= start.timeInMillis) {
+//                    includeTermAddBinding.termEndDate.setText("")
+//                    includeTermAddBinding.termEndDateLay.error = "تاریخ پایان ترم باید بعد از تاریخ شروع باشد"
+//                }else{
+//                    includeTermAddBinding.termEndDate.setText(selectedDate.persianShortDate)
+//                    includeTermAddBinding.termEndDateLay.isErrorEnabled = false
+//                }
+//            }else {
+//                includeTermAddBinding.termEndDate.setText(selectedDate.persianShortDate)
+//                includeTermAddBinding.termEndDateLay.isErrorEnabled = false
+//            }
+//        }
+//    }
 
     override fun onDetach() {
         super.onDetach()

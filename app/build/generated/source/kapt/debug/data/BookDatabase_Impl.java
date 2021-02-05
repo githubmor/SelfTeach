@@ -144,7 +144,11 @@ public final class BookDatabase_Impl implements BookDatabase {
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
             final String _tmpName;
-            _tmpName = _cursor.getString(_cursorIndexOfName);
+            if (_cursor.isNull(_cursorIndexOfName)) {
+              _tmpName = null;
+            } else {
+              _tmpName = _cursor.getString(_cursorIndexOfName);
+            }
             final int _tmpPageCount;
             _tmpPageCount = _cursor.getInt(_cursorIndexOfPageCount);
             final int _tmpPriority;
@@ -195,7 +199,11 @@ public final class BookDatabase_Impl implements BookDatabase {
           final int _tmpId;
           _tmpId = _cursor.getInt(_cursorIndexOfId);
           final String _tmpName;
-          _tmpName = _cursor.getString(_cursorIndexOfName);
+          if (_cursor.isNull(_cursorIndexOfName)) {
+            _tmpName = null;
+          } else {
+            _tmpName = _cursor.getString(_cursorIndexOfName);
+          }
           final int _tmpPageCount;
           _tmpPageCount = _cursor.getInt(_cursorIndexOfPageCount);
           final int _tmpPriority;
@@ -300,7 +308,11 @@ public final class BookDatabase_Impl implements BookDatabase {
           final int _tmpPageReadCount;
           _tmpPageReadCount = _cursor.getInt(_cursorIndexOfPageReadCount);
           final String _tmpReadDate;
-          _tmpReadDate = _cursor.getString(_cursorIndexOfReadDate);
+          if (_cursor.isNull(_cursorIndexOfReadDate)) {
+            _tmpReadDate = null;
+          } else {
+            _tmpReadDate = _cursor.getString(_cursorIndexOfReadDate);
+          }
           _item_1 = new ReadDataTable(_tmpId,_tmpBookId,_tmpPageReadCount,_tmpReadDate);
           _tmpRelation.add(_item_1);
         }

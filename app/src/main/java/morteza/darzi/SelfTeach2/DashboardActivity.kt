@@ -1,8 +1,5 @@
 package morteza.darzi.SelfTeach2
 
-//import DAL.BookRepository
-//import DAL.TermRepository
-//import DAL.AppDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem

@@ -100,7 +100,11 @@ public final class ReadDatabase_Impl implements ReadDatabase {
       while(_cursor.moveToNext()) {
         final ReadBookNameDataTable _item;
         final String _tmpBookName;
-        _tmpBookName = _cursor.getString(_cursorIndexOfBookName);
+        if (_cursor.isNull(_cursorIndexOfBookName)) {
+          _tmpBookName = null;
+        } else {
+          _tmpBookName = _cursor.getString(_cursorIndexOfBookName);
+        }
         final ReadDataTable _tmpReadDataTable;
         if (! (_cursor.isNull(_cursorIndexOfId) && _cursor.isNull(_cursorIndexOfBookId) && _cursor.isNull(_cursorIndexOfPageReadCount) && _cursor.isNull(_cursorIndexOfReadDate))) {
           final int _tmpId;
@@ -110,7 +114,11 @@ public final class ReadDatabase_Impl implements ReadDatabase {
           final int _tmpPageReadCount;
           _tmpPageReadCount = _cursor.getInt(_cursorIndexOfPageReadCount);
           final String _tmpReadDate;
-          _tmpReadDate = _cursor.getString(_cursorIndexOfReadDate);
+          if (_cursor.isNull(_cursorIndexOfReadDate)) {
+            _tmpReadDate = null;
+          } else {
+            _tmpReadDate = _cursor.getString(_cursorIndexOfReadDate);
+          }
           _tmpReadDataTable = new ReadDataTable(_tmpId,_tmpBookId,_tmpPageReadCount,_tmpReadDate);
         }  else  {
           _tmpReadDataTable = null;

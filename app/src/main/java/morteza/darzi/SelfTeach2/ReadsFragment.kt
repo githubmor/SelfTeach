@@ -1,7 +1,4 @@
 package morteza.darzi.SelfTeach2
-
-
-//import DAL.*
 import DBAdapter.Read_Adapter
 import android.content.Context
 import android.os.Bundle
@@ -15,8 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
-import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import com.sardari.daterangepicker.utils.PersianCalendar
+//import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
+//import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import core.Book
 import core.Read
 import core.ReadBook
@@ -93,14 +91,11 @@ class ReadsFragment : BaseDatePickerFragment() {
     private fun intializeSuspend() {
         launch {
 
-
             intializeSpinnerBookList()
 
             term = termRepository.getTerm()
 
             reads = readService.getAllReadsWithBookName().toMutableList()
-
-
 
             if (reads.size <= 0) {
                 arrangeForShowFirstViewSwitcher(false)
@@ -109,8 +104,6 @@ class ReadsFragment : BaseDatePickerFragment() {
             }
         }
     }
-
-
 
     private fun intializeReadList(): Read_Adapter {
         includeReadListBinding.list.layoutManager = LinearLayoutManager(context)
@@ -185,8 +178,6 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     }
 
-
-
     private fun arrangeForShowFirstViewSwitcher(isListShow: Boolean) {
         ShowLoader(false)
         includeReadListBinding.list.visibility = if (isListShow) VISIBLE else GONE
@@ -219,7 +210,6 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -234,14 +224,20 @@ class ReadsFragment : BaseDatePickerFragment() {
         listener = null
     }
 
-
-    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-
-        val selectedDate = PersianCalendar().apply {
-            setPersianDate(year, monthOfYear, dayOfMonth)
-        }
-        readDate.setText(selectedDate.persianShortDate)
+    override fun onRangeDateSelected(startDate: PersianCalendar, endDate: PersianCalendar) {
+        TODO("Not yet implemented")
     }
+
+    override fun onSingleDateSelected(date: PersianCalendar?) {
+        TODO("Not yet implemented")
+    }
+//    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+//
+//        val selectedDate = PersianCalendar().apply {
+//            setPersianDate(year, monthOfYear, dayOfMonth)
+//        }
+//        readDate.setText(selectedDate.persianShortDate)
+//    }
 
     interface OnFragmentInteractionListener {
         fun failRead()
