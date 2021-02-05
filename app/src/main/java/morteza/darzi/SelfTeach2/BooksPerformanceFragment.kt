@@ -1,8 +1,5 @@
 package morteza.darzi.SelfTeach2
 
-//import DAL.AppDatabase
-//import DAL.BookRepository
-//import DAL.TermRepository
 import DBAdapter.Book_Performance_Adapter
 import android.content.Context
 import android.os.Bundle

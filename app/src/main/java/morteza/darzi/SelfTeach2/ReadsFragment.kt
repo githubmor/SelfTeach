@@ -27,8 +27,7 @@ import morteza.darzi.SelfTeach2.databinding.FragmentReadsBinding
 
 
 class ReadsFragment : BaseDatePickerFragment() {
-    override val selectableDateList: Array<PersianCalendar>
-        get() = term.getCalenderActiveDaysList()
+
     override val mindate: PersianCalendar
         get() = PersianCalendar().apply { parse(term.startDate) }.apply { addPersianDate(PersianCalendar.MONTH, -2) }//this is for bug
     override val maxdate: PersianCalendar
@@ -229,7 +228,7 @@ class ReadsFragment : BaseDatePickerFragment() {
     }
 
     override fun onRangeDateSelected(startDate: PersianCalendar, endDate: PersianCalendar) {
-        TODO("Not yet implemented")
+        TODO("Not Need implementation")
     }
 
     override fun onSingleDateSelected(date: PersianCalendar?) {

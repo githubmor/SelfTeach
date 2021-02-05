@@ -139,12 +139,7 @@ class TermPerformanceFragment : BaseFragment() {
                 it.isFoghBarname -> te.text = "فوق برنامه : " + it.name + it.readSuggest + " صفحه بخوان"
                 else -> te.text = it.name + it.readSuggest + " صفحه بخوان"
             }
-//            if (Build.VERSION.SDK_INT < 23) {
-//                te.setTextAppearance(requireContext(), R.style.creditCardText)
-//            } else {
-//                te.setTextAppearance(R.style.creditCardText)
-//            }
-//            te.setTextColor(fragmentView.perDayLab.textColors)
+
             te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
             fragmentView.readList.addView(te)

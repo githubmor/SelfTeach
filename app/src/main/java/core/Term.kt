@@ -92,9 +92,9 @@ var startDate
         return end - start
     }
 
-    fun getCalenderActiveDaysList(): Array<PersianCalendar> {
-        return Ultility.arrayOfPersianCalendars(startDate, endDate)
-    }
+//    fun getCalenderActiveDaysList(): Array<PersianCalendar> {
+//        return Ultility.arrayOfPersianCalendars(startDate, endDate)
+//    }
 
 
 }
