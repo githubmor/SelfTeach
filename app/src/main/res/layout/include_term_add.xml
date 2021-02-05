@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/design_default_color_background"
-    >
+    android:layout_margin="8dp"
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/indicator_add_term"
@@ -16,91 +15,316 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <Spinner
-        android:id="@+id/term_type"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:textDirection="rtl" />
-    <!--<com.google.android.material.textfield.TextInputLayout-->
-        <!--android:id="@+id/term_name_lay"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="8dp"-->
-        <!--android:hint="@string/termName"-->
-        <!--app:errorEnabled="true">-->
-
-        <!--<com.google.android.material.textfield.TextInputEditText-->
-            <!--android:id="@+id/term_name"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
-    <!--</com.google.android.material.textfield.TextInputLayout>-->
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/term_start_date_lay"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/aval_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:errorEnabled="true"
+        android:background="@android:color/holo_blue_light"
         android:clickable="true"
-        android:hint="@string/startDate">
+        android:focusable="true"
+        app:cardBackgroundColor="@android:color/holo_blue_light"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/term_start_date"
-            android:focusable="false"
-            android:clickable="true"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/term_end_date_lay"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aval_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="ترم تحصیلی اول"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aval_az_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="از تاریخ "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aval_lable" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aval_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/aval_az_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/aval_az_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aval_ta_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="تا تاریخ "
+                app:layout_constraintBaseline_toBaselineOf="@id/aval_start"
+                app:layout_constraintEnd_toStartOf="@+id/aval_start" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aval_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/aval_ta_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/aval_ta_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aval_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aval_az_tarikh"
+                tools:text="@string/sample_duration" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dovom_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:errorEnabled="true"
+        android:background="@android:color/holo_red_light"
         android:clickable="true"
-        android:hint="@string/endDate">
+        android:focusable="true"
+        app:cardBackgroundColor="@android:color/holo_red_light"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/term_end_date"
-            android:focusable="false"
-            android:clickable="true"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
 
-    <!--<androidx.appcompat.widget.AppCompatTextView-->
-        <!--android:id="@+id/term_start_date"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="16dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:hint="@string/startDate"-->
-        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dovom_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="ترم تحصیلی دوم"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dovom_az_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="از تاریخ "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dovom_lable" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dovom_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/dovom_az_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/dovom_az_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dovom_ta_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="تا تاریخ "
+                app:layout_constraintBaseline_toBaselineOf="@id/dovom_start"
+                app:layout_constraintEnd_toStartOf="@+id/dovom_start" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dovom_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/dovom_ta_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/dovom_ta_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dovom_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dovom_az_tarikh"
+                tools:text="@string/sample_duration" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!--<androidx.appcompat.widget.AppCompatTextView-->
-        <!--android:id="@+id/term_end_date"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="16dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:hint="@string/endDate"-->
-        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
+    </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/term_save"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tabe_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="72dp"
-        android:text="@string/save" />
+        android:layout_margin="8dp"
+        android:background="@android:color/holo_orange_light"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@android:color/holo_orange_light"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabe_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="ترم تحصیلی تابستان"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabe_az_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="از تاریخ "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabe_lable" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabe_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tabe_az_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/tabe_az_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabe_ta_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="تا تاریخ "
+                app:layout_constraintBaseline_toBaselineOf="@id/tabe_start"
+                app:layout_constraintEnd_toStartOf="@+id/tabe_start" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabe_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/tabe_ta_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/tabe_ta_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabe_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabe_az_tarikh"
+                tools:text="@string/sample_duration" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/azad_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@android:color/darker_gray"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@android:color/darker_gray"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/azad_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="دوره آزاد"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/azad_az_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="از تاریخ "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/azad_lable" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/azad_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/azad_az_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/azad_az_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/azad_ta_tarikh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="تا تاریخ "
+                app:layout_constraintBaseline_toBaselineOf="@id/azad_start"
+                app:layout_constraintEnd_toStartOf="@+id/azad_start" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/azad_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/azad_ta_tarikh"
+                app:layout_constraintEnd_toStartOf="@+id/azad_ta_tarikh"
+                tools:text="@string/sample_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/azad_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/azad_az_tarikh"
+                tools:text="@string/sample_duration" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

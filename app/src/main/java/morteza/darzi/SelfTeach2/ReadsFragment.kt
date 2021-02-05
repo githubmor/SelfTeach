@@ -29,6 +29,10 @@ import morteza.darzi.SelfTeach2.databinding.FragmentReadsBinding
 class ReadsFragment : BaseDatePickerFragment() {
     override val selectableDateList: Array<PersianCalendar>
         get() = term.getCalenderActiveDaysList()
+    override val mindate: PersianCalendar
+        get() = PersianCalendar().apply { parse(term.startDate) }.apply { addPersianDate(PersianCalendar.MONTH, -2) }//this is for bug
+    override val maxdate: PersianCalendar
+        get() = PersianCalendar().apply { parse(term.endDate) }.apply { addPersianDate(PersianCalendar.MONTH, -2) }//this is for bug
     private lateinit var readDate: TextInputEditText
     override val title: String
         get() = "خوانده ها"
@@ -76,10 +80,10 @@ class ReadsFragment : BaseDatePickerFragment() {
         }
 
         includeReadAddBinding.readDateLay.setOnClickListener {
-            showDatapicker("")
+            showDatapicker(isRange = false)
         }
         includeReadAddBinding.readDate.setOnClickListener {
-            showDatapicker("")
+            showDatapicker(isRange = false)
         }
 
         errorTextChangeListner(includeReadAddBinding.readPageCountLay, readPageCountErrorMessage)
@@ -229,7 +233,7 @@ class ReadsFragment : BaseDatePickerFragment() {
     }
 
     override fun onSingleDateSelected(date: PersianCalendar?) {
-        TODO("Not yet implemented")
+        readDate.setText(date?.persianShortDate)
     }
 //    override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 //

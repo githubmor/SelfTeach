@@ -1,7 +1,7 @@
 package core
 
-import android.graphics.Color
 //import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
+import android.graphics.Color
 import com.sardari.daterangepicker.utils.PersianCalendar
 import morteza.darzi.SelfTeach2.TermType
 
@@ -51,5 +51,17 @@ class Ultility {
             return re.toTypedArray()
 
         }
+
+        fun getDuration(termType: TermType): String {
+            val now = PersianCalendar()
+            return when (termType) {
+                TermType.NimsalAvl -> ""
+                TermType.NimsalDovom -> ""
+                TermType.TermTabestan -> ""
+                TermType.TermManual -> ""
+            }
+        }
+
+
     }
 }

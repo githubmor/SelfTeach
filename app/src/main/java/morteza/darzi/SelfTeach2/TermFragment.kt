@@ -3,12 +3,11 @@ package morteza.darzi.SelfTeach2
 //import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 //import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.sardari.daterangepicker.utils.PersianCalendar
 import core.Term
@@ -23,9 +22,9 @@ import morteza.darzi.SelfTeach2.databinding.FragmentTermFirstBinding
 
 class TermFragment : BaseDatePickerFragment() {
 
-    private lateinit var selectedTermType: TermType
-    private val startDateError = "لطفا تاریخ شروع ترم را مشخص کنید"
-    private val endDateError = "لطفا تاریخ پایان ترم را مشخص کنید"
+//    private lateinit var selectedTermType: TermType
+//    private val startDateError = "لطفا تاریخ شروع ترم را مشخص کنید"
+//    private val endDateError = "لطفا تاریخ پایان ترم را مشخص کنید"
 
     override val title: String
         get() = "ترم"
@@ -33,8 +32,9 @@ class TermFragment : BaseDatePickerFragment() {
 
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var term: Term
-    private val startTag = "start"
-    private val endTag = "end"
+    private val isRange = true
+
+    //    private val endTag = "end"
     private lateinit var termRepository: TermService
     private var isTermEdit = false
 
@@ -89,11 +89,12 @@ class TermFragment : BaseDatePickerFragment() {
             isTermEdit = true
             showEditTermView()
         }
-        intializeSpinner()
+//        intializeSpinner()
         showViewSwitcher(true)
     }
 
     private fun showEditTermView() {
+        loadDefaultDateInView()
         showTermView()
         loadTermInView()
     }
@@ -104,87 +105,134 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun loadTermInView() {
-        includeTermAddBinding.termType.setSelection(TermType.values().single { it.typeName == term.name }.ordinal)
-        includeTermAddBinding.termStartDate.setText(term.startDate)
-        includeTermAddBinding.termEndDate.setText(term.endDate)
+        when {
+            TermType.NimsalAvl.typeName == term.name -> {
+                includeTermAddBinding.avalCard.strokeColor = Color.GREEN
+                includeTermAddBinding.avalCard.strokeWidth = 5
+            }
+            TermType.NimsalDovom.typeName == term.name -> {
+                includeTermAddBinding.dovomCard.strokeColor = Color.GREEN
+                includeTermAddBinding.dovomCard.strokeWidth = 5
+            }
+            TermType.TermTabestan.typeName == term.name -> {
+                includeTermAddBinding.tabeCard.strokeColor = Color.GREEN
+                includeTermAddBinding.tabeCard.strokeWidth = 5
+            }
+            TermType.TermManual.typeName == term.name -> {
+                includeTermAddBinding.azadCard.strokeColor = Color.GREEN
+                includeTermAddBinding.azadCard.strokeWidth = 5
+                loadAzadDateInView()
+            }
+        }
+
+//        includeTermAddBinding.termType.setSelection(TermType.values().single { it.typeName == term.name }.ordinal)
+//        includeTermAddBinding.termStartDate.setText(term.startDate)
+//        includeTermAddBinding.termEndDate.setText(term.endDate)
+    }
+
+    private fun loadAzadDateInView() {
+        includeTermAddBinding.azadStart.text = term.startDate
+        includeTermAddBinding.azadEnd.text = term.endDate
+        includeTermAddBinding.azadDuration.text = Ultility.getDuration(TermType.TermManual)//TODO باید حساب کنیم
+    }
+
+    private fun loadDefaultDateInView() {
+        includeTermAddBinding.avalStart.text = Ultility.getStartDate(TermType.NimsalAvl)
+        includeTermAddBinding.avalEnd.text = Ultility.getEndDate(TermType.NimsalAvl)
+        includeTermAddBinding.avalDuration.text = Ultility.getDuration(TermType.NimsalAvl)
+
+        includeTermAddBinding.dovomStart.text = Ultility.getStartDate(TermType.NimsalDovom)
+        includeTermAddBinding.dovomEnd.text = Ultility.getEndDate(TermType.NimsalDovom)
+        includeTermAddBinding.dovomDuration.text = Ultility.getDuration(TermType.NimsalDovom)
+
+        includeTermAddBinding.tabeStart.text = Ultility.getStartDate(TermType.TermTabestan)
+        includeTermAddBinding.tabeEnd.text = Ultility.getEndDate(TermType.TermTabestan)
+        includeTermAddBinding.tabeDuration.text = Ultility.getDuration(TermType.TermTabestan)
+
+        includeTermAddBinding.azadStart.text = Ultility.getStartDate(TermType.TermManual)
+        includeTermAddBinding.azadEnd.text = Ultility.getEndDate(TermType.TermManual)
+        includeTermAddBinding.azadDuration.text = Ultility.getDuration(TermType.TermManual)
+
     }
 
     private fun intializeNotRelatedToSuspend() {
 
         includeTermEmptyBinding.addNewTerm.setOnClickListener {
+            loadDefaultDateInView()
             showTermView()
         }
 
-        includeTermAddBinding.termStartDate.setOnClickListener {
-            showDatapicker(startTag)
+        includeTermAddBinding.azadCard.setOnClickListener {
+            showDatapicker(isRange)
         }
-        includeTermAddBinding.termStartDateLay.setOnClickListener {
-            showDatapicker(startTag)
-        }
-
-        includeTermAddBinding.termEndDate.setOnClickListener {
-            showDatapicker(endTag)
-        }
-        includeTermAddBinding.termEndDateLay.setOnClickListener {
-            showDatapicker(endTag)
+        includeTermAddBinding.avalCard.setOnClickListener {
+            termSave(TermType.NimsalAvl, Ultility.getStartDate(TermType.NimsalAvl), Ultility.getEndDate(TermType.NimsalAvl))
         }
 
-
-
-        errorTextChangeListner(includeTermAddBinding.termStartDateLay, startDateError)
-        errorTextChangeListner(includeTermAddBinding.termEndDateLay, endDateError)
-
-        includeTermAddBinding.termSave.setOnClickListener {
-            if (validateToSave()) {
-                getTermAndSave()
-            }
+        includeTermAddBinding.dovomCard.setOnClickListener {
+            termSave(TermType.NimsalDovom, Ultility.getStartDate(TermType.NimsalDovom), Ultility.getEndDate(TermType.NimsalDovom))
         }
+        includeTermAddBinding.tabeCard.setOnClickListener {
+            termSave(TermType.TermTabestan, Ultility.getStartDate(TermType.TermTabestan), Ultility.getEndDate(TermType.TermTabestan))
+        }
+
+
+//        errorTextChangeListner(includeTermAddBinding.termStartDateLay, startDateError)
+//        errorTextChangeListner(includeTermAddBinding.termEndDateLay, endDateError)
+
+
     }
 
-    private fun intializeSpinner() {
-        val dataAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, TermType.values().map { it.typeName })
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        includeTermAddBinding.termType.adapter = dataAdapter
+//    private fun SaveTerm(){
+////        if (validateToSave()) {
+//            getTermAndSave()
+////        }
+//    }
 
-        includeTermAddBinding.termType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
-                if (!isTermEdit) {
-                    includeTermAddBinding.termStartDate.setText(Ultility.getStartDate(selectedTermType))
-                    includeTermAddBinding.termEndDate.setText(Ultility.getEndDate(selectedTermType))
-                }
+//    private fun intializeSpinner() {
+//        val dataAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, TermType.values().map { it.typeName })
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        includeTermAddBinding.termType.adapter = dataAdapter
+//
+//        includeTermAddBinding.termType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+//                selectedTermType = TermType.values().single { it.typeName == adapterView.getItemAtPosition(i) as String }
+//                if (!isTermEdit) {
+//                    includeTermAddBinding.termStartDate.setText(Ultility.getStartDate(selectedTermType))
+//                    includeTermAddBinding.termEndDate.setText(Ultility.getEndDate(selectedTermType))
+//                }
+//
+//            }
+//
+//            override fun onNothingSelected(adapterView: AdapterView<*>) {
+//
+//            }
+//        }
+//    }
 
-            }
+//    private fun validateToSave(): Boolean {
+//        return when {
+//            includeTermAddBinding.termStartDate.text.isNullOrEmpty() -> {
+//                includeTermAddBinding.termStartDateLay.error = startDateError
+//                false
+//            }
+//            includeTermAddBinding.termEndDate.text.isNullOrEmpty() -> {
+//                includeTermAddBinding.termEndDateLay.error = endDateError
+//                false
+//            }
+//            isDateValidate(includeTermAddBinding.termStartDate.text.toString(), includeTermAddBinding.termEndDate.text.toString()) -> true
+//            else -> true
+//        }
+//    }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>) {
+//    private fun isDateValidate(text: String, text1: String): Boolean {
+//        //TODO باید چک شود تاریخ پایان بعد از تاریخ شروع باشد
+//        return text == text1
+//    }
 
-            }
-        }
-    }
-
-    private fun validateToSave(): Boolean {
-        return when {
-            includeTermAddBinding.termStartDate.text.isNullOrEmpty() -> {
-                includeTermAddBinding.termStartDateLay.error = startDateError
-                false
-            }
-            includeTermAddBinding.termEndDate.text.isNullOrEmpty() -> {
-                includeTermAddBinding.termEndDateLay.error = endDateError
-                false
-            }
-            isDateValidate(includeTermAddBinding.termStartDate.text.toString(), includeTermAddBinding.termEndDate.text.toString()) -> true
-            else -> true
-        }
-    }
-
-    private fun isDateValidate(text: String, text1: String): Boolean {
-        //TODO باید چک شود تاریخ پایان بعد از تاریخ شروع باشد
-        return text == text1
-    }
-
-    private fun getTermAndSave() {
+    private fun termSave(type: TermType, start: String, end: String) {
         launch {
-            getTermFromViewData()
+            getTermObject(type, start, end)
             if (isTermEdit) {
 
                 val saved = termRepository.update(term)
@@ -193,7 +241,7 @@ class TermFragment : BaseDatePickerFragment() {
                     throw IllegalArgumentException("به روز رسانی ترم دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, selectedTermType.typeName + " به روز شد", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, term.name + " به روز شد", Toast.LENGTH_SHORT).show()
                     listener!!.onSaveTermComplete()
                 }
             } else {
@@ -202,19 +250,19 @@ class TermFragment : BaseDatePickerFragment() {
 
                 withContext(Dispatchers.Main) {
                     if (saved) {
-                        Toast.makeText(context, selectedTermType.typeName + " ذخیره شد", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, term.name + " ذخیره شد", Toast.LENGTH_SHORT).show()
                         listener!!.onSaveTermComplete()
-                    }else
+                    } else
                         throw IllegalArgumentException("ذخیره سازی ترم دچار مشکل شده . لطفا به سازنده با ایمیل pc2man@gmail.com اطلاع دهید")
                 }
             }
         }
     }
 
-    private fun getTermFromViewData() {
-        term.name = selectedTermType.name
-        term.startDate = includeTermAddBinding.termStartDate.text.toString()
-        term.endDate = includeTermAddBinding.termEndDate.text.toString()
+    private fun getTermObject(type: TermType, start: String, end: String) {
+        term.name = type.name
+        term.startDate = start
+        term.endDate = end
     }
 
     override fun onAttach(context: Context) {
@@ -238,9 +286,16 @@ class TermFragment : BaseDatePickerFragment() {
             val end = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, 12) }.persianShortDate
             return Ultility.arrayOfPersianCalendars(start, end)
         }
+    override val mindate: PersianCalendar
+        get() = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, -8) }
+    override val maxdate: PersianCalendar
+        get() = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, 12) }
 
     override fun onRangeDateSelected(startDate: PersianCalendar, endDate: PersianCalendar) {
-        TODO("Not yet implemented")
+        //TODO اینجا باید بک وقفه ای اتفاق بیافتد تا اطلاعات ترم آزاد به کاربر نمایش داده شود بعد سیو شود
+//        getTermObject(TermType.TermManual,startDate.persianShortDate,endDate.persianShortDate)
+//        loadAzadDateInView()
+        termSave(TermType.TermManual, startDate.persianShortDate, endDate.persianShortDate)
     }
 
     override fun onSingleDateSelected(date: PersianCalendar?) {
