@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import core.Book
 import core.services.BookService
@@ -68,7 +69,7 @@ class BooksFragment : BaseFragment() {
 
                     val saved = service.insert(book)
                     if (!saved)
-                        throw IllegalArgumentException("ایجاد کتاب دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
+                        Toast.makeText(requireContext(), "ایجاد کتاب دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید", Toast.LENGTH_LONG).show()
                     adapter.addNewBook(book)
 
                     showBookListSwitcher()

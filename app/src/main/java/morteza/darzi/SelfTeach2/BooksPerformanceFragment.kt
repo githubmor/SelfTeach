@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
 import core.BookPerformance
 import core.services.BookService
 import core.services.TermService
@@ -54,10 +55,14 @@ class BooksPerformanceFragment : BaseFragment() {
             if (!termService.isTermExist()) {
                 listener!!.failOpenBooks()
             }
-            val term = termService.getTerm()
+            try {
+                val term = termService.getTerm()
 
-            for (book in bookService.getAllBookWithSumRead()) {
-                bookPerformances.add(BookPerformance(term, book))
+                for (book in bookService.getAllBookWithSumRead()) {
+                    bookPerformances.add(BookPerformance(term, book))
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
             intializeAfterSuspend()
 

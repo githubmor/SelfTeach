@@ -12,6 +12,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
 import com.github.lzyzsd.circleprogress.DonutProgress
 import com.google.android.material.textview.MaterialTextView
 import core.*
@@ -80,12 +81,19 @@ class TermPerformanceFragment : BaseFragment() {
             listener!!.failPerformance()
         }
 
-        val term = TermService(requireContext()).getTerm()
-        val books = bookService.getAllBookWithListRead()
+        try {
+            val term = TermService(requireContext()).getTerm()
+            val books = bookService.getAllBookWithListRead()
 
-        termPerformance = TermPerformance(term, books)
+            termPerformance = TermPerformance(term, books)
 
-        suggest = Suggestion(term, books).getBookSuggestList(termPerformance)
+            suggest = Suggestion(term, books).getBookSuggestList(termPerformance)
+
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            listener!!.failPerformance()
+        }
+
 
     }
 

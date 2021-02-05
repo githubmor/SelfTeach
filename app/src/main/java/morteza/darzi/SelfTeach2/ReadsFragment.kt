@@ -96,14 +96,18 @@ class ReadsFragment : BaseDatePickerFragment() {
 
             intializeSpinnerBookList()
 
-            term = termRepository.getTerm()
+            try {
+                term = termRepository.getTerm()
 
-            reads = readService.getAllReadsWithBookName().toMutableList()
+                reads = readService.getAllReadsWithBookName().toMutableList()
 
-            if (reads.size <= 0) {
-                arrangeForShowFirstViewSwitcher(false)
-            } else {
-                arrangeForShowFirstViewSwitcher(true)
+                if (reads.size <= 0) {
+                    arrangeForShowFirstViewSwitcher(false)
+                } else {
+                    arrangeForShowFirstViewSwitcher(true)
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -202,7 +206,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
                     val saved = readService.insert(read)
                     if (!saved)
-                        throw IllegalArgumentException("ایجاد خواندن دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
+                        Toast.makeText(requireContext(), "ایجاد خواندن دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید", Toast.LENGTH_LONG).show()
 
                     adapter.addNewRead(ReadBook(read.getReadDataTable(), selectedBook!!.name))
                     arrangeForShowFirstViewSwitcher(true)

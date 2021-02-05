@@ -142,20 +142,23 @@ class DashboardActivity : ScopedAppActivity()
         when (item.itemId) {
             R.id.Reseting -> {
                 launch {
-                    val term = termService.getTerm()
-                    if (term.isSaved()) {
-                        val saved = termService.delete(term)
-                        if (!saved)
-                            throw IllegalArgumentException("حذف ترم دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
-                    }
+                    try {
+                        val term = termService.getTerm()
+                        if (term.isSaved()) {
+                            val saved = termService.delete(term)
+                            if (!saved)
+                                Toast.makeText(baseContext, "حذف ترم دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید", Toast.LENGTH_LONG).show()
+                        }
 
-                    val books = bookService.getAllBookWithSumRead()
-                    if (!books.isNullOrEmpty()) {
-                        val saved =bookService.deleteAll()
-                        if (!saved)
-                            throw IllegalArgumentException("حذف کتاب ها دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید")
+                        val books = bookService.getAllBookWithSumRead()
+                        if (!books.isNullOrEmpty()) {
+                            val saved = bookService.deleteAll()
+                            if (!saved)
+                                Toast.makeText(baseContext, "حذف کتاب ها دچار مشکل شده. لطفا به سازنده برنامه اطلاع دهید", Toast.LENGTH_LONG).show()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(baseContext, e.message, Toast.LENGTH_LONG).show()
                     }
-
                     intializeSuspend()
                 }
             }
