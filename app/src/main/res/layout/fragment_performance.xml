@@ -4,99 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/colorPrimary"
-    tools:context=".TermEditFragment">
+    android:background="@color/colorPrimary">
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/indic_performance"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/per_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/per_day_lab"
-        app:layout_constraintEnd_toEndOf="@+id/per_day_lab"
-        app:layout_constraintStart_toEndOf="@+id/safe_1"
-        tools:text="14" />
-
-    <TextView
-        android:id="@+id/per_day_lab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="متوسط روزانه"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-        android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/today_lab"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/performanceCircle" />
-    <!--<com.github.aakira.compoundicontextview.CompoundIconTextView-->
-        <!--android:id="@+id/compoundIconTextView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:drawablePadding="4dp"-->
-        <!--android:gravity="center"-->
-        <!--android:text="Hello World!"-->
-        <!--android:textColor="#3F51B5"-->
-        <!--android:textSize="16sp"-->
-        <!--app:cit_drawableLeft="@drawable/info_black_24dp"-->
-    <!--app:cit_iconColor="#00e1ff"-->
-        <!--app:cit_iconHeight="16dp"-->
-        <!--app:cit_iconWidth="16dp" />-->
-    <TextView
-        android:id="@+id/today"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/today_lab"
-        app:layout_constraintEnd_toEndOf="@+id/today_lab"
-        app:layout_constraintStart_toEndOf="@+id/safe_2"
-        tools:text="25" />
-
-    <TextView
-        android:id="@+id/safe_2"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:text="صفحه"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-        android:textSize="10sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/today"
-        app:layout_constraintEnd_toStartOf="@+id/today"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@+id/today_lab" />
-
-    <TextView
-        android:id="@+id/safe_1"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:text="صفحه"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-        android:textSize="10sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/per_day"
-        app:layout_constraintEnd_toStartOf="@+id/per_day"
-        app:layout_constraintStart_toStartOf="@+id/per_day_lab" />
-
-    <TextView
-        android:id="@+id/today_lab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+    <LinearLayout
+        android:id="@+id/read_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="امروز"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/performanceCircle"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_list_lab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ليست خواندن :"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
     <com.github.lzyzsd.circleprogress.DonutProgress
         android:id="@+id/performanceCircle"
@@ -115,62 +56,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <!--<com.github.aakira.compoundicontextview.CompoundIconTextView-->
+    <!--android:id="@+id/compoundIconTextView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:drawablePadding="4dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="Hello World!"-->
+    <!--android:textColor="#3F51B5"-->
+    <!--android:textSize="16sp"-->
+    <!--app:cit_drawableLeft="@drawable/info_black_24dp"-->
+    <!--app:cit_iconColor="#00e1ff"-->
+    <!--app:cit_iconHeight="16dp"-->
+    <!--app:cit_iconWidth="16dp" />-->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/indic_performance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:progress="50"
+        app:indicatorColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:indeterminate="false"
+        android:layoutDirection="rtl"
         android:maxHeight="12dp"
         android:minHeight="12dp"
         android:progress="40"
-        android:progressDrawable="@drawable/progress_drawable"
-        android:scaleX="-1"
-        app:backgroundColor="@color/colorPrimary"
+        app:indicatorColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/day_remind" />
 
-    <LinearLayout
-        android:id="@+id/read_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar">
-
-        <TextView
-            android:id="@+id/read_list_lab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ليست خواندن :"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/day_remind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -182,5 +109,78 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="(12/45) روز" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/per_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/per_day_lab"
+        app:layout_constraintEnd_toEndOf="@+id/per_day_lab"
+        app:layout_constraintStart_toEndOf="@+id/safe_1"
+        tools:text="14" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/per_day_lab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="متوسط روزانه"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/today_lab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/performanceCircle" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/today_lab"
+        app:layout_constraintEnd_toEndOf="@+id/today_lab"
+        app:layout_constraintStart_toEndOf="@+id/safe_2"
+        tools:text="25" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/safe_2"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:text="صفحه"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/today"
+        app:layout_constraintEnd_toStartOf="@+id/today"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/today_lab" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/safe_1"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:text="صفحه"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/per_day"
+        app:layout_constraintEnd_toStartOf="@+id/per_day"
+        app:layout_constraintStart_toStartOf="@+id/per_day_lab" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/today_lab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="امروز"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/performanceCircle"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

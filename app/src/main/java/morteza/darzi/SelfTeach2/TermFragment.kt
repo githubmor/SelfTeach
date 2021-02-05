@@ -3,7 +3,6 @@ package morteza.darzi.SelfTeach2
 //import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog
 //import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +46,7 @@ class TermFragment : BaseDatePickerFragment() {
     private var _binding: FragmentTermFirstBinding? = null
     private val fragmentView get() = _binding!!
     private val includeTermAddBinding get() = fragmentView.includeTermAddInc
-    private val includeTermEmptyBinding get() = fragmentView.includeTermEmptyInc
+//    private val includeTermEmptyBinding get() = fragmentView.includeTermEmptyInc
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -107,19 +106,19 @@ class TermFragment : BaseDatePickerFragment() {
     private fun loadTermInView() {
         when {
             TermType.NimsalAvl.typeName == term.name -> {
-                includeTermAddBinding.avalCard.strokeColor = Color.GREEN
+//                includeTermAddBinding.avalCard.strokeColor = Color.GREEN
                 includeTermAddBinding.avalCard.strokeWidth = 5
             }
             TermType.NimsalDovom.typeName == term.name -> {
-                includeTermAddBinding.dovomCard.strokeColor = Color.GREEN
+//                includeTermAddBinding.dovomCard.strokeColor = Color.GREEN
                 includeTermAddBinding.dovomCard.strokeWidth = 5
             }
             TermType.TermTabestan.typeName == term.name -> {
-                includeTermAddBinding.tabeCard.strokeColor = Color.GREEN
+//                includeTermAddBinding.tabeCard.strokeColor = Color.GREEN
                 includeTermAddBinding.tabeCard.strokeWidth = 5
             }
             TermType.TermManual.typeName == term.name -> {
-                includeTermAddBinding.azadCard.strokeColor = Color.GREEN
+//                includeTermAddBinding.azadCard.strokeColor = Color.GREEN
                 includeTermAddBinding.azadCard.strokeWidth = 5
                 loadAzadDateInView()
             }
@@ -157,10 +156,10 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun intializeNotRelatedToSuspend() {
 
-        includeTermEmptyBinding.addNewTerm.setOnClickListener {
-            loadDefaultDateInView()
-            showTermView()
-        }
+//        includeTermEmptyBinding.addNewTerm.setOnClickListener {
+//            loadDefaultDateInView()
+//            showTermView()
+//        }
 
         includeTermAddBinding.azadCard.setOnClickListener {
             showDatapicker(isRange)

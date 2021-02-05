@@ -6,5 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/creditCardText</item>
+    </style>
+
+    <style name="creditCardText">
+        <item name="fontFamily">@font/shab</item>
     </style>
 </resources>
