@@ -34,7 +34,7 @@ class BooksPerformanceFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentBookListBinding.inflate(inflater, container, false)
 
         bookService = BookService(requireContext())

@@ -37,7 +37,7 @@ class BooksFragment : BaseFragment() {
     private val includeBookListBinding get() = fragmentBooksFirstBinding.includeBookListInc
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentBooksFirstBinding.inflate(inflater, container, false)
         intializeBeforeSuspend()
         intializeSuspend()

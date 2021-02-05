@@ -2,6 +2,7 @@ package morteza.darzi.SelfTeach2
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.system.exitProcess
 
 /**
  * Activity based Exception handler ...
@@ -29,7 +30,7 @@ class MyExceptionHandler(private val context: AppCompatActivity) : Thread.Uncaug
             // make sure we die, otherwise the app will hang ...
             android.os.Process.killProcess(android.os.Process.myPid())
             // sometimes on older android version killProcess wasn't enough -- strategy pattern should be considered here
-            System.exit(0)
+            exitProcess(0)
         } else {
             rootHandler.uncaughtException(thread, ex)
         }

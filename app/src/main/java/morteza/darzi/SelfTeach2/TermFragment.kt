@@ -50,7 +50,7 @@ class TermFragment : BaseDatePickerFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentTermFirstBinding.inflate(inflater, container, false)
 
         intializeBeforeSuspend()
@@ -277,7 +277,7 @@ class TermFragment : BaseDatePickerFragment() {
         super.onDestroyView()
     }
 
-    override val selectableDateList: Array<PersianCalendar>?
+    override val selectableDateList: Array<PersianCalendar>
         get() {
             //2 month kamtar for bug
             val start = PersianCalendar().apply { addPersianDate(PersianCalendar.MONTH, -8) }.persianShortDate

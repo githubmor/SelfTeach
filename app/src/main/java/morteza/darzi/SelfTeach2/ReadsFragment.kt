@@ -58,7 +58,7 @@ class ReadsFragment : BaseDatePickerFragment() {
     private var selectedBook: Book? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentReadsBinding.inflate(inflater, container, false)
 
         intializeNotRelatedSuspend()
@@ -70,7 +70,7 @@ class ReadsFragment : BaseDatePickerFragment() {
 
     private fun intializeNotRelatedSuspend() {
 
-        ShowLoader(true)
+        showLoader(true)
         readService = ReadService(requireContext())
         bookService = BookService(requireContext())
         termRepository = TermService(requireContext())
@@ -175,7 +175,7 @@ class ReadsFragment : BaseDatePickerFragment() {
         fragmentReadsBinding.fab.hide()
     }
 
-    private fun ShowLoader(isShow: Boolean) {
+    private fun showLoader(isShow: Boolean) {
         if (isShow) fragmentReadsBinding.indicReadFirst.show() else fragmentReadsBinding.indicReadFirst.hide()
         fragmentReadsBinding.switcher.visibility = if (isShow) GONE else VISIBLE
         fragmentReadsBinding.fab.visibility = if (isShow) GONE else VISIBLE
@@ -183,7 +183,7 @@ class ReadsFragment : BaseDatePickerFragment() {
     }
 
     private fun arrangeForShowFirstViewSwitcher(isListShow: Boolean) {
-        ShowLoader(false)
+        showLoader(false)
         includeReadListBinding.list.visibility = if (isListShow) VISIBLE else GONE
         includeReadListBinding.PLZDefineReads.visibility = if (isListShow) GONE else VISIBLE
 

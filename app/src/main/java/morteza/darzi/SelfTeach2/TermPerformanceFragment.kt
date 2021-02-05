@@ -12,7 +12,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import androidx.appcompat.app.AlertDialog
 import com.github.lzyzsd.circleprogress.DonutProgress
 import com.google.android.material.textview.MaterialTextView
 import core.*
@@ -33,7 +32,7 @@ class TermPerformanceFragment : BaseFragment() {
     private var _binding: FragmentPerformanceBinding? = null
     private val fragmentView get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentPerformanceBinding.inflate(inflater, container, false)
 
@@ -90,17 +89,17 @@ class TermPerformanceFragment : BaseFragment() {
 
     }
 
-    fun showSummery(summery: ISummery) {
-        val builder: AlertDialog.Builder? = activity?.let {
-            AlertDialog.Builder(it)
-        }
-
-        builder?.setMessage(summery.getSummery())?.setTitle(summery.title)
-
-        val dialog: AlertDialog? = builder?.create()
-
-        dialog?.show()
-    }
+//    fun showSummery(summery: ISummery) {
+//        val builder: AlertDialog.Builder? = activity?.let {
+//            AlertDialog.Builder(it)
+//        }
+//
+//        builder?.setMessage(summery.getSummery())?.setTitle(summery.title)
+//
+//        val dialog: AlertDialog? = builder?.create()
+//
+//        dialog?.show()
+//    }
 
     private fun intializeAfterSusped() {
 
