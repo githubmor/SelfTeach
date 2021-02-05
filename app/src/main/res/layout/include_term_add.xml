@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="vertical"
@@ -15,6 +15,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@string/PLZDefineTerm" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/aval_card"
@@ -24,8 +31,6 @@
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="@android:color/holo_blue_light"
-            app:cardCornerRadius="4dp"
-            app:cardUseCompatPadding="true"
             app:strokeColor="@color/colorAccent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -102,8 +107,6 @@
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="@android:color/holo_red_light"
-            app:cardCornerRadius="4dp"
-            app:cardUseCompatPadding="true"
             app:strokeColor="@color/colorAccent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -180,8 +183,6 @@
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="@android:color/holo_orange_light"
-            app:cardCornerRadius="4dp"
-            app:cardUseCompatPadding="true"
             app:strokeColor="@color/colorAccent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -258,8 +259,6 @@
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="@android:color/darker_gray"
-            app:cardCornerRadius="4dp"
-            app:cardUseCompatPadding="true"
             app:strokeColor="@color/colorAccent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -327,13 +326,6 @@
 
 
         </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:text="@string/PLZDefineTerm" />
 
     </LinearLayout>
 

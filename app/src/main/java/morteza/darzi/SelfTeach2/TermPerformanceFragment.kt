@@ -5,7 +5,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.github.lzyzsd.circleprogress.DonutProgress
+import com.google.android.material.textview.MaterialTextView
 import core.*
 import core.services.BookService
 import core.services.TermService
@@ -136,17 +135,17 @@ class TermPerformanceFragment : BaseFragment() {
     private fun loadBookSuggestionData() {
 
         suggest.forEach {
-            val te = TextView(context)
+            val te = MaterialTextView(requireContext())
             when {
                 it.isFoghBarname -> te.text = "فوق برنامه : " + it.name + it.readSuggest + " صفحه بخوان"
                 else -> te.text = it.name + it.readSuggest + " صفحه بخوان"
             }
-            if (Build.VERSION.SDK_INT < 23) {
-                te.setTextAppearance(context, R.style.creditCardText)
-            } else {
-                te.setTextAppearance(R.style.creditCardText)
-            }
-            te.setTextColor(fragmentView.perDayLab.textColors)
+//            if (Build.VERSION.SDK_INT < 23) {
+//                te.setTextAppearance(requireContext(), R.style.creditCardText)
+//            } else {
+//                te.setTextAppearance(R.style.creditCardText)
+//            }
+//            te.setTextColor(fragmentView.perDayLab.textColors)
             te.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
             fragmentView.readList.addView(te)

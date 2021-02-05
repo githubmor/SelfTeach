@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:layout_editor_absoluteY="25dp">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/read_book_name_lab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="رياضي" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/read_page_count_lab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/read_book_name_lab"
-        tools:text="28 صفحه" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/read_date_lab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintBaseline_toBaselineOf="@+id/read_page_count_lab"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        tools:text="1398/02/18" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/del_read"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/del" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/del_read"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:background="@drawable/background_transparent"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/del"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_page_count_lab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/read_book_name_lab"
+            tools:text="28 صفحه" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="."
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBaseline_toBaselineOf="@+id/read_page_count_lab"
-        app:layout_constraintEnd_toStartOf="@+id/read_page_count_lab" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_date_lab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBaseline_toBaselineOf="@+id/read_page_count_lab"
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            tools:text="1398/02/18" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_book_name_lab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="رياضي" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="."
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/read_page_count_lab"
+            app:layout_constraintEnd_toStartOf="@+id/read_page_count_lab" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

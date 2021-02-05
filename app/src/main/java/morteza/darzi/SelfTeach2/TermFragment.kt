@@ -67,10 +67,10 @@ class TermFragment : BaseDatePickerFragment() {
 
     private fun showViewSwitcher(isShow: Boolean) = if (isShow) {
         fragmentView.switcher.visibility = View.VISIBLE
-        fragmentView.indicatorTermFirst.visibility = View.GONE
+        fragmentView.loaderTermFirst.visibility = View.GONE
     } else {
         fragmentView.switcher.visibility = View.GONE
-        fragmentView.indicatorTermFirst.visibility = View.VISIBLE
+        fragmentView.loaderTermFirst.visibility = View.VISIBLE
     }
 
     private fun intializeSuspend() {
@@ -84,16 +84,15 @@ class TermFragment : BaseDatePickerFragment() {
     }
 
     private fun intializeAfterSuspend() {
+        loadDefaultDateInView()
         if (term.isSaved()) {
             isTermEdit = true
             showEditTermView()
         }
-//        intializeSpinner()
         showViewSwitcher(true)
     }
 
     private fun showEditTermView() {
-        loadDefaultDateInView()
         showTermView()
         loadTermInView()
     }

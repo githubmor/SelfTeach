@@ -6,15 +6,27 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/creditCardText</item>
+        <item name="materialCardViewStyle">@style/MyCardView</item>
+        <item name="circularProgressIndicatorStyle">@style/MyContentLoadingStyle</item>
+    </style>
+
+    <style name="MyCardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="MyContentLoadingStyle">
+        <item name="android:indeterminate">true</item>
+        <item name="indicatorColor">@color/colorAccent</item>
     </style>
 
     <style name="creditCardText">
         <item name="fontFamily">@font/shab</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 
 </resources>

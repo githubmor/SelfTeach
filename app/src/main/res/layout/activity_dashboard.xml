@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".DashboardActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -21,16 +21,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/wainting_Loader_dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:indicatorColor="@color/colorAccent" />
+
     <include
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        layout="@layout/dashboard_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/dashboard_content" />
-
-    <ProgressBar
-        android:id="@+id/wainting_Loader_dashboard"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
